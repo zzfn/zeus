@@ -18,7 +18,7 @@ export default function Router() {
                     <Navigate to="/login" replace/>
                 }>
                     <Route path='home' element={<Home/>}/>
-                    <Route path='article-list' element={<ArticleList/>}/>
+                    <Route path='article' element={<ArticleList/>}/>
                     <Route path='article/:id' element={<ArticleDetail/>}/>
                     <Route path=':id' element={<Detail/>}/>
                     <Route
