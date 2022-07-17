@@ -4,14 +4,15 @@ import {useEffect, useState} from "react";
 
 function useAccess() {
     let user = useSelector((state: RootState) => state.user);
-    const [access,setAccess]=useState({
-        isAdmin:false
+    const [access, setAccess] = useState({
+        isAdmin: false
     })
-    useEffect(()=>{
+    useEffect(() => {
         setAccess({
-            isAdmin: user.info.roleValue==='ROLE_ADMIN'
+            isAdmin: user.info.roleList.some(_ => _.roleValue === 'ROLE_ADMIN')
         })
-    },[user])
+    }, [user])
     return access
 }
+
 export default useAccess
