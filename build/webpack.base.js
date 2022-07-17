@@ -83,6 +83,23 @@ module.exports = {
         ]
       },
       {
+        test: /\.(css)$/,
+        use: [
+          {
+            loader: isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader
+          },
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 3,
+              modules: false,
+              sourceMap: true
+            }
+          },
+          "postcss-loader"
+        ]
+      },
+      {
         test: lessRegex,
         exclude: lessModuleRegex,
         use: [

@@ -8,9 +8,9 @@ export async function articlePage(params: any): Promise<any> {
     });
 }
 
-export async function getUserState(): Promise<any> {
+export async function articleOne(params:any): Promise<any> {
     return http({
-        url: '/user/getUserState',
+        url: `/article/${params.id}`,
         method: 'get',
     });
 }

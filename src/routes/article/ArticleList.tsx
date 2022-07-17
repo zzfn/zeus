@@ -1,8 +1,13 @@
 import {useState} from "react";
-import {articlePage} from "../../service/article";
+import {articlePage} from "service/article";
 import ZeusTable from "components/ZeusTable";
+import {Space} from "antd";
+import {Link} from "react-router-dom";
+import Access from "components/Access";
+import useAccess from "hooks/useAccess";
 
 const ArticleList = () => {
+    const access=useAccess();
     const [params] = useState({})
     const columns = [
         {
@@ -29,13 +34,24 @@ const ArticleList = () => {
             title: '操作',
             dataIndex: 'address',
             key: 'address',
+            render: (_:string, record:any) => (
+
+                    <Access accessible={access.isAdmin}>
+                        <Space>
+                        <a>发布</a>
+                        <a>下线</a>
+                        <Link to={`/article/${record.id}`}>编辑</Link>
+                        <a>删除</a>
+                        </Space>
+                    </Access>
+            )
         },
     ];
 
 
     return (
         <>
-            <ZeusTable columns={columns} service={articlePage} params={params} />
+            <ZeusTable columns={columns} service={articlePage} params={params}/>
         </>
     );
 }
