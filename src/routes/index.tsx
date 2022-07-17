@@ -7,7 +7,6 @@ import ArticleList from "./article/ArticleList";
 import ArticleDetail from './article/ArticleDetail';
 import {useSelector} from "react-redux";
 import {RootState} from "store";
-import Auth from 'layout/Auth';
 import {Spin} from "antd";
 
 export default function Router() {
@@ -17,7 +16,9 @@ export default function Router() {
             <Routes>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/' element={<Navigate to="/workspace" replace/>}/>
-                <Route path='/' element={<Auth><CommonLayout/></Auth>}>
+                <Route path='/'
+                       element={user.loginState === false ? <Navigate to="/login" state={{from: location}} replace/> :
+                           <CommonLayout/>}>
                     <Route path='home' element={<Home/>}/>
                     <Route path='article' element={<ArticleList/>}/>
                     <Route path='article/:id' element={<ArticleDetail/>}/>

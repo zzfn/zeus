@@ -20,7 +20,6 @@ const Login = () => {
 
     const navigate = useNavigate();
     useEffect(()=>{
-        console.log(user)
         if(user.loginState){
             navigate('/workspace');
         }
