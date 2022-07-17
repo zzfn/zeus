@@ -30,26 +30,28 @@ export const user = createModel<RootModel>()({
         info: undefined
     } as User,
     reducers: {
-        // handle state changes with pure functions
         updateUser(state, payload) {
             return {...state, ...payload};
         },
     },
     effects: (dispatch) => ({
         async updateUserState() {
-            dispatch.user.updateUser({loading: true})
-            const {data, code} = await getUserState();
-            if (code === 0) {
-                dispatch.user.updateUser({loginState: data})
+            if (sessionStorage.getItem('uid')) {
+                dispatch.user.updateUser({loading: true})
+                const {code} = await getUserState();
+                if (code === 0) {
+                    dispatch.user.updateUser({loginState: true, loading: false,})
+                } else {
+                    dispatch.user.updateUser({loginState: false, loading: false,})
+                }
             } else {
-                dispatch.user.updateUser({loginState: false})
+                dispatch.user.updateUser({loading: false, loginState: false})
             }
-            dispatch.user.updateUser({loading: false})
         },
         async updateUserInfo() {
-            const {data, code} = await getUserInfo();
-            if (code === 0) {
-                dispatch.user.updateUser({info: data})
+            if (sessionStorage.getItem('uid')) {
+                const {data, code} = await getUserInfo();
+                code === 0 && dispatch.user.updateUser({info: data, loginState: true, loading: false})
             }
         },
     }),

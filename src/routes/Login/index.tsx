@@ -7,30 +7,29 @@ import {RootState} from "../../store";
 import {useEffect} from "react";
 
 const Login = () => {
+    let user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
     const onFinish = async (values: any) => {
         const {data, code} = await login(values);
         if (code === 0) {
             sessionStorage.setItem('uid', data.token);
             dispatch({type: 'user/updateUserState'})
+            dispatch({type: 'user/updateUserInfo'})
         }
     };
 
-    let user = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
     useEffect(()=>{
+        console.log(user)
         if(user.loginState){
-            navigate('/');
+            navigate('/workspace');
         }
     },[user])
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
+
     return <div className={styles.loginContainer}>
         <Form
             className={styles.loginForm}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
             <Form.Item
