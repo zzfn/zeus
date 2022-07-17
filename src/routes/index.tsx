@@ -12,17 +12,28 @@ import {Spin} from "antd";
 export default function Router() {
     let user = useSelector((state: RootState) => state.user);
     return (
-        <Spin spinning={user.loading} tip="Loading..."> <BrowserRouter>
-            <Routes>
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/' element={<Navigate to="/workspace" replace/>}/>
-                <Route path='/'
-                       element={user.loginState === false ? <Navigate to="/login" state={{from: location}} replace/> :
-                           <CommonLayout/>}>
-                    <Route path='home' element={<Home/>}/>
-                    <Route path='article' element={<ArticleList/>}/>
-                    <Route path='article/:id' element={<ArticleDetail/>}/>
-                    <Route path=':id' element={<Detail/>}/>
+        <Spin spinning={user.loading} tip="Loading...">
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/' element={<Navigate to="/workspace" replace/>}/>
+                    <Route path='/'
+                           element={user.loginState === false ?
+                               <Navigate to="/login" state={{from: location}} replace/> :
+                               <CommonLayout/>}>
+                        <Route path='home' element={<Home/>}/>
+                        <Route path='article' element={<ArticleList/>}/>
+                        <Route path='article/:id' element={<ArticleDetail/>}/>
+                        <Route path=':id' element={<Detail/>}/>
+                        <Route
+                            path='*'
+                            element={
+                                <main style={{padding: '1rem'}}>
+                                    <p>There's nothing here!</p>
+                                </main>
+                            }
+                        />
+                    </Route>
                     <Route
                         path='*'
                         element={
@@ -31,17 +42,8 @@ export default function Router() {
                             </main>
                         }
                     />
-                </Route>
-                <Route
-                    path='*'
-                    element={
-                        <main style={{padding: '1rem'}}>
-                            <p>There's nothing here!</p>
-                        </main>
-                    }
-                />
-            </Routes>
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
         </Spin>
     );
 }

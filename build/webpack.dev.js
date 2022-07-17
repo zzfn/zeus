@@ -2,6 +2,9 @@ const { merge } = require("webpack-merge");
 const base = require("./webpack.base");
 module.exports = merge(base, {
   mode: "development",
+  output: {
+    publicPath: "/",
+  },
   target: "web",
   devtool: "eval-source-map",
   devServer: {
