@@ -5,7 +5,7 @@ import {useEffect} from "react";
 
 function App(): JSX.Element {
     useEffect(() => {
-        store.dispatch({type: 'user/updateUserState'})
+        store.dispatch.user.updateUserState()
     }, [])
     return (
         <Provider store={store}>

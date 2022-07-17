@@ -35,7 +35,6 @@ const ArticleList = () => {
             dataIndex: 'address',
             key: 'address',
             render: (_:string, record:any) => (
-
                     <Access accessible={access.isAdmin}>
                         <Space>
                         <a>发布</a>

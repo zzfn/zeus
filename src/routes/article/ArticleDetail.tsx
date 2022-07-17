@@ -1,36 +1,42 @@
-import {Button, Card, Form, Input, message, Space} from "antd";
-import SelectCode from "../../components/SelectCode";
-import MarkdownEditor from "../../components/MarkdownEditor";
-import {useParams} from "react-router-dom";
-import {articleOne} from "../../service/article";
+import {Button, Card, Form, Input, message, Space, Switch} from "antd";
+import SelectCode from "components/SelectCode";
+import MarkdownEditor from "components/MarkdownEditor";
+import {useNavigate, useParams} from "react-router-dom";
+import {articleOne, saveArticle} from "service/article";
 import {useEffect} from "react";
+import Access from "components/Access";
+import useAccess from "hooks/useAccess";
 
 const formItemLayout = {
     labelCol: {
-        xs: { span: 24 },
-        sm: { span: 2 },
+        xs: {span: 24},
+        sm: {span: 3},
     },
     wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 22 },
-        md: { span: 22 },
+        xs: {span: 24},
+        sm: {span: 21},
+        md: {span: 22},
     },
 };
 
 const submitFormLayout = {
     wrapperCol: {
-        xs: { span: 24, offset: 11 },
-        sm: { span: 10, offset: 11 },
+        xs: {span: 24, offset: 11},
+        sm: {span: 10, offset: 11},
     },
 };
 const ArticleDetail = () => {
     const [form] = Form.useForm();
     const params = useParams();
+    const navigate = useNavigate();
+    const access = useAccess()
     const onFinish = async (values: Record<string, any>): Promise<void> => {
-        console.log(values)
+        const {data} = await saveArticle({...values, id: params.id});
+        data && message.success('操作成功');
+        data && navigate(`/article/${data}`);
     };
-    const handleFetchArticle = async (id:string) => {
-        const { data, msg } = await articleOne({ id });
+    const handleFetchArticle = async (id: string) => {
+        const {data, msg} = await articleOne({id});
         if (msg === 'success') {
             form.setFieldsValue(data);
         } else {
@@ -86,6 +92,38 @@ const ArticleDetail = () => {
                         <Input placeholder={'请输入排序号'}/>
                     </Form.Item>
                     <Form.Item
+                        label={'LOGO'}
+                        name="logo"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入LOGO',
+                            },
+                        ]}
+                    >
+                        <Input placeholder={'请输入LOGO'}/>
+                    </Form.Item>
+                    <Form.Item
+                        label={'摘要'}
+                        name="summary"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入摘要',
+                            },
+                        ]}
+                    >
+                        <Input.TextArea placeholder={'请输入摘要'}/>
+                    </Form.Item>
+                    <Form.Item rules={[
+                        {
+                            required: true,
+                            message: '请选择',
+                        },
+                    ]} label={'是否发布'} name="isRelease" valuePropName="checked">
+                        <Switch/>
+                    </Form.Item>
+                    <Form.Item
                         label={'文章'}
                         name="content"
                         rules={[
@@ -95,20 +133,19 @@ const ArticleDetail = () => {
                             },
                         ]}
                     >
-                        <MarkdownEditor />
+                        <MarkdownEditor/>
                     </Form.Item>
                     <Form.Item {...submitFormLayout} style={{marginTop: 32}}>
-                        <Space>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                            >
-                                发布
-                            </Button>
-                            <Button htmlType="submit">
-                                保存
-                            </Button>
-                        </Space>
+                        <Access accessible={access.isAdmin}>
+                            <Space>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                >
+                                    确认
+                                </Button>
+                            </Space>
+                        </Access>
                     </Form.Item>
                 </Form>
             </Card>

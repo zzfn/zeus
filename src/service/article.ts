@@ -15,9 +15,10 @@ export async function articleOne(params:any): Promise<any> {
     });
 }
 
-export async function getUserInfo(): Promise<any> {
+export async function saveArticle(data:any): Promise<any> {
     return http({
-        url: '/user/getUserInfo',
-        method: 'get',
+        url: '/article/save',
+        method: 'post',
+        data,
     });
 }
