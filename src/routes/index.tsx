@@ -8,11 +8,12 @@ import ArticleDetail from './article/ArticleDetail';
 import {useSelector} from "react-redux";
 import {RootState} from "store";
 import Auth from 'layout/Auth';
+import {Spin} from "antd";
 
 export default function Router() {
     let user = useSelector((state: RootState) => state.user);
     return (
-        user.loading ? <div>loading</div> : <BrowserRouter>
+        <Spin spinning={user.loading} tip="Loading..."> <BrowserRouter>
             <Routes>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/' element={<Navigate to="/workspace" replace/>}/>
@@ -40,5 +41,6 @@ export default function Router() {
                 />
             </Routes>
         </BrowserRouter>
+        </Spin>
     );
 }
