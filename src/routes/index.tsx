@@ -19,7 +19,7 @@ export default function Router() {
                     <Route path='/' element={<Navigate to="/workspace" replace/>}/>
                     <Route path='/'
                            element={user.loginState === false ?
-                               <Navigate to="/login" state={{from: location}} replace/> :
+                               <Navigate to="/login" replace/> :
                                <CommonLayout/>}>
                         <Route path='home' element={<Home/>}/>
                         <Route path='article' element={<ArticleList/>}/>
