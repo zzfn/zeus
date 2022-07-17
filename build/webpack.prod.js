@@ -8,6 +8,9 @@ const base = require("./webpack.base");
 module.exports = merge(base, {
   mode: "production",
   devtool: "nosources-source-map",
+  output: {
+    publicPath: "https://oss-zzf.zzfzzf.com",
+  },
   optimization: {
     runtimeChunk: "single",
     chunkIds: "named",
