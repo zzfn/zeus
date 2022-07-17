@@ -1,12 +1,12 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Home from './Home';
 import Detail from './Detail';
-import CommonLayout from '../layout/CommonLayout';
+import CommonLayout from 'layout/CommonLayout';
 import Login from "./Login";
 import ArticleList from "./article/ArticleList";
 import ArticleDetail from './article/ArticleDetail';
 import {useSelector} from "react-redux";
-import {RootState} from "../store";
+import {RootState} from "store";
 
 export default function Router() {
     let user = useSelector((state: RootState) => state.user);
@@ -14,9 +14,8 @@ export default function Router() {
         user.loading ? <div>loading</div> : <BrowserRouter>
             <Routes>
                 <Route path='/login' element={<Login/>}/>
-                <Route path='/' element={user.loginState ? <CommonLayout/> :
-                    <Navigate to="/login" replace/>
-                }>
+                <Route path='/' element={<Navigate to="/workspace" replace/>}/>
+                <Route path='/' element={<CommonLayout/>}>
                     <Route path='home' element={<Home/>}/>
                     <Route path='article' element={<ArticleList/>}/>
                     <Route path='article/:id' element={<ArticleDetail/>}/>
