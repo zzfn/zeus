@@ -1,7 +1,8 @@
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {Layout, Menu, MenuProps} from "antd";
 import styles from './common.module.less';
 import TopHeader from "./TopHeader";
+import {useEffect, useState} from "react";
 
 const {Header, Footer, Sider, Content} = Layout;
 const menuItems: MenuProps['items'] = [
@@ -17,28 +18,31 @@ const menuItems: MenuProps['items'] = [
     },
 ]
 const CommonLayout = () => {
+    const [selectKey,setSelectKey]=useState<string[]>([''])
     const navigate = useNavigate();
+    const location = useLocation();
     const handleMenuClick = ({keyPath}: { keyPath: string[] }) => {
         const paths = keyPath.reverse().join('/');
         navigate(paths)
     }
-
+    useEffect(() => {
+        setSelectKey(location.pathname.split('/').filter(Boolean).slice(0,1))
+    },[location.pathname])
     return (
         <Layout>
             <Header><TopHeader/></Header>
             <Layout className={styles.layout}>
                 <Sider>
                     <Menu
+                        selectedKeys={selectKey}
                         onClick={handleMenuClick}
                         mode="inline"
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
                         style={{height: '100%'}}
                         items={menuItems}
                     />
                 </Sider>
                 <Layout>
-                    <Content>
+                    <Content style={{padding:'15px'}}>
                         <Outlet/>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>Ant Design ©{new Date().getFullYear()} Created by Ant
