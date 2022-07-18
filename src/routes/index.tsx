@@ -16,7 +16,7 @@ export default function Router() {
             <BrowserRouter>
                 <Routes>
                     <Route path='/login' element={<Login/>}/>
-                    <Route path='/' element={<Navigate to="/workspace" replace/>}/>
+                    <Route path='/' element={<Navigate to="/home" replace/>}/>
                     <Route path='/'
                            element={user.loginState === false ?
                                <Navigate to="/login" replace/> :

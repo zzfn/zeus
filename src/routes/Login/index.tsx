@@ -21,7 +21,7 @@ const Login = () => {
     const navigate = useNavigate();
     useEffect(()=>{
         if(user.loginState){
-            navigate('/workspace');
+            navigate('/home');
         }
     },[user])
 

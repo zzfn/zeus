@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 
 const {Header, Footer, Sider, Content} = Layout;
 const menuItems: MenuProps['items'] = [
-    {key: 'workspace', label: '工作台'},
+    {key: 'home', label: '工作台'},
     {key: 'article', label: '文章管理'},
     {key: 'dictionary', label: '字典管理'},
     {key: 'log', label: '日志管理'},
