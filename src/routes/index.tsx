@@ -8,6 +8,7 @@ import ArticleDetail from './article/ArticleDetail';
 import {useSelector} from "react-redux";
 import {RootState} from "store";
 import {Spin} from "antd";
+import LogList from "./log/LogList";
 
 export default function Router() {
     let user = useSelector((state: RootState) => state.user);
@@ -22,6 +23,7 @@ export default function Router() {
                                <Navigate to="/login" replace/> :
                                <CommonLayout/>}>
                         <Route path='home' element={<Home/>}/>
+                        <Route path='log' element={<LogList/>}/>
                         <Route path='article' element={<ArticleList/>}/>
                         <Route path='article/:id' element={<ArticleDetail/>}/>
                         <Route path=':id' element={<Detail/>}/>
