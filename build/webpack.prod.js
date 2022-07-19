@@ -1,10 +1,13 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const webpack =require('webpack')
 const { merge } = require('webpack-merge');
 const base = require('./webpack.base');
-
+const handler = (percentage, message, ...args) => {
+  // e.g. Output each progress message directly to the console:
+  console.info(`${Number.parseInt(percentage*100)}%`, message, ...args);
+};
 module.exports = merge(base, {
   mode: 'production',
   devtool: 'nosources-source-map',
@@ -49,7 +52,9 @@ module.exports = merge(base, {
       },
     },
   },
+
   plugins: [
+    new webpack.ProgressPlugin(handler),
     process.env.ANALYZER && new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[contenthash:8].css',
