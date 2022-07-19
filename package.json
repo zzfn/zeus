@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development APP_ENV=development webpack server --config build/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production APP_ENV=development webpack --config build/webpack.prod.js",
+    "build": "cross-env NODE_ENV=production APP_ENV=production webpack --config build/webpack.prod.js",
     "lint:fix": "eslint src/**/*.tsx --fix",
     "prettier": "prettier --write ."
   },
