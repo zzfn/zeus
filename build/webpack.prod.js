@@ -23,6 +23,7 @@ module.exports = merge(base, {
     splitChunks: {
       chunks: "all",
       minSize: 0,
+      maxSize: 240,
       minRemainingSize: 0,
       minChunks: 1,
       maxAsyncRequests: 30,
@@ -31,6 +32,15 @@ module.exports = merge(base, {
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
+          name(module, chunks, cacheGroupKey) {
+            const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight((item) => item);
+            const allChunksNames = chunks.map((item) => item.name).join('~');
+            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+          },
+          chunks: 'all',
           priority: -10,
           reuseExistingChunk: true
         },
