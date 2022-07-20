@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { articlePage } from 'service/article';
 import ZeusTable from 'components/ZeusTable';
-import { Space } from 'antd';
+import {Space, Tag} from 'antd';
 import { Link } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
@@ -13,10 +13,16 @@ const ArticleList = () => {
     {
       title: '标题',
       dataIndex: 'title',
+      render: (_: string,record:any) => (
+          <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`}>{record.title}</a>
+      )
     },
     {
       title: '是否发布',
       dataIndex: 'isRelease',
+      render: (_: boolean) => (
+          _?<Tag color='#87d068'>已发布</Tag>:<Tag color='#108ee9'>草稿</Tag>
+      )
     },
     {
       title: '排序号',
@@ -37,10 +43,7 @@ const ArticleList = () => {
       render: (_: string, record: any) => (
         <Access accessible={access.isAdmin}>
           <Space>
-            <a>发布</a>
-            <a>下线</a>
             <Link to={`/article/${record.id}`}>编辑</Link>
-            <a>删除</a>
           </Space>
         </Access>
       ),
