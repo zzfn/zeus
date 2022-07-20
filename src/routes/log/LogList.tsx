@@ -17,20 +17,68 @@ const LogList = () => {
     }
     const columns = [
         {
+            title: '操作系统',
+            children:[
+                {
+                    title: 'os',
+                    dataIndex: 'os',
+                },
+                {
+                    title: 'version',
+                    dataIndex: 'osVersion',
+                },
+            ]
+        },
+        {
             title: '浏览器',
-            dataIndex: 'browser',
+            children:[
+                {
+                    title: 'browser',
+                    dataIndex: 'browser',
+                },
+                {
+                    title: 'version',
+                    dataIndex: 'browserVersion',
+                },
+            ]
         },
         {
-            title: '浏览器版本',
-            dataIndex: 'browserVersion',
+            title: '动作',
+            children:[
+                {
+                    title: 'name',
+                    dataIndex: 'name',
+                },
+                {
+                    title: 'score',
+                    dataIndex: 'value',
+                },
+            ]
         },
         {
-            title: '类型',
-            dataIndex: 'name',
-        },
-        {
-            title: 'ip',
-            dataIndex: 'ip',
+            title: 'user',
+            children:[
+                {
+                    title: 'visitorId',
+                    dataIndex: 'visitorId',
+                    width: 100,
+                    ellipsis: true,
+                    textWrap: 'word-break',
+                },
+                {
+                    title: 'ip',
+                    dataIndex: 'ip',
+                    width: 100
+                },
+                {
+                    title: 'url',
+                    dataIndex: 'url',
+                },
+                {
+                    title: 'referrer',
+                    dataIndex: 'referrer',
+                },
+            ]
         },
         {
             title: 'time',
@@ -38,8 +86,6 @@ const LogList = () => {
         },
         {
             title: '操作',
-            dataIndex: 'address',
-            key: 'address',
             render: (_: string, record: any) => (
                 <Access accessible={access.isAdmin}>
                     <a onClick={handleDelete(record.id)}>删除</a>
