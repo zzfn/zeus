@@ -3,6 +3,9 @@ import { Layout, Menu, MenuProps } from 'antd';
 import styles from './common.module.less';
 import TopHeader from './TopHeader';
 import { useEffect, useState } from 'react';
+import WaterMark from "../components/WaterMark";
+import {useSelector} from "react-redux";
+import {RootState} from "../store";
 
 const { Header, Footer, Sider, Content } = Layout;
 const menuItems: MenuProps['items'] = [
@@ -20,6 +23,7 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 const CommonLayout = () => {
+  let user = useSelector((state: RootState) => state.user);
   const [selectKey, setSelectKey] = useState<string[]>(['']);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,30 +35,32 @@ const CommonLayout = () => {
     setSelectKey(location.pathname.split('/').filter(Boolean).slice(0, 1));
   }, [location.pathname]);
   return (
-    <Layout>
-      <Header>
-        <TopHeader />
-      </Header>
-      <Layout className={styles.layout}>
-        <Sider>
-          <Menu
-            selectedKeys={selectKey}
-            onClick={handleMenuClick}
-            mode='inline'
-            style={{ height: '100%' }}
-            items={menuItems}
-          />
-        </Sider>
+      <WaterMark content={user?.info?.nickName}>
         <Layout>
-          <Content style={{ padding: '15px' }}>
-            <Outlet />
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer>
+          <Header>
+            <TopHeader />
+          </Header>
+          <Layout className={styles.layout}>
+            <Sider>
+              <Menu
+                  selectedKeys={selectKey}
+                  onClick={handleMenuClick}
+                  mode='inline'
+                  style={{ height: '100%' }}
+                  items={menuItems}
+              />
+            </Sider>
+            <Layout>
+              <Content style={{ padding: '15px' }}>
+                <Outlet />
+              </Content>
+              <Footer style={{ textAlign: 'center' }}>
+                Ant Design ©{new Date().getFullYear()} Created by Ant UED
+              </Footer>
+            </Layout>
+          </Layout>
         </Layout>
-      </Layout>
-    </Layout>
+      </WaterMark>
   );
 };
 export default CommonLayout;
