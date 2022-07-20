@@ -33,6 +33,10 @@ const LogList = () => {
             dataIndex: 'ip',
         },
         {
+            title: 'time',
+            dataIndex: 'time',
+        },
+        {
             title: '操作',
             dataIndex: 'address',
             key: 'address',
