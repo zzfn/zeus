@@ -6,7 +6,7 @@ module.exports = merge(base, {
     publicPath: '/',
   },
   target: 'web',
-  devtool: 'eval-source-map',
+  devtool: 'eval',
   devServer: {
     hot: true,
     port: 8088,
