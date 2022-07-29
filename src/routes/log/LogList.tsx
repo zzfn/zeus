@@ -73,6 +73,7 @@ const LogList = () => {
                 {
                     title: 'url',
                     dataIndex: 'url',
+                    render: (_: string) =>  <a target='_blank' href={_}>{_}</a>,
                 },
                 {
                     title: 'referrer',
