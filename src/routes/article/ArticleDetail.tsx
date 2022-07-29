@@ -31,7 +31,7 @@ const ArticleDetail = () => {
   const navigate = useNavigate();
   const access = useAccess();
   const onFinish = async (values: Record<string, any>): Promise<void> => {
-    const { data } = await saveArticle({ ...values, id: params.id });
+    const { data } = await saveArticle({ ...values, id: params.id === '_' ? '' : params.id });
     data && message.success('操作成功');
     data && navigate(`/article/${data}`);
   };
@@ -49,7 +49,13 @@ const ArticleDetail = () => {
   return (
     <>
       <Card bordered={false}>
-        <Form {...formItemLayout} style={{ marginTop: 8 }} form={form} onFinish={onFinish}>
+        <Form
+          {...formItemLayout}
+          style={{ marginTop: 8 }}
+          form={form}
+          onFinish={onFinish}
+          initialValues={{ isRelease: true }}
+        >
           <Form.Item
             label={'标题'}
             name='title'

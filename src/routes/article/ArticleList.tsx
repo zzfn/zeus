@@ -1,28 +1,34 @@
 import { useState } from 'react';
-import { articlePage } from 'service/article';
+import { articlePage, removeArticle } from 'service/article';
 import ZeusTable from 'components/ZeusTable';
-import {Space, Tag} from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Space, Tag } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 
 const ArticleList = () => {
   const access = useAccess();
   const [params] = useState({});
+  const navigate = useNavigate();
+  const handleDelete = (id: string) => async () => {
+    await removeArticle({ id });
+    navigate(0);
+  };
   const columns = [
     {
       title: '标题',
       dataIndex: 'title',
-      render: (_: string,record:any) => (
-          <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`}>{record.title}</a>
-      )
+      render: (_: string, record: any) => (
+        <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`}>
+          {record.title}
+        </a>
+      ),
     },
     {
       title: '是否发布',
       dataIndex: 'isRelease',
-      render: (_: boolean) => (
-          _?<Tag color='#87d068'>已发布</Tag>:<Tag color='#108ee9'>草稿</Tag>
-      )
+      render: (_: boolean) =>
+        _ ? <Tag color='#87d068'>已发布</Tag> : <Tag color='#108ee9'>草稿</Tag>,
     },
     {
       title: '排序号',
@@ -44,6 +50,7 @@ const ArticleList = () => {
         <Access accessible={access.isAdmin}>
           <Space>
             <Link to={`/article/${record.id}`}>编辑</Link>
+            <Button type='text' onClick={handleDelete(record.id)}>删除</Button>
           </Space>
         </Access>
       ),
@@ -52,6 +59,9 @@ const ArticleList = () => {
 
   return (
     <>
+      <Link to={`/article/_`}>
+        <Button type='primary'>新增</Button>
+      </Link>
       <ZeusTable columns={columns} service={articlePage} params={params} />
     </>
   );

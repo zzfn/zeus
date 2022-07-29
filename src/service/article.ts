@@ -22,3 +22,9 @@ export async function saveArticle(data: any): Promise<any> {
     data,
   });
 }
+export async function removeArticle(params: { id: string }) {
+  return http({
+    url: `/article/${params.id}`,
+    method: 'delete',
+  });
+}

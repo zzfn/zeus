@@ -1,9 +1,9 @@
 import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../service/user';
+import { login } from 'service/user';
 import styles from './index.module.less';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from 'store';
 import { useEffect } from 'react';
 
 const Login = () => {

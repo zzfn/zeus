@@ -1,7 +1,7 @@
 import {Button, Card} from 'antd';
 import {Funnel, FunnelChart, LabelList, Pie, PieChart, ResponsiveContainer, Tooltip} from 'recharts';
 import {getHomeOverview} from '../service/home';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 
 export default function Home() {
   const { data = {} } = useQuery(['getHomeOverview'], getHomeOverview);

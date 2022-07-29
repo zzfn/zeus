@@ -2,7 +2,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import Router from './routes';
 import { useEffect } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
