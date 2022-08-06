@@ -95,12 +95,6 @@ const ArticleDetail = () => {
           <Form.Item
             label={'LOGO'}
             name='logo'
-            rules={[
-              {
-                required: true,
-                message: '请输入LOGO',
-              },
-            ]}
           >
             <Input placeholder={'请输入LOGO'} />
           </Form.Item>
