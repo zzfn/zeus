@@ -12,7 +12,7 @@ const menuItems: MenuProps['items'] = [
   { key: 'article', label: '文章管理' },
   { key: 'dictionary', label: '字典管理' },
   { key: 'log', label: '日志管理' },
-  { key: 'resource', label: '资源管理' },
+  { key: 'device', label: '资源管理' },
   {
     key: 'cloud',
     label: '云盘管理',
