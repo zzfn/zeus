@@ -5,6 +5,7 @@ import { RootState } from '../../store';
 import styles from './index.module.less';
 import { DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import Logo from 'assets/logo.png';
 
 const TopHeader = () => {
   const dispatch = useDispatch();
@@ -22,29 +23,32 @@ const TopHeader = () => {
   }, []);
   return (
     <div className={styles.topHeader}>
-      <Dropdown
-        trigger={['click']}
-        overlay={
-          <Menu
-            onClick={handleMenuClick}
-            items={[
-              {
-                key: 'logout',
-                label: (
-                  <>
-                    <LogoutOutlined /> 退出登录
-                  </>
-                ),
-              },
-            ]}
-          />
-        }
-      >
-        <a>
-          {user.info?.nickName} <DownOutlined />
-        </a>
-      </Dropdown>
-      <Tag color={'orange'}>{process.env.APP_ENV}</Tag>
+      <img className={'w-14 h-14'} src={Logo} alt='' />
+      <div>
+        <Dropdown
+          trigger={['click']}
+          overlay={
+            <Menu
+              onClick={handleMenuClick}
+              items={[
+                {
+                  key: 'logout',
+                  label: (
+                    <>
+                      <LogoutOutlined /> 退出登录
+                    </>
+                  ),
+                },
+              ]}
+            />
+          }
+        >
+          <a>
+            {user.info?.nickName} <DownOutlined />
+          </a>
+        </Dropdown>
+        <Tag color={'orange'}>{process.env.APP_ENV}</Tag>
+      </div>
     </div>
   );
 };

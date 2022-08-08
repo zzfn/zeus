@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { Spin } from 'antd';
 import LogList from './log/LogList';
+import ResourceList from "./resource/ResourceList";
 
 export default function Router() {
   let user = useSelector((state: RootState) => state.user);
@@ -27,6 +28,7 @@ export default function Router() {
             <Route path='home' element={<Home />} />
             <Route path='log' element={<LogList />} />
             <Route path='article' element={<ArticleList />} />
+            <Route path='resource' element={<ResourceList />} />
             <Route path='article/:id' element={<ArticleDetail />} />
             <Route path=':id' element={<Detail />} />
             <Route
