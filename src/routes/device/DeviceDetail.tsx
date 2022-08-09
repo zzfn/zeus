@@ -42,7 +42,7 @@ const ArticleDetail = () => {
     }
   };
   useEffect(() => {
-    params.id && handleFetchArticle(params.id).then();
+    params.id && params.id !== '_' && handleFetchArticle(params.id).then();
   }, [params.id]);
   return (
     <>
@@ -90,10 +90,7 @@ const ArticleDetail = () => {
           >
             <Input placeholder={'请输入排序号'} />
           </Form.Item>
-          <Form.Item
-            label={'到期时间'}
-            name='dueDate'
-          >
+          <Form.Item label={'到期时间'} name='dueDate'>
             <Input placeholder={'请输入LOGO'} />
           </Form.Item>
           <Form.Item

@@ -8,9 +8,11 @@ const ZeusTable = (props: any): JSX.Element => {
     const [page, setPage] = useState({});
 
     async function handleFetch(query: any) {
-        const {data} = await service(query);
-        setDataSource(data.records);
-        setTotal(data.total);
+        const {data,code} = await service(query);
+        if(code===0){
+            setDataSource(data.records);
+            setTotal(data.total);
+        }
     }
 
     useEffect(() => {

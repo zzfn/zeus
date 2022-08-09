@@ -46,7 +46,7 @@ const DeviceList = () => {
       render: (_: string, record: any) => (
         <Access accessible={access.isAdmin}>
           <Space>
-            <Link to={`/article/${record.id}`}>编辑</Link>
+            <Link to={`/device/${record.id}`}>编辑</Link>
             <Button type='text' onClick={handleDelete(record.id)}>删除</Button>
           </Space>
         </Access>
