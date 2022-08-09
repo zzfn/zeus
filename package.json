@@ -4,7 +4,7 @@
   "description": "个人博客后台管理系统",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development APP_ENV=development webpack server --config build/webpack.dev.js",
+    "dev": "cross-env NODE_ENV=development APP_ENV=production webpack server --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production APP_ENV=production webpack --config build/webpack.prod.js",
     "analyzer": "cross-env ANALYZER=true npm run build",
     "lint:fix": "eslint src/**/*.tsx --fix",

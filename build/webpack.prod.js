@@ -13,7 +13,7 @@ module.exports = merge(base, {
     mode: 'production',
     devtool: 'nosources-source-map',
     output: {
-        publicPath: 'https://oss-zzf.zzfzzf.com/zeus',
+        publicPath: 'https://oss-zzf.zzfzzf.com/zeus/',
     },
     optimization: {
         runtimeChunk: 'single',
