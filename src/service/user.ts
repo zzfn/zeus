@@ -21,3 +21,10 @@ export async function getUserInfo(): Promise<any> {
     method: 'get',
   });
 }
+
+export async function userList(): Promise<any> {
+  return http({
+    url: '/user/list',
+    method: 'get',
+  });
+}
