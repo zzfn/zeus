@@ -1,9 +1,10 @@
-import { Button, Card, Form, Input, message, Space, Switch } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card, Form, Input, message, Select, Space, Switch } from 'antd';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { menuOne, menuSave } from '../../service/menu';
+import useMenu from 'hooks/useMenu';
 
 const formItemLayout = {
   labelCol: {
@@ -26,10 +27,16 @@ const submitFormLayout = {
 const MenuDetail = () => {
   const [form] = Form.useForm();
   const params = useParams();
+  let [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const access = useAccess();
+  const contextMenu = useMenu();
   const onFinish = async (values: Record<string, any>): Promise<void> => {
-    const { data } = await menuSave({ ...values, id: params.id === '_' ? '' : params.id });
+    const { data } = await menuSave({
+      ...values,
+      id: params.id === '_' ? '' : params.id,
+      parentId: searchParams.get('pid'),
+    });
     data && message.success('操作成功');
     data && navigate(`/menu/${data}`);
   };
@@ -55,7 +62,20 @@ const MenuDetail = () => {
             <Input placeholder={'请输入菜单路径'} />
           </Form.Item>
           <Form.Item label={'菜单组件地址'} name='component'>
-            <Input placeholder={'请输入菜单组件'} />
+            <Select
+              allowClear
+              showSearch
+              style={{ width: '100%' }}
+              filterOption={(input, option: any) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {contextMenu.map((item: { path: string }) => (
+                <Select.Option key={item.path} value={item.path.replace('.tsx', '')}>
+                  {item.path.replace('.tsx', '')}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item label={'排序号'} name='orderNum'>
             <Input placeholder={'请输入排序号'} />

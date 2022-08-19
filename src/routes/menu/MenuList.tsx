@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Space, Table } from 'antd';
 import { menuList } from '../../service/menu';
 import { list2tree } from '../../utils/list2tree';
 import { ColumnsType } from 'antd/es/table';
@@ -27,9 +27,10 @@ const MenuList = () => {
       title: '操作',
       render: (_, record: any) => {
         return (
-          <>
-            <Link to={`/menu/${record.id}`}>新增子菜单</Link>
-          </>
+          <Space>
+            <Link to={`/menu/${record.id}`}>编辑</Link>
+            <Link to={`/menu/_?pid=${record.id}`}>新增子菜单</Link>
+          </Space>
         );
       },
     },

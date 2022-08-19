@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import WaterMark from '../components/WaterMark';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch, RootState } from '../store';
+import { list2tree } from '../utils/list2tree';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -37,10 +38,17 @@ const CommonLayout = () => {
               onClick={handleMenuClick}
               mode='inline'
               style={{ height: '100%' }}
-              items={menu
-                ?.filter((item) => item.isShow)
-                .sort((a, b) => a.orderNum - b.orderNum)
-                .map((item) => ({ key: item.path, label: item.name }))}
+              items={list2tree(
+                menu
+                  ?.filter((item) => item.isShow)
+                  .sort((a, b) => a.orderNum - b.orderNum)
+                  .map((item) => ({
+                    key: item.path,
+                    label: item.name,
+                    pid: item.parentId,
+                    id: item.id,
+                  })),
+              )}
             />
           </Sider>
           <Layout>
