@@ -4,7 +4,7 @@
   "description": "个人博客后台管理系统",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development APP_ENV=production webpack server --config build/webpack.dev.js",
+    "dev": "cross-env NODE_ENV=development APP_ENV=development webpack server --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production APP_ENV=production webpack --config build/webpack.prod.js",
     "analyzer": "cross-env ANALYZER=true npm run build",
     "lint:fix": "eslint src/**/*.tsx --fix",
@@ -34,6 +34,7 @@
     "antd": "^4.22.6",
     "axios": "^0.27.2",
     "bytemd": "^1.17.1",
+    "dayjs": "^1.11.5",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",

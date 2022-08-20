@@ -15,3 +15,11 @@ export async function droneBuilds(params: any): Promise<any> {
     params
   });
 }
+
+export async function droneBuildCreate(data: any): Promise<any> {
+  return http({
+    url: '/drone/buildCreate',
+    method: 'post',
+    data
+  });
+}
