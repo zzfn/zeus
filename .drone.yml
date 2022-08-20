@@ -1,0 +1,71 @@
+kind: pipeline
+volumes:
+  - name: node_modules
+    host:
+      path: /root/zeus/node_modules
+  - name: ssh_keys
+    host:
+      path: /root/.ssh
+clone:
+  disable: true
+
+steps:
+  - name: clone
+    image: alpine/git
+    volumes:
+      - name: ssh_keys
+        path: /root/.ssh
+    environment:
+      warehouse_name: zeus
+      publish_branch: drone
+
+    commands:
+      - echo $publish_branch
+      - echo $DRONE_GIT_SSH_URL
+      - ls /root/.ssh/
+      - chmod -R 600 /root/.ssh/
+      - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+      - git clone -b $publish_branch --depth=1 $DRONE_GIT_SSH_URL
+      - cd $warehouse_name
+      - pwd
+      - mv -f * .[^.]* /drone/src
+      - ls
+
+  - name: build
+    image: node
+    depends_on: [clone]
+    volumes:
+      - name: node_modules
+        path: /drone/src/node_modules
+    commands:
+      - pwd
+      - ls -a
+      - npm install
+      - npm run build
+  - name: oss
+    image: registry.cn-shanghai.aliyuncs.com/zzf2001/drone-aliyun-oss
+    depends_on: [build]
+    settings:
+      endpoint:
+        from_secret: endpoint
+      ACCESS_KEY_ID:
+        from_secret: accessKeyID
+      ACCESS_KEY_SECRET:
+        from_secret: accessKeySecret
+      BUCKET_NAME:
+        from_secret: bucketName
+      target: zeus
+      source: ./dist
+  - name: deploy
+    image: appleboy/drone-scp
+    depends_on: [build]
+    settings:
+      host:
+        from_secret: host
+      port: 22
+      username:
+        from_secret: username
+      password:
+        from_secret: password
+      target: /root/www/zeus.zzfzzf.com
+      source: ./dist
