@@ -17,15 +17,13 @@ steps:
         path: /root/.ssh
     environment:
       warehouse_name: zeus
-      publish_branch: drone
 
     commands:
-      - echo $publish_branch
       - echo $DRONE_GIT_SSH_URL
       - ls /root/.ssh/
       - chmod -R 600 /root/.ssh/
       - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-      - git clone -b $publish_branch --depth=1 $DRONE_GIT_SSH_URL
+      - git clone -b $DRONE_COMMIT_BRANCH --depth=1 $DRONE_GIT_SSH_URL
       - cd $warehouse_name
       - pwd
       - mv -f * .[^.]* /drone/src
