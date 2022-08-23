@@ -2,7 +2,8 @@ import http from 'utils/http';
 
 export async function logPage(params: any): Promise<any> {
   return http({
-    url: '/log/search',
+    baseURL: process.env.API_URL,
+    url: '/search/log',
     method: 'get',
     params,
   });
