@@ -53,10 +53,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (response.status !== 200) {
-      message.error(msg.get(response.status)).then();
+      return message.error(msg.get(response.status)).then();
     }
     if (response.data.code !== 0) {
-      message.error(response.data.msg).then();
+      return message.error(response.data.msg || response.data.message).then();
     }
     if (response.data.code === 4001) {
     }
