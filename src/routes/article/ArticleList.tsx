@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { articlePage, removeArticle } from 'service/article';
 import ZeusTable from 'components/ZeusTable';
-import {Button, Input, Space, Tag} from 'antd';
+import { Button, Input, Space, Tag } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 
 const ArticleList = () => {
   const access = useAccess();
-  const [params,setParams] = useState({id:''});
+  const [params, setParams] = useState({ id: '' });
   const navigate = useNavigate();
   const handleDelete = (id: string) => async () => {
     await removeArticle({ id });
@@ -19,7 +19,7 @@ const ArticleList = () => {
       title: '标题',
       dataIndex: 'title',
       render: (_: string, record: any) => (
-        <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`}>
+        <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`} rel="noreferrer">
           {record.title}
         </a>
       ),
@@ -50,7 +50,9 @@ const ArticleList = () => {
         <Access accessible={access.isAdmin}>
           <Space>
             <Link to={`/article/${record.id}`}>编辑</Link>
-            <Button type='text' onClick={handleDelete(record.id)}>删除</Button>
+            <Button type='text' onClick={handleDelete(record.id)}>
+              删除
+            </Button>
           </Space>
         </Access>
       ),
@@ -59,7 +61,10 @@ const ArticleList = () => {
 
   return (
     <>
-      <Input value={params.id} onChange={e=>setParams({...params,id:e.target.value})}></Input>
+      <Input
+        value={params.id}
+        onChange={(e) => setParams({ ...params, id: e.target.value })}
+      ></Input>
       <Link to={`/article/_`}>
         <Button type='primary'>新增</Button>
       </Link>

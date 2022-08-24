@@ -1,5 +1,14 @@
 import http from 'utils/http';
 
+export async function dnsDomains(params: any): Promise<any> {
+  return http({
+    baseURL: process.env.GATEWAY_URL,
+    url: '/dns/domains',
+    method: 'get',
+    params,
+  });
+}
+
 export async function dnsList(params: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
@@ -9,23 +18,11 @@ export async function dnsList(params: any): Promise<any> {
   });
 }
 
-export async function articleOne(params: any): Promise<any> {
+export async function removeDns(data: any) {
   return http({
-    url: `/article/${params.id}`,
-    method: 'get',
-  });
-}
-
-export async function saveArticle(data: any): Promise<any> {
-  return http({
-    url: '/article/save',
+    baseURL: process.env.GATEWAY_URL,
+    url: `/dns/del`,
     method: 'post',
     data,
-  });
-}
-export async function removeArticle(params: { id: string }) {
-  return http({
-    url: `/article/${params.id}`,
-    method: 'delete',
   });
 }

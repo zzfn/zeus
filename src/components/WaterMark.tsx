@@ -77,10 +77,11 @@ function generateWaterMark(options: any) {
 const WaterMark = (props: any) => {
   const waterMarkRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    props.content&&generateWaterMark({
-      container: waterMarkRef.current,
-      content: props.content,
-    });
+    props.content &&
+      generateWaterMark({
+        container: waterMarkRef.current,
+        content: props.content,
+      });
   }, [props.content]);
   return <div ref={waterMarkRef}>{props.children}</div>;
 };

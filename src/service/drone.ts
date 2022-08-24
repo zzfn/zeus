@@ -12,7 +12,7 @@ export async function droneBuilds(params: any): Promise<any> {
   return http({
     url: '/drone/builds',
     method: 'get',
-    params
+    params,
   });
 }
 
@@ -20,6 +20,6 @@ export async function droneBuildCreate(data: any): Promise<any> {
   return http({
     url: '/drone/buildCreate',
     method: 'post',
-    data
+    data,
   });
 }

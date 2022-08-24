@@ -1,18 +1,23 @@
 import { useState } from 'react';
-import { removeArticle } from 'service/article';
 import ZeusTable from 'components/ZeusTable';
-import { Button, Space } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, Drawer, Form, Input, Select, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
-import { dnsList } from '../../service/dns';
+import { dnsDomains, dnsList, removeDns } from '../../service/dns';
+import { useQuery } from '@tanstack/react-query';
 
 const DnsList = () => {
+  const { data = [] } = useQuery(['dnsDomains'], () =>
+    dnsDomains(params).then(({ data }) => data.records),
+  );
+
   const access = useAccess();
-  const [params] = useState({ url: 'zzfzzf.com' });
+  const [params, setParams] = useState({ DomainName: 'cocoplums.com' });
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const handleDelete = (id: string) => async () => {
-    await removeArticle({ id });
+  const handleDelete = (RecordId: string) => async () => {
+    await removeDns({ RecordId });
     navigate(0);
   };
   const columns = [
@@ -43,8 +48,10 @@ const DnsList = () => {
       render: (_: string, record: any) => (
         <Access accessible={access.isAdmin}>
           <Space>
-            <Link to={`/article/${record.id}`}>编辑</Link>
-            <Button type='text' onClick={handleDelete(record.id)}>
+            <Button type='text' onClick={() => setVisible(true)}>
+              修改
+            </Button>
+            <Button type='text' onClick={handleDelete(record.RecordId)}>
               删除
             </Button>
           </Space>
@@ -53,12 +60,76 @@ const DnsList = () => {
     },
   ];
 
+  async function handleSubmit(values: any) {
+    console.log(values);
+  }
+
   return (
     <>
-      <Link to={`/article/_`}>
-        <Button type='primary'>新增</Button>
-      </Link>
-      <ZeusTable columns={columns} service={dnsList} params={params} />
+      {data.length && (
+        <Select
+          onChange={(value) => setParams({ ...params, DomainName: value })}
+          value={params.DomainName}
+        >
+          {data.map((item: any) => (
+            <Select.Option key={item.DomainName} value={item.DomainName}>
+              {item.DomainName}
+            </Select.Option>
+          ))}
+        </Select>
+      )}
+      <Button onClick={() => setVisible(true)} type='primary'>
+        新增
+      </Button>
+      <Drawer
+        title={params.DomainName}
+        placement='right'
+        visible={visible}
+        onClose={() => setVisible(false)}
+      >
+        <Form
+          name='basic'
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          onFinish={handleSubmit}
+          initialValues={{ Type: 'A' }}
+        >
+          <Form.Item
+            label='记录类型'
+            name='Type'
+            rules={[{ required: true, message: 'Please input your Type!' }]}
+          >
+            <Select>
+              <Select.Option value={'A'}>A记录</Select.Option>
+              <Select.Option value={'CNAME'}>CNAME记录</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item required label='主机记录'>
+            <Form.Item
+              rules={[{ required: true, message: 'Please input your RR!' }]}
+              name='RR'
+              noStyle
+            >
+              <Input />
+            </Form.Item>
+            <span>{params.DomainName}</span>
+          </Form.Item>
+          <Form.Item
+            label='记录值'
+            name='Value'
+            rules={[{ required: true, message: 'Please input your Value!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type='primary' htmlType='submit'>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Drawer>
+      <ZeusTable rowKey={'RecordId'} columns={columns} service={dnsList} params={params} />
     </>
   );
 };

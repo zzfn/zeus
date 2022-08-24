@@ -1,4 +1,4 @@
-import {Form, Input, Button, Alert} from 'antd';
+import { Form, Input, Button, Alert } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
 import styles from './index.module.less';
@@ -27,7 +27,7 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <Alert message="访客账号密码 test/test" type="info"/>
+      <Alert message='访客账号密码 test/test' type='info' />
       <Form className={styles.loginForm} onFinish={onFinish} autoComplete='off'>
         <Form.Item
           name='username'

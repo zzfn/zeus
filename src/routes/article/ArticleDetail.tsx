@@ -92,10 +92,7 @@ const ArticleDetail = () => {
           >
             <Input placeholder={'请输入排序号'} />
           </Form.Item>
-          <Form.Item
-            label={'LOGO'}
-            name='logo'
-          >
+          <Form.Item label={'LOGO'} name='logo'>
             <Input placeholder={'请输入LOGO'} />
           </Form.Item>
           <Form.Item

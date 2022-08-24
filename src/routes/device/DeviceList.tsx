@@ -5,7 +5,7 @@ import { Button, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
-import {deviceList} from "../../service/device";
+import { deviceList } from '../../service/device';
 
 const DeviceList = () => {
   const access = useAccess();
@@ -47,7 +47,9 @@ const DeviceList = () => {
         <Access accessible={access.isAdmin}>
           <Space>
             <Link to={`/device/${record.id}`}>编辑</Link>
-            <Button type='text' onClick={handleDelete(record.id)}>删除</Button>
+            <Button type='text' onClick={handleDelete(record.id)}>
+              删除
+            </Button>
           </Space>
         </Access>
       ),

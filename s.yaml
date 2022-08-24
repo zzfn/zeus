@@ -1,5 +1,5 @@
 edition: 1.0.0
-access: "default"
+access: 'default'
 
 services:
   framework: # 业务名称/模块名称
@@ -15,10 +15,10 @@ services:
       region: cn-shanghai
       service:
         name: web-service
-        description: "Serverless Devs Website Service"
+        description: 'Serverless Devs Website Service'
       function:
         name: zeus
-        description: "Serverless Devs Website Docusaurus Function"
+        description: 'Serverless Devs Website Docusaurus Function'
         codeUri: ./dist
         timeout: 30
         memorySize: 512
