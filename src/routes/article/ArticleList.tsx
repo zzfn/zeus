@@ -19,7 +19,7 @@ const ArticleList = () => {
       title: '标题',
       dataIndex: 'title',
       render: (_: string, record: any) => (
-        <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`} rel="noreferrer">
+        <a target='_blank' href={`https://zzfzzf.com/article/${record.id}`} rel='noreferrer'>
           {record.title}
         </a>
       ),
@@ -65,7 +65,7 @@ const ArticleList = () => {
         value={params.id}
         onChange={(e) => setParams({ ...params, id: e.target.value })}
       ></Input>
-      <Link to={`/article/_`}>
+      <Link to="/article/_">
         <Button type='primary'>新增</Button>
       </Link>
       <ZeusTable columns={columns} service={articlePage} params={params} />

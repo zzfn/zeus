@@ -74,7 +74,7 @@ const LogList = () => {
           title: 'url',
           dataIndex: 'url',
           render: (_: string) => (
-            <a target='_blank' href={_} rel="noreferrer">
+            <a target='_blank' href={_} rel='noreferrer'>
               {_}
             </a>
           ),

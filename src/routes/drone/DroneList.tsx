@@ -16,7 +16,7 @@ const DroneList = () => {
       title: '仓库',
       dataIndex: 'slug',
       render: (text: string, record: any) => (
-        <a target='_blank' href={record.link} rel="noreferrer">
+        <a target='_blank' href={record.link} rel='noreferrer'>
           {text}
         </a>
       ),
