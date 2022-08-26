@@ -66,8 +66,9 @@ const DnsList = () => {
 
   return (
     <>
-      {data.length && (
+      {data.length !== 0 && (
         <Select
+          style={{ width: '200px' }}
           onChange={(value) => setParams({ ...params, DomainName: value })}
           value={params.DomainName}
         >
@@ -100,8 +101,8 @@ const DnsList = () => {
             rules={[{ required: true, message: 'Please input your Type!' }]}
           >
             <Select>
-              <Select.Option value={'A'}>A记录</Select.Option>
-              <Select.Option value={'CNAME'}>CNAME记录</Select.Option>
+              <Select.Option value='A'>A记录</Select.Option>
+              <Select.Option value='CNAME'>CNAME记录</Select.Option>
             </Select>
           </Form.Item>
 
@@ -129,7 +130,7 @@ const DnsList = () => {
           </Form.Item>
         </Form>
       </Drawer>
-      <ZeusTable rowKey={'RecordId'} columns={columns} service={dnsList} params={params} />
+      <ZeusTable rowKey='RecordId' columns={columns} service={dnsList} params={params} />
     </>
   );
 };
