@@ -1,18 +1,20 @@
 import { Button, Card } from 'antd';
 import {
+  CartesianGrid,
   Funnel,
   FunnelChart,
-  LabelList,
+  LabelList, Legend, Line,
   Pie,
   PieChart,
   ResponsiveContainer,
-  Tooltip,
+  Tooltip, XAxis, YAxis,LineChart
 } from 'recharts';
 import { getHomeOverview } from '../service/home';
 import { useQuery } from '@tanstack/react-query';
-
+import {logUser} from "../service/log";
 export default function Home() {
   const { data = {} } = useQuery(['getHomeOverview'], getHomeOverview);
+  const { data:records=[] } = useQuery(['logUser'], ()=>logUser().then(({data})=>data));
   return (
     <>
       <Card title='快捷操作'>
@@ -54,6 +56,30 @@ export default function Home() {
           </ResponsiveContainer>
         </Card>
       </div>
+      <Card title='访客统计'>
+        <ResponsiveContainer height={200}>
+          <LineChart
+              width={500}
+              height={300}
+              data={records}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          </LineChart>
+        </ResponsiveContainer>
+      </Card>
+
     </>
   );
 }
