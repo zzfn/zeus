@@ -8,14 +8,6 @@ export async function roleList(data: any): Promise<any> {
     data,
   });
 }
-export async function userRegister(data: any): Promise<any> {
-  return http({
-    baseURL: process.env.GATEWAY_URL,
-    url: '/user/register',
-    method: 'post',
-    data,
-  });
-}
 export async function getUserState(): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,

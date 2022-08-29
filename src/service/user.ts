@@ -26,7 +26,6 @@ export async function getUserState(): Promise<any> {
 
 export async function getUserInfo(): Promise<any> {
   return http({
-    baseURL: process.env.GATEWAY_URL,
     url: '/user/getUserInfo',
     method: 'get',
   });
