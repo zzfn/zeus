@@ -1,9 +1,9 @@
 import http from 'utils/http';
 
-export async function login(data: any): Promise<any> {
+export async function roleList(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
-    url: '/user/login',
+    url: '/role/list',
     method: 'post',
     data,
   });

@@ -13,7 +13,7 @@ const DnsList = () => {
   );
 
   const access = useAccess();
-  const [params, setParams] = useState({ DomainName: 'cocoplums.com' });
+  const [params, setParams] = useState({ DomainName: 'orluma.ltd' });
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const handleDelete = (RecordId: string) => async () => {

@@ -18,12 +18,11 @@ const CommonLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const handleMenuClick = ({ keyPath }: { keyPath: string[] }) => {
-    const paths = keyPath.reverse().join('/');
-    navigate(paths);
+    navigate(keyPath[0]);
   };
   useEffect(() => {
     dispatch.menu.updateMenuInfo();
-    setSelectKey(location.pathname.split('/').filter(Boolean).slice(0, 1));
+    setSelectKey([location.pathname.split('/').filter(Boolean).join('/')]);
   }, [location.pathname]);
   return (
     <WaterMark content={user?.info?.nickName}>

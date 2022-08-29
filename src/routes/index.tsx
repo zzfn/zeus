@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { Spin } from 'antd';
 import React, { Suspense } from 'react';
+import Register from './register';
 
 export default function Router() {
   let user = useSelector((state: RootState) => state.user);
@@ -15,6 +16,7 @@ export default function Router() {
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
           <Route path='/' element={<Navigate to='/home' replace />} />
           <Route
             path='/'

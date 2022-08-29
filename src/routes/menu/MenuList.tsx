@@ -24,6 +24,10 @@ const MenuList = () => {
       dataIndex: 'isShow',
     },
     {
+      title: '排序号',
+      dataIndex: 'orderNum',
+    },
+    {
       title: '操作',
       render: (_, record: any) => {
         return (
@@ -46,7 +50,7 @@ const MenuList = () => {
   }, []);
   return (
     <>
-      <Link to={'/menu/_'}>新增一级菜单</Link>
+      <Link to='/menu/_'>新增一级菜单</Link>
       <Table rowKey='id' bordered pagination={false} columns={columns} dataSource={treeData} />
     </>
   );

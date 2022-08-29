@@ -10,7 +10,7 @@ function useAccess() {
   useEffect(() => {
     user.info &&
       setAccess({
-        isAdmin: user.info.roleList.some((_: any) => _.roleValue === 'ROLE_ADMIN'),
+        isAdmin: user.info.roleList?.some((_: any) => _.roleValue === 'ROLE_ADMIN'),
       });
   }, [user]);
   return access;

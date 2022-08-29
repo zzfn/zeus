@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ZeusTable from 'components/ZeusTable';
 import { userList } from '../../service/user';
 
-const UserList = () => {
+const User = () => {
   const [params] = useState({});
 
   const columns = [
@@ -32,4 +32,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default User;
