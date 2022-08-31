@@ -24,19 +24,12 @@ steps:
     volumes:
       - name: ssh_keys
         path: /root/.ssh
-    environment:
-      warehouse_name: zeus
-
     commands:
-      - echo $DRONE_GIT_SSH_URL
-      - ls /root/.ssh/
-      - chmod -R 600 /root/.ssh/
-      - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-      - git clone -b $DRONE_COMMIT_BRANCH --depth=1 $DRONE_GIT_SSH_URL
-      - cd $warehouse_name
-      - pwd
-      - mv -f * .[^.]* /drone/src
-      - ls
+      - git init
+      - git remote add origin $DRONE_GIT_SSH_URL
+      - git fetch
+      - git checkout origin/$DRONE_COMMIT_BRANCH -ft
+
 
   - name: build
     image: node
