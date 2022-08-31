@@ -17,6 +17,7 @@ steps:
         from_secret: webhook
       secret:
         from_secret: secret
+      text: hello
 
   - name: clone
     image: alpine/git
