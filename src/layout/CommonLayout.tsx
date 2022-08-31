@@ -55,7 +55,7 @@ const CommonLayout = () => {
               <Outlet />
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-              {new Date().getFullYear()} &copy; CocoPlums
+              {new Date().getFullYear()} &copy; SnowLuna
             </Footer>
           </Layout>
         </Layout>

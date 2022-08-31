@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import ZeusTable from 'components/ZeusTable';
 import { userList } from '../../service/user';
-import { Space } from 'antd';
+import { Modal, Space } from 'antd';
 import UserDetail from './UserDetail';
+import { useQuery } from '@tanstack/react-query';
+import { roleList } from '../../service/role';
 
 const User = () => {
   const [params] = useState({});
   const [id, setId] = useState('');
+  const [visible, setVisible] = useState(false);
+  const { data: roles = [] } = useQuery(['roleList'], () => roleList({}).then(({ data }) => data));
 
   const columns = [
     {
@@ -18,13 +22,8 @@ const User = () => {
       dataIndex: 'nickname',
     },
     {
-      title: '头像',
-      dataIndex: 'avatar',
-      render: (_: string) => <img className='w-10 h-10 rounded-full' src={_} alt='' />,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
+      title: '更新时间',
+      dataIndex: 'updateTime',
     },
     {
       title: '操作',
@@ -32,6 +31,7 @@ const User = () => {
         <Space>
           <a
             onClick={() => {
+              setVisible(true);
               setId(record.id);
             }}
           >
@@ -44,7 +44,9 @@ const User = () => {
 
   return (
     <>
-      <UserDetail id={id}></UserDetail>
+      <Modal title='用户信息' visible={visible} onCancel={() => setVisible(false)}>
+        <UserDetail key={id + visible} roles={roles} userId={id} />
+      </Modal>
       <ZeusTable columns={columns} service={userList} params={params} />
     </>
   );

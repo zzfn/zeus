@@ -8,6 +8,7 @@ export async function login(data: any): Promise<any> {
     data,
   });
 }
+
 export async function userRegister(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
@@ -16,6 +17,7 @@ export async function userRegister(data: any): Promise<any> {
     data,
   });
 }
+
 export async function getUserState(): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
@@ -39,6 +41,7 @@ export async function userList(): Promise<any> {
     method: 'get',
   });
 }
+
 export async function infoById(params: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
@@ -47,10 +50,20 @@ export async function infoById(params: any): Promise<any> {
     params,
   });
 }
+
 export async function changeUser(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
     url: '/user/changeUser',
+    method: 'post',
+    data,
+  });
+}
+
+export async function changeRoleByUserId(data: any): Promise<any> {
+  return http({
+    baseURL: process.env.GATEWAY_URL,
+    url: '/user/changeRoleByUserId',
     method: 'post',
     data,
   });

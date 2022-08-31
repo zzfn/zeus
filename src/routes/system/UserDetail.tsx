@@ -1,56 +1,60 @@
-import { Form, Input, message, Modal, Select } from 'antd';
+import { Form, Input, message, Select, Tag } from 'antd';
 import { useQuery } from '@tanstack/react-query';
-import { changeUser, infoById } from '../../service/user';
-import { useEffect, useState } from 'react';
-import { roleList } from '../../service/role';
+import { changeRoleByUserId, changeUser, infoById } from '../../service/user';
+import { PlusOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
-const UserDetail = ({ id }: { id: string }) => {
-  const [form] = Form.useForm();
+const UserDetail = ({ userId, roles }: { userId: string; roles: any[] }) => {
   const [visible, setVisible] = useState(false);
+  const { data: roleById = {} } = useQuery(['infoById', userId, visible], () =>
+    infoById({ id: userId }).then(({ data }) => data),
+  );
+  const [form] = Form.useForm();
 
   async function handleSubmit(values: any) {
-    const { success } = await changeUser({ ...values, id });
+    const { success } = await changeUser({ ...values, id: userId });
     success && message.success('success');
   }
 
-  const { data: roles = [] } = useQuery(['roleList'], () => roleList({}).then(({ data }) => data));
+  const handleDelete = (roleId: string) => async () => {
+    const { success } = await changeRoleByUserId({ userId, roleId, isAdd: false });
+    success && message.success('success');
+  };
 
-  useEffect(() => {
-    setVisible(!!id);
-  }, [id]);
-  useEffect(() => {
-    if (visible) {
-      getUserInfo();
-    }
-  }, [visible]);
-
-  async function getUserInfo() {
-    const { data } = await infoById({ id });
-    form.setFieldsValue(data);
+  async function handleAdd(roleId: string) {
+    const { success } = await changeRoleByUserId({ userId, roleId, isAdd: true });
+    success && message.success('success');
+    setVisible(false);
   }
 
   return (
-    <Modal
-      title='用户详情'
-      visible={visible}
-      onOk={() => form.submit()}
-      onCancel={() => setVisible(false)}
-    >
+    <>
       <Form onFinish={handleSubmit} form={form}>
         <Form.Item label='用户昵称' name='nickname'>
           <Input />
         </Form.Item>
-        <Form.Item label='用户角色' name='role'>
-          <Select mode='multiple' allowClear>
-            {roles.map((item: any) => (
+      </Form>
+      {roleById.role?.map((item: any) => (
+        <Tag closable onClose={handleDelete(item.id)} key={item.id}>
+          {item.name}
+        </Tag>
+      ))}
+      {visible ? (
+        <Select onChange={handleAdd} className='w-full'>
+          {roles
+            .filter((item) => !roleById.role?.some((_: any) => _.id === item.id))
+            .map((item: any) => (
               <Select.Option key={item.id} value={item.id}>
                 {item.name}
               </Select.Option>
             ))}
-          </Select>
-        </Form.Item>
-      </Form>
-    </Modal>
+        </Select>
+      ) : (
+        <Tag onClick={() => setVisible(true)}>
+          <PlusOutlined /> New Role
+        </Tag>
+      )}
+    </>
   );
 };
 export default UserDetail;
