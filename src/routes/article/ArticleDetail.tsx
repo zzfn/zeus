@@ -36,8 +36,8 @@ const ArticleDetail = () => {
     data && navigate(`/article/${data}`);
   };
   const handleFetchArticle = async (id: string) => {
-    const { data, msg } = await articleOne({ id });
-    if (msg === 'success') {
+    const { data, success } = await articleOne({ id });
+    if (success) {
       form.setFieldsValue(data);
     } else {
       message.error('未知错误');

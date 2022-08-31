@@ -2,7 +2,6 @@ import http from 'utils/http';
 
 export async function articlePage(params: any): Promise<any> {
   return http({
-    baseURL: process.env.API_URL,
     url: '/article/page',
     method: 'get',
     params,
@@ -11,15 +10,14 @@ export async function articlePage(params: any): Promise<any> {
 
 export async function articleOne(params: any): Promise<any> {
   return http({
-    baseURL: process.env.API_URL,
-    url: `/article/${params.id}`,
+    url: `/article/getOne`,
     method: 'get',
+    params
   });
 }
 
 export async function saveArticle(data: any): Promise<any> {
   return http({
-    baseURL: process.env.API_URL,
     url: '/article/save',
     method: 'post',
     data,
