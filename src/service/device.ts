@@ -2,6 +2,7 @@ import http from 'utils/http';
 
 export async function deviceList(params: any): Promise<any> {
   return http({
+    baseURL: process.env.API_URL,
     url: '/device/list',
     method: 'get',
     params,
@@ -10,6 +11,7 @@ export async function deviceList(params: any): Promise<any> {
 
 export async function deviceOne(params: any): Promise<any> {
   return http({
+    baseURL: process.env.API_URL,
     url: `/device/${params.id}`,
     method: 'get',
   });
@@ -17,6 +19,7 @@ export async function deviceOne(params: any): Promise<any> {
 
 export async function saveDevice(data: any): Promise<any> {
   return http({
+    baseURL: process.env.API_URL,
     url: '/device/save',
     method: 'post',
     data,

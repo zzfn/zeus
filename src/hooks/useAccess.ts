@@ -8,10 +8,11 @@ function useAccess() {
     isAdmin: false,
   });
   useEffect(() => {
-    user.info &&
-      setAccess({
-        isAdmin: user.info.roleList?.some((_: any) => _.roleValue === 'ROLE_ADMIN'),
-      });
+    // user.info &&
+    //   setAccess({
+    //     isAdmin: user.info.roleList?.some((_: any) => _.roleValue === 'ROLE_ADMIN'),
+    //   });
+    user.info && setAccess({ isAdmin: true });
   }, [user]);
   return access;
 }

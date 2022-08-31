@@ -28,7 +28,7 @@ const msg = new Map([
   [504, '网关超时'],
 ]);
 const instance = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.GATEWAY_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json;charset=UTF-8' },
   validateStatus: () => true,

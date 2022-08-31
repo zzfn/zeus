@@ -10,6 +10,14 @@ clone:
   disable: true
 
 steps:
+  - name: feishu
+    image: registry.cn-shanghai.aliyuncs.com/zzf2001/foo-webhook
+    settings:
+      webhook:
+        from_secret: webhook
+      secret:
+        from_secret: secret
+
   - name: clone
     image: alpine/git
     volumes:

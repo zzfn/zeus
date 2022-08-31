@@ -4,15 +4,16 @@ export async function roleList(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
     url: '/role/list',
-    method: 'post',
+    method: 'get',
     data,
   });
 }
-export async function getUserState(): Promise<any> {
+export async function roleSave(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
-    url: '/user/getUserState',
-    method: 'get',
+    url: '/role/save',
+    method: 'post',
+    data,
   });
 }
 

@@ -1,24 +1,17 @@
-import { Alert, Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { userRegister } from 'service/user';
 import styles from './index.module.less';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { useEffect } from 'react';
 
 const Register = () => {
-  let user = useSelector((state: RootState) => state.user);
-  const onFinish = async (values: any) => {
-    const { data, code } = await userRegister(values);
-    console.log(data, code);
-  };
-
   const navigate = useNavigate();
-  useEffect(() => {
-    if (user.loginState) {
-      navigate('/home');
+  const onFinish = async (values: any) => {
+    const { code } = await userRegister(values);
+    if (code === 0) {
+      message.success('注册成功');
+      navigate('/login');
     }
-  }, [user]);
+  };
 
   return (
     <div className={styles.loginContainer}>
