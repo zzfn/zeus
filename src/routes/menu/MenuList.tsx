@@ -33,7 +33,8 @@ const MenuList = () => {
         return (
           <Space>
             <Link to={`/menu/${record.id}`}>编辑</Link>
-            <Link to={`/menu/_?pid=${record.id}`}>新增子菜单</Link>
+            <Link to={`/menu/_?pid=${record.id}`}>新增</Link>
+            <Link to={`/menu/_?pid=${record.id}`}>删除</Link>
           </Space>
         );
       },

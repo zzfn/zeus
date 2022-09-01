@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import ZeusTable from 'components/ZeusTable';
 import { roleList, roleSave } from '../../service/role';
-import { Button, Checkbox, Form, Input, message, Modal } from 'antd';
-import { TeamOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, message, Modal, Space } from 'antd';
 import { resourceById, resourceList } from '../../service/resource';
 import { useQuery } from '@tanstack/react-query';
 
@@ -35,15 +34,17 @@ const Role = () => {
     {
       title: '分配权限',
       render: (_: string, record: any) => (
-        <Button
-          onClick={() => {
-            setRoleVisible(true);
-            setRoleId(record.id);
-          }}
-          type='primary'
-          shape='circle'
-          icon={<TeamOutlined />}
-        />
+        <Space>
+          <a
+            onClick={() => {
+              setRoleVisible(true);
+              setRoleId(record.id);
+            }}
+          >
+            权限
+          </a>
+          <a>用户</a>
+        </Space>
       ),
     },
   ];

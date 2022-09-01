@@ -3,22 +3,36 @@ import {
   CartesianGrid,
   Funnel,
   FunnelChart,
-  LabelList, Legend, Line,
+  LabelList,
+  Legend,
+  Line,
   Pie,
   PieChart,
   ResponsiveContainer,
-  Tooltip, XAxis, YAxis,LineChart
+  Tooltip,
+  XAxis,
+  YAxis,
+  LineChart,
 } from 'recharts';
 import { getHomeOverview } from '../service/home';
 import { useQuery } from '@tanstack/react-query';
-import {logUser} from "../service/log";
+import { logUser } from '../service/log';
+import { resetEs } from '../service/article';
+
 export default function Home() {
   const { data = {} } = useQuery(['getHomeOverview'], getHomeOverview);
-  const { data:records=[] } = useQuery(['logUser'], ()=>logUser().then(({data})=>data));
+  const { data: records = [] } = useQuery(['logUser'], () => logUser().then(({ data }) => data));
+
+  async function handleReset() {
+    const r = await resetEs();
+    console.log(r);
+  }
+
   return (
     <>
       <Card title='快捷操作'>
         <Button>清除缓存</Button>
+        <Button onClick={handleReset}>重置es</Button>
       </Card>
       <div className='grid grid-cols-2 gap-2'>
         <Card title='文章分类'>
@@ -59,27 +73,26 @@ export default function Home() {
       <Card title='访客统计'>
         <ResponsiveContainer height={200}>
           <LineChart
-              width={500}
-              height={300}
-              data={records}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+            width={500}
+            height={300}
+            data={records}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis dataKey='name' />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            <Line type='monotone' dataKey='pv' stroke='#8884d8' activeDot={{ r: 8 }} />
+            <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
           </LineChart>
         </ResponsiveContainer>
       </Card>
-
     </>
   );
 }

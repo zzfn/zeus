@@ -12,7 +12,7 @@ export async function articleOne(params: any): Promise<any> {
   return http({
     url: `/article/getOne`,
     method: 'get',
-    params
+    params,
   });
 }
 
@@ -29,5 +29,12 @@ export async function removeArticle(params: { id: string }) {
     baseURL: process.env.API_URL,
     url: `/article/${params.id}`,
     method: 'delete',
+  });
+}
+export async function resetEs() {
+  return http({
+    baseURL: process.env.GATEWAY_URL,
+    url: `/article/resetEs`,
+    method: 'post',
   });
 }
