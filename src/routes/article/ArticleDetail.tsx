@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { isExist } from '../../utils/isExist';
+import ZeusUpload from '../../components/ZeusUpload';
 
 const ArticleDetail = () => {
   const [form] = Form.useForm();
@@ -77,7 +78,7 @@ const ArticleDetail = () => {
             <Input placeholder='请输入排序号' />
           </Form.Item>
           <Form.Item label='LOGO' name='logo'>
-            <Input placeholder='请输入LOGO' />
+            <ZeusUpload />
           </Form.Item>
           <Form.Item
             label='摘要'
