@@ -41,27 +41,27 @@ const MenuDetail = () => {
     data && navigate(`/menu/${data}`);
   };
   const handleFetchArticle = async (id: string) => {
-    const { data, msg } = await menuOne({ id });
-    if (msg === 'success') {
+    const { data, success } = await menuOne({ id });
+    if (success) {
       form.setFieldsValue(data);
     } else {
       message.error('未知错误');
     }
   };
   useEffect(() => {
-    params.id && handleFetchArticle(params.id).then();
+    params.id && params.id !== '_' && handleFetchArticle(params.id).then();
   }, [params.id]);
   return (
     <>
       <Card bordered={false}>
         <Form {...formItemLayout} style={{ marginTop: 8 }} form={form} onFinish={onFinish}>
-          <Form.Item label={'菜单名称'} name='name'>
-            <Input placeholder={'请输入菜单名称'} />
+          <Form.Item label='菜单名称' name='name'>
+            <Input placeholder='请输入菜单名称' />
           </Form.Item>
-          <Form.Item label={'菜单路径'} name='path'>
-            <Input placeholder={'请输入菜单路径'} />
+          <Form.Item label='菜单路径' name='path'>
+            <Input placeholder='请输入菜单路径' />
           </Form.Item>
-          <Form.Item label={'菜单组件地址'} name='component'>
+          <Form.Item label='菜单组件地址' name='component'>
             <Select
               allowClear
               showSearch
@@ -77,10 +77,10 @@ const MenuDetail = () => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label={'排序号'} name='orderNum'>
-            <Input placeholder={'请输入排序号'} />
+          <Form.Item label='排序号' name='orderNum'>
+            <Input placeholder='请输入排序号' />
           </Form.Item>
-          <Form.Item label={'是否显示在侧边栏'} name='isShow' valuePropName='checked'>
+          <Form.Item label='是否显示在侧边栏' name='isShow' valuePropName='checked'>
             <Switch />
           </Form.Item>
           <Form.Item {...submitFormLayout} style={{ marginTop: 32 }}>

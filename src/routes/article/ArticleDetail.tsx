@@ -6,25 +6,8 @@ import { articleOne, saveArticle } from 'service/article';
 import { useEffect } from 'react';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
+import { isExist } from '../../utils/isExist';
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 3 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 21 },
-    md: { span: 22 },
-  },
-};
-
-const submitFormLayout = {
-  wrapperCol: {
-    xs: { span: 24, offset: 11 },
-    sm: { span: 10, offset: 11 },
-  },
-};
 const ArticleDetail = () => {
   const [form] = Form.useForm();
   const params = useParams();
@@ -44,20 +27,21 @@ const ArticleDetail = () => {
     }
   };
   useEffect(() => {
-    params.id && handleFetchArticle(params.id).then();
+    params.id && isExist(params.id) && handleFetchArticle(params.id).then();
   }, [params.id]);
   return (
     <>
       <Card bordered={false}>
         <Form
-          {...formItemLayout}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
           style={{ marginTop: 8 }}
           form={form}
           onFinish={onFinish}
           initialValues={{ isRelease: true }}
         >
           <Form.Item
-            label={'标题'}
+            label='标题'
             name='title'
             rules={[
               {
@@ -66,11 +50,11 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input placeholder={'请输入标题'} />
+            <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
-            label={'标签'}
-            name='tag'
+            label='标签'
+            name='tagId'
             rules={[
               {
                 required: true,
@@ -78,10 +62,10 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <SelectCode placeholder={'请选择标签'} code={'TAG'} />
+            <SelectCode placeholder='请选择标签' code='TAG' />
           </Form.Item>
           <Form.Item
-            label={'排序号'}
+            label='排序号'
             name='orderNum'
             rules={[
               {
@@ -90,13 +74,13 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input placeholder={'请输入排序号'} />
+            <Input placeholder='请输入排序号' />
           </Form.Item>
-          <Form.Item label={'LOGO'} name='logo'>
-            <Input placeholder={'请输入LOGO'} />
+          <Form.Item label='LOGO' name='logo'>
+            <Input placeholder='请输入LOGO' />
           </Form.Item>
           <Form.Item
-            label={'摘要'}
+            label='摘要'
             name='summary'
             rules={[
               {
@@ -105,7 +89,7 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input.TextArea placeholder={'请输入摘要'} />
+            <Input.TextArea placeholder='请输入摘要' />
           </Form.Item>
           <Form.Item
             rules={[
@@ -114,14 +98,14 @@ const ArticleDetail = () => {
                 message: '请选择',
               },
             ]}
-            label={'是否发布'}
+            label='是否发布'
             name='isRelease'
             valuePropName='checked'
           >
             <Switch />
           </Form.Item>
           <Form.Item
-            label={'文章'}
+            label='文章'
             name='content'
             rules={[
               {
@@ -132,7 +116,7 @@ const ArticleDetail = () => {
           >
             <MarkdownEditor />
           </Form.Item>
-          <Form.Item {...submitFormLayout} style={{ marginTop: 32 }}>
+          <Form.Item wrapperCol={{ offset: 12 }} style={{ marginTop: 32 }}>
             <Access accessible={access.isAdmin}>
               <Space>
                 <Button type='primary' htmlType='submit'>

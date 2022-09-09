@@ -1,8 +1,8 @@
 import http from 'utils/http';
 
-export async function menuList(data: any): Promise<any> {
+export async function friendList(data: any): Promise<any> {
   return http({
-    url: '/menu/list',
+    url: '/friend/list',
     method: 'get',
     data,
   });

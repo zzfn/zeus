@@ -7,6 +7,7 @@ interface ResponseType {
   data?: unknown;
   code?: number;
   errcode?: number;
+  success: boolean;
 }
 
 const msg = new Map([
@@ -68,7 +69,7 @@ instance.interceptors.response.use(
 );
 
 function http(config: AxiosRequestConfig): Promise<ResponseType> {
-  return instance(config);
+  return instance(config) as unknown as Promise<ResponseType>;
 }
 
 export default http;

@@ -31,10 +31,9 @@ export async function removeArticle(params: { id: string }) {
     method: 'delete',
   });
 }
-export async function resetEs() {
+export async function resetElastic() {
   return http({
-    baseURL: process.env.GATEWAY_URL,
-    url: `/article/resetEs`,
+    url: `/article/resetElastic`,
     method: 'post',
   });
 }

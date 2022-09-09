@@ -1,8 +1,8 @@
 import http from 'utils/http';
 
-export async function menuList(data: any): Promise<any> {
+export async function changelogList(data: any): Promise<any> {
   return http({
-    url: '/menu/list',
+    url: '/changelog/list',
     method: 'get',
     data,
   });

@@ -1,4 +1,4 @@
-import { Button, Card } from 'antd';
+import { Button, Card, message } from 'antd';
 import {
   CartesianGrid,
   Funnel,
@@ -17,22 +17,23 @@ import {
 import { getHomeOverview } from '../service/home';
 import { useQuery } from '@tanstack/react-query';
 import { logUser } from '../service/log';
-import { resetEs } from '../service/article';
+import { resetElastic } from '../service/article';
 
 export default function Home() {
   const { data = {} } = useQuery(['getHomeOverview'], getHomeOverview);
   const { data: records = [] } = useQuery(['logUser'], () => logUser().then(({ data }) => data));
 
   async function handleReset() {
-    const r = await resetEs();
-    console.log(r);
+    const { success } = await resetElastic();
+    if (success) {
+      message.success('reset successfully');
+    }
   }
 
   return (
     <>
       <Card title='快捷操作'>
-        <Button>清除缓存</Button>
-        <Button onClick={handleReset}>重置es</Button>
+        <Button onClick={handleReset}>reset elastic article</Button>
       </Card>
       <div className='grid grid-cols-2 gap-2'>
         <Card title='文章分类'>

@@ -5,24 +5,6 @@ import { useEffect } from 'react';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 3 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 21 },
-    md: { span: 22 },
-  },
-};
-
-const submitFormLayout = {
-  wrapperCol: {
-    xs: { span: 24, offset: 11 },
-    sm: { span: 10, offset: 11 },
-  },
-};
 const ArticleDetail = () => {
   const [form] = Form.useForm();
   const params = useParams();
@@ -48,14 +30,15 @@ const ArticleDetail = () => {
     <>
       <Card bordered={false}>
         <Form
-          {...formItemLayout}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
           style={{ marginTop: 8 }}
           form={form}
           onFinish={onFinish}
           initialValues={{ isRelease: true }}
         >
           <Form.Item
-            label={'资源名称'}
+            label='资源名称'
             name='name'
             rules={[
               {
@@ -64,10 +47,10 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input placeholder={'请输入标题'} />
+            <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
-            label={'资源类型'}
+            label='资源类型'
             name='type'
             rules={[
               {
@@ -76,10 +59,10 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input placeholder={'请输入标题'} />
+            <Input placeholder='请输入标题' />
           </Form.Item>
           <Form.Item
-            label={'连接地址'}
+            label='连接地址'
             name='url'
             rules={[
               {
@@ -88,13 +71,13 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input placeholder={'请输入排序号'} />
+            <Input placeholder='请输入排序号' />
           </Form.Item>
-          <Form.Item label={'到期时间'} name='dueDate'>
-            <Input placeholder={'请输入LOGO'} />
+          <Form.Item label='到期时间' name='dueDate'>
+            <Input placeholder='请输入LOGO' />
           </Form.Item>
           <Form.Item
-            label={'备注'}
+            label='备注'
             name='remark'
             rules={[
               {
@@ -103,7 +86,7 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <Input.TextArea placeholder={'请输入备注'} />
+            <Input.TextArea placeholder='请输入备注' />
           </Form.Item>
           <Form.Item
             rules={[
@@ -112,12 +95,12 @@ const ArticleDetail = () => {
                 message: '请选择',
               },
             ]}
-            label={'管理链接'}
+            label='管理链接'
             name='PANEL'
           >
-            <Input placeholder={'请输入LOGO'} />
+            <Input placeholder='请输入LOGO' />
           </Form.Item>
-          <Form.Item {...submitFormLayout} style={{ marginTop: 32 }}>
+          <Form.Item wrapperCol={{ offset: 12 }} style={{ marginTop: 32 }}>
             <Access accessible={access.isAdmin}>
               <Space>
                 <Button type='primary' htmlType='submit'>
