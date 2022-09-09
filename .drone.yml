@@ -70,7 +70,7 @@ steps:
         from_secret: password
       target: /root/www/zeus.zzfzzf.com
       source: ./dist
-  - name: feishu
+  - name: failure
     when:
       status:
         - failure
