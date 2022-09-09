@@ -78,7 +78,7 @@ const ArticleDetail = () => {
             <Input placeholder='请输入排序号' />
           </Form.Item>
           <Form.Item label='LOGO' name='logo'>
-            <ZeusUpload />
+            <ZeusUpload data={{ path: `article/logo/${params.id}` }} />
           </Form.Item>
           <Form.Item
             label='摘要'

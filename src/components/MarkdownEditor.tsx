@@ -9,7 +9,7 @@ const MarkdownEditor = (props: any) => {
   const { value = '', onChange } = props;
 
   async function handleUploadImages(value: File[]): Promise<any> {
-    const hide = message.loading('uploading...');
+    const hide = message.loading('uploading...', 0);
     let formData = new FormData();
     value.forEach((item) => formData.append('file', item));
     const {
