@@ -10,7 +10,7 @@ import { copyToClip } from '../../utils/copyToClip';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
-const OssList = () => {
+const FileList = () => {
   const [prefix, setPrefix] = useState('');
   const [open, setOpen] = useState(false);
   const { data = {} } = useQuery(['files', prefix], () =>
@@ -102,4 +102,4 @@ const OssList = () => {
   );
 };
 
-export default OssList;
+export default FileList;

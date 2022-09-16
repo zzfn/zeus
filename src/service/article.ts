@@ -37,3 +37,9 @@ export async function resetElastic() {
     method: 'post',
   });
 }
+export async function topSearch() {
+  return http({
+    url: `/article/topSearch`,
+    method: 'get',
+  });
+}

@@ -61,13 +61,16 @@ const ArticleList = () => {
 
   return (
     <>
-      <Input
-        value={params.id}
-        onChange={(e) => setParams({ ...params, id: e.target.value })}
-      ></Input>
-      <Link to="/article/_">
-        <Button type='primary'>新增</Button>
-      </Link>
+      <Space>
+        <Input
+          placeholder='search by id'
+          value={params.id}
+          onChange={(e) => setParams({ ...params, id: e.target.value })}
+        ></Input>
+        <Link to='/article/_'>
+          <Button type='primary'>新增</Button>
+        </Link>
+      </Space>
       <ZeusTable columns={columns} service={articlePage} params={params} />
     </>
   );
