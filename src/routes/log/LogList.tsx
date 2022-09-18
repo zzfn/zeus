@@ -4,12 +4,13 @@ import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { deleteLog, logPage } from '../../service/log';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { Button, Input, message, Space } from 'antd';
 
 const LogList = () => {
   const access = useAccess();
   const navigate = useNavigate();
-  const [params] = useState({});
+  const [params,setParams] = useState<any>({});
+  const [query,setQuery] = useState<any>({});
   const handleDelete = (id: string) => async () => {
     const { data } = await deleteLog({ id });
     message.success(data);
@@ -35,10 +36,12 @@ const LogList = () => {
         {
           title: 'browser',
           dataIndex: 'browser',
+          width: 100,
         },
         {
           title: 'version',
           dataIndex: 'browserVersion',
+          width: 100,
         },
       ],
     },
@@ -52,6 +55,7 @@ const LogList = () => {
         {
           title: 'score',
           dataIndex: 'value',
+          render: (_: number) => _.toFixed(2),
         },
       ],
     },
@@ -61,8 +65,6 @@ const LogList = () => {
         {
           title: 'visitorId',
           dataIndex: 'visitorId',
-          width: 100,
-          ellipsis: true,
           textWrap: 'word-break',
         },
         {
@@ -101,6 +103,15 @@ const LogList = () => {
 
   return (
     <>
+      <Space className='mb-2'>
+        {['os','browser','name','visitorId','ip'].map((item: any) => (
+          <>
+            <label htmlFor={item}>{item}</label>
+            <Input allowClear value={query[item]} onChange={e=>setQuery({...query,[item]:e.target.value})} id={item} />
+          </>
+        ))}
+        <Button onClick={()=>setParams({...params,...query})}>查询</Button>
+      </Space>
       <ZeusTable columns={columns} service={logPage} params={params} />
     </>
   );
