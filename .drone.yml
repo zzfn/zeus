@@ -44,7 +44,7 @@ steps:
       ACCESS_KEY_SECRET:
         from_secret: accessKeySecret
       BUCKET_NAME: ootd-zeus
-      target: /
+      target:
       source: ./dist
   - name: deploy
     image: appleboy/drone-scp
