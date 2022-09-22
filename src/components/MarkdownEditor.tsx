@@ -5,13 +5,18 @@ import axios from 'axios';
 import { message } from 'antd';
 
 const plugins = [gfm()];
+function formatFile(file: File) {
+  const suffix = file.name.split('.').pop();
+  return new File([file], `${Date.now()}.${suffix}`);
+}
 const MarkdownEditor = (props: any) => {
   const { value = '', onChange } = props;
 
   async function handleUploadImages(value: File[]): Promise<any> {
     const hide = message.loading('uploading...', 0);
     let formData = new FormData();
-    value.forEach((item) => formData.append('file', item));
+    formData.append('path', `article/${props.articleId}`);
+    value.forEach((item) => formData.append('file', formatFile(item)));
     const {
       data: { data },
     } = await axios({

@@ -1,27 +1,37 @@
 import { Button, Image, message, Upload, UploadProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { useRef } from 'react';
 
 type ZeusUpload = {
   value?: string;
   onChange?: (value: string) => void;
   data?: Record<string, string>;
 };
-const ZeusUpload = ({ value, onChange, data }: ZeusUpload) => {
+const ZeusUpload = ({ value, onChange, data = {} }: ZeusUpload) => {
+  let msgInstance = useRef<any>(null);
   const props: UploadProps = {
     name: 'file',
     showUploadList: false,
     action: `${process.env.GATEWAY_URL}/file/upload`,
-    data,
+    data: { path: `article/${data.id}` },
     headers: {
       authorization: `Bearer ${sessionStorage.getItem('uid')}`,
     },
+    beforeUpload: (file) => {
+      return new Promise((resolve) => {
+        const suffix = file.name.split('.').pop();
+        const copyFile = new File([file], `logo.${suffix}`);
+        resolve(copyFile);
+      });
+    },
     onChange(info) {
       if (info.file.status === 'uploading') {
-        message.destroy();
-        message.loading('uploading...', 0);
+        if (!msgInstance.current) {
+          msgInstance.current = message.loading('uploading...', 0);
+        }
       }
       if (info.file.status === 'done') {
-        message.destroy();
+        msgInstance.current();
         message.success(`${info.file.name} file uploaded successfully`);
         info.file.response.data.map(onChange);
       } else if (info.file.status === 'error') {

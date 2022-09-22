@@ -78,7 +78,7 @@ const ArticleDetail = () => {
             <Input placeholder='请输入排序号' />
           </Form.Item>
           <Form.Item label='LOGO' name='logo'>
-            <ZeusUpload data={{ path: `article/logo/${params.id}` }} />
+            <ZeusUpload data={{ id: params.id as string }} />
           </Form.Item>
           <Form.Item
             label='摘要'
@@ -115,7 +115,7 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <MarkdownEditor />
+            <MarkdownEditor articleId={params.id} />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 12 }} style={{ marginTop: 32 }}>
             <Access accessible={access.isAdmin}>
