@@ -12,13 +12,6 @@ clone:
   disable: true
 
 steps:
-  - name: feishu
-    image: registry.cn-shanghai.aliyuncs.com/zzf2001/foo-webhook
-    settings:
-      webhook:
-        from_secret: webhook
-      secret:
-        from_secret: secret
   - name: clone
     image: alpine/git
     volumes:
@@ -59,23 +52,12 @@ steps:
     depends_on: [build]
     settings:
       host:
-        from_secret: host
+        from_secret: caddy_host
       port: 22
       username:
-        from_secret: username
+        from_secret: caddy_username
       password:
-        from_secret: password
+        from_secret: caddy_password
       target: /root/www/zeus.zzfzzf.com
       source: ./dist
-  - name: failure
-    when:
-      status:
-        - failure
-    image: registry.cn-shanghai.aliyuncs.com/zzf2001/foo-webhook
-    settings:
-      webhook:
-        from_secret: webhook
-      secret:
-        from_secret: secret
-      text: "{url:${DRONE_GIT_SSH_URL},repo:${DRONE_REPO_LINK},content:\"failure\"}"
 
