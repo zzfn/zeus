@@ -29,8 +29,6 @@ steps:
       - name: node_modules
         path: /drone/src/node_modules
     commands:
-      - pwd
-      - ls -a
       - npm install
       - npm run build
   - name: oss
@@ -43,8 +41,9 @@ steps:
         from_secret: accessKeyID
       ACCESS_KEY_SECRET:
         from_secret: accessKeySecret
-      BUCKET_NAME: ootd-zeus
-      target: /
+      BUCKET_NAME:
+        from_secret: bucketName
+      target: zeus
       source: ./dist
   - name: deploy
     image: appleboy/drone-scp
