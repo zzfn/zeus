@@ -20,7 +20,7 @@ const ZeusUpload = ({ value, onChange, data = {} }: ZeusUpload) => {
     beforeUpload: (file) => {
       return new Promise((resolve) => {
         const suffix = file.name.split('.').pop();
-        const copyFile = new File([file], `logo.${suffix}`);
+        const copyFile = new File([file], `logo_${Date.now()}.${suffix}`);
         resolve(copyFile);
       });
     },
