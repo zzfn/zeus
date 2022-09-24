@@ -8,7 +8,7 @@ type InfoType = {
   createTime?: any;
   id: string;
   isDelete?: any;
-  nickName: string;
+  nickname: string;
   openid?: any;
   roleList?: any;
   roleName: string;

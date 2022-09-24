@@ -23,7 +23,7 @@ const TopHeader = () => {
   }, []);
   return (
     <div className={styles.topHeader}>
-      <img className={'w-14 h-14'} src={Logo} alt='' />
+      <img className='w-14 h-14' src={Logo} alt='' />
       <div>
         <Dropdown
           trigger={['click']}
@@ -44,10 +44,10 @@ const TopHeader = () => {
           }
         >
           <a>
-            {user.info?.nickName} <DownOutlined />
+            {user.info?.nickname} <DownOutlined />
           </a>
         </Dropdown>
-        <Tag color={'orange'}>{process.env.APP_ENV}</Tag>
+        <Tag color='orange'>{process.env.APP_ENV}</Tag>
       </div>
     </div>
   );
