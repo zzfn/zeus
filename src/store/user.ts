@@ -8,6 +8,7 @@ type InfoType = {
   createTime?: any;
   id: string;
   isDelete?: any;
+  isAdmin: boolean;
   nickname: string;
   openid?: any;
   roleList?: any;

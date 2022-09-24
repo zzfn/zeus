@@ -1,5 +1,7 @@
+import useAccess from '../hooks/useAccess';
+
 const Access = (props: any) => {
-  const { accessible, children } = props;
-  return accessible && children;
+  const access = useAccess();
+  return access.isAdmin && props.children;
 };
 export default Access;

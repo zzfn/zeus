@@ -4,10 +4,8 @@ import ZeusTable from 'components/ZeusTable';
 import { Button, Input, Space, Tag } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
-import useAccess from 'hooks/useAccess';
 
 const ArticleList = () => {
-  const access = useAccess();
   const [params, setParams] = useState({ id: '' });
   const navigate = useNavigate();
   const handleDelete = (id: string) => async () => {
@@ -47,7 +45,7 @@ const ArticleList = () => {
       dataIndex: 'address',
       key: 'address',
       render: (_: string, record: any) => (
-        <Access accessible={access.isAdmin}>
+        <Access>
           <Space>
             <Link to={`/article/${record.id}`}>编辑</Link>
             <Button type='text' onClick={handleDelete(record.id)}>
