@@ -26,7 +26,6 @@ export async function saveArticle(data: any): Promise<any> {
 
 export async function removeArticle(params: { id: string }) {
   return http({
-    baseURL: process.env.API_URL,
     url: `/article/${params.id}`,
     method: 'delete',
   });

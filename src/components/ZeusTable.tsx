@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import { useEffect, useState } from 'react';
 
 const ZeusTable = (props: any): JSX.Element => {
-  const { columns, service, params, rowKey = 'id', showPage = true } = props;
+  const { columns, service, params, rowKey = 'id', showPage = true, size = 'middle' } = props;
   const [dataSource, setDataSource] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState({});
@@ -25,6 +25,7 @@ const ZeusTable = (props: any): JSX.Element => {
   }, [service, params, page]);
   return (
     <Table
+      size={size}
       bordered
       pagination={
         showPage

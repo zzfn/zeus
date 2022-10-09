@@ -1,17 +1,7 @@
 import { Select } from 'antd';
-import { useEffect, useState } from 'react';
-import { fetchDict } from '../service/common';
 
 const SelectCode = (props: any) => {
-  const { code } = props;
-  const [list, setList] = useState([]);
-  const handleFetchList = async () => {
-    const { data } = await fetchDict({ code });
-    setList(data);
-  };
-  useEffect(() => {
-    handleFetchList().then();
-  }, [code]);
+  const { source = [] } = props;
   return (
     <Select
       {...props}
@@ -22,9 +12,9 @@ const SelectCode = (props: any) => {
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     >
-      {list.map((item: any) => (
-        <Select.Option key={item.id} value={item.code}>
-          {item.name}
+      {source.map((item: any) => (
+        <Select.Option key={item.id} value={item.value}>
+          {item.label}
         </Select.Option>
       ))}
     </Select>

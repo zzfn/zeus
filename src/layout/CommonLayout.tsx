@@ -25,7 +25,7 @@ const CommonLayout = () => {
     setSelectKey([location.pathname.split('/').filter(Boolean).join('/')]);
   }, [location.pathname]);
   return (
-    <WaterMark content={user?.info?.nickName}>
+    <WaterMark content={user?.info?.nickname}>
       <Layout>
         <Header>
           <TopHeader />

@@ -9,6 +9,16 @@ import useAccess from 'hooks/useAccess';
 import { isExist } from '../../utils/isExist';
 import ZeusUpload from '../../components/ZeusUpload';
 
+const sourceTag = [
+  { label: 'frontend', value: 'frontend' },
+  { label: 'backend', value: 'backend' },
+  { label: 'devops', value: 'devops' },
+  { label: 'react', value: 'react' },
+  { label: 'vue', value: 'vue' },
+  { label: 'typescript', value: 'typescript' },
+  { label: 'leetcode', value: 'leetcode' },
+];
+
 const ArticleDetail = () => {
   const [form] = Form.useForm();
   const params = useParams();
@@ -63,7 +73,7 @@ const ArticleDetail = () => {
               },
             ]}
           >
-            <SelectCode placeholder='请选择标签' code='TAG' />
+            <SelectCode placeholder='请选择标签' source={sourceTag} />
           </Form.Item>
           <Form.Item
             label='排序号'
