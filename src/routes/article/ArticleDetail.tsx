@@ -66,7 +66,7 @@ const ArticleDetail = () => {
           </Form.Item>
           <Form.Item
             label='标签'
-            name='tagId'
+            name='tag'
             rules={[
               {
                 required: true,
