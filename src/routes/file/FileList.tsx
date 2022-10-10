@@ -18,7 +18,7 @@ const FileList = () => {
   );
   const props: UploadProps = {
     name: 'file',
-    action: `${process.env.GATEWAY_URL}/file/upload`,
+    action: `${process.env.API_URL}/file/upload`,
     headers: {
       authorization: `Bearer ${sessionStorage.getItem('uid')}`,
     },

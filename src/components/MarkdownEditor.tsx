@@ -20,7 +20,7 @@ const MarkdownEditor = (props: any) => {
     const {
       data: { data },
     } = await axios({
-      url: `${process.env.GATEWAY_URL}/file/upload`,
+      url: `${process.env.API_URL}/file/upload`,
       method: 'post',
       data: formData,
       headers: {

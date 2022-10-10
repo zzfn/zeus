@@ -2,19 +2,17 @@ import http from 'utils/http';
 
 export async function logPage(params: any): Promise<any> {
   return http({
-    baseURL: process.env.GATEWAY_URL,
     url: '/search/log',
     method: 'get',
     params,
   });
 }
 
-export function logUser():Promise<any> {
+export function logUser(): Promise<any> {
   return http({
-    baseURL: process.env.GATEWAY_URL,
-    url:'/search/log/user',
-    method:'get'
-  })
+    url: '/search/log/user',
+    method: 'get',
+  });
 }
 export async function deleteLog(data: any): Promise<any> {
   return http({

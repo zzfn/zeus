@@ -12,7 +12,7 @@ const ZeusUpload = ({ value, onChange, data = {} }: ZeusUpload) => {
   const props: UploadProps = {
     name: 'file',
     showUploadList: false,
-    action: `${process.env.GATEWAY_URL}/file/upload`,
+    action: `${process.env.API_URL}/file/upload`,
     data: { path: `article/${data.id}` },
     headers: {
       authorization: `Bearer ${sessionStorage.getItem('uid')}`,
