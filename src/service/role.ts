@@ -1,13 +1,5 @@
 import http from 'utils/http';
 
-export async function roleList(data: any): Promise<any> {
-  return http({
-    baseURL: process.env.GATEWAY_URL,
-    url: '/role/list',
-    method: 'get',
-    data,
-  });
-}
 export async function roleSave(data: any): Promise<any> {
   return http({
     baseURL: process.env.GATEWAY_URL,
