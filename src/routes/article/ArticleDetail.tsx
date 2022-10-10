@@ -17,6 +17,7 @@ const sourceTag = [
   { label: 'vue', value: 'vue' },
   { label: 'typescript', value: 'typescript' },
   { label: 'leetcode', value: 'leetcode' },
+  { label: 'other', value: 'other' },
 ];
 
 const ArticleDetail = () => {
