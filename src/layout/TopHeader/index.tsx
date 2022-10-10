@@ -5,7 +5,7 @@ import { RootState } from '../../store';
 import styles from './index.module.less';
 import { DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import Logo from 'assets/logo.png';
+import { getCdn } from '../../utils/getCdn';
 
 const TopHeader = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const TopHeader = () => {
   }, []);
   return (
     <div className={styles.topHeader}>
-      <img className='w-14 h-14' src={Logo} alt='' />
+      <img className='w-14 h-14' src={getCdn('/assets/logo.png')} alt='' />
       <div>
         <Dropdown
           trigger={['click']}
