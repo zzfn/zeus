@@ -21,7 +21,12 @@ module.exports = merge(base, {
     moduleIds: 'deterministic',
     minimize: true, // 启动压缩
     usedExports: true, //只导出被使用的模块
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        minify: TerserPlugin.swcMinify,
+      }),
+    ],
     splitChunks: {
       chunks: 'all',
       minSize: 0,
