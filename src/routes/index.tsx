@@ -35,15 +35,6 @@ export default function Router() {
                 }
               />
             ))}
-            {/*<Route path='log' element={<LogList />} />*/}
-            {/*<Route path='article' element={<ArticleList />} />*/}
-            {/*<Route path='device' element={<DeviceList />} />*/}
-            {/*<Route path='user' element={<UserList />} />*/}
-            {/*<Route path='menu' element={<MenuList />} />*/}
-            {/*<Route path='menu/:id' element={<MenuDetail />} />*/}
-            {/*<Route path='device/:id' element={<DeviceDetail />} />*/}
-            {/*<Route path='article/:id' element={<ArticleDetail />} />*/}
-            {/*<Route path=':id' element={<Detail />} />*/}
             <Route
               path='*'
               element={

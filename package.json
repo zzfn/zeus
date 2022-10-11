@@ -31,6 +31,8 @@
     "@bytemd/plugin-gfm": "^1.17.2",
     "@bytemd/react": "^1.17.2",
     "@rematch/core": "^2.2.0",
+    "@sentry/react": "^7.15.0",
+    "@sentry/tracing": "^7.15.0",
     "@tanstack/react-query": "^4.10.3",
     "@xstate/react": "^3.0.1",
     "antd": "^4.23.5",
