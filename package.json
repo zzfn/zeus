@@ -30,6 +30,7 @@
     "@ant-design/icons": "^4.7.0",
     "@bytemd/plugin-gfm": "^1.17.2",
     "@bytemd/react": "^1.17.2",
+    "@oc/monitor": "^1.0.1",
     "@rematch/core": "^2.2.0",
     "@sentry/react": "^7.15.0",
     "@sentry/tracing": "^7.15.0",
