@@ -18,7 +18,7 @@ const sourceTag = [
   { label: 'typescript', value: 'typescript' },
   { label: 'leetcode', value: 'leetcode' },
   { label: 'other', value: 'other' },
-];
+].map((_) => ({ ..._, key: _.value }));
 
 const ArticleDetail = () => {
   const [form] = Form.useForm();
