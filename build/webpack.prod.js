@@ -24,7 +24,7 @@ module.exports = merge(base, {
     minimizer: [
       new CssMinimizerPlugin(),
       new TerserPlugin({
-        minify: TerserPlugin.swcMinify,
+        // minify: TerserPlugin.swcMinify,
       }),
     ],
     splitChunks: {
