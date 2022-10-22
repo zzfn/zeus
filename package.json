@@ -32,8 +32,6 @@
     "@bytemd/react": "^1.17.4",
     "@oc/monitor": "^1.0.1",
     "@rematch/core": "^2.2.0",
-    "@sentry/react": "^7.16.0",
-    "@sentry/tracing": "^7.16.0",
     "@tanstack/react-query": "^4.12.0",
     "@xstate/react": "^3.0.1",
     "antd": "^4.23.6",
