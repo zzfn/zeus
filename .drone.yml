@@ -4,7 +4,7 @@ name: ci/cd
 volumes:
   - name: node_modules
     host:
-      path: /root/zeus/node_modules
+      path: /root/drone/zeus/node_modules
 clone:
   disable: true
 
