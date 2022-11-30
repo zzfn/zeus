@@ -1,6 +1,5 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import styles from './common.module.less';
 import TopHeader from './TopHeader';
 import { useEffect, useState } from 'react';
 import WaterMark from '../components/WaterMark';
@@ -30,7 +29,7 @@ const CommonLayout = () => {
         <Header>
           <TopHeader />
         </Header>
-        <Layout className={styles.layout}>
+        <Layout>
           <Sider>
             <Menu
               selectedKeys={selectKey}

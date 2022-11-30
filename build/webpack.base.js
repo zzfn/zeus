@@ -49,40 +49,6 @@ module.exports = {
         ],
       },
       {
-        test: lessModuleRegex,
-        include: path.resolve(__dirname, '../src'),
-        use: [
-          {
-            loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 3,
-              modules: {
-                exportLocalsConvention: 'camelCaseOnly',
-              },
-              sourceMap: true,
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-                modifyVars: {
-                  'primary-color': '#1DA57A',
-                  'link-color': '#1DA57A',
-                  'border-radius-base': '2px',
-                },
-              },
-              sourceMap: true,
-            },
-          },
-        ],
-      },
-      {
         test: /\.(css)$/,
         use: [
           {
@@ -99,34 +65,68 @@ module.exports = {
           'postcss-loader',
         ],
       },
-      {
-        test: lessRegex,
-        exclude: lessModuleRegex,
-        use: [
-          {
-            loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 3,
-              modules: false,
-              sourceMap: true,
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-                modifyVars: {},
-              },
-              sourceMap: true,
-            },
-          },
-        ],
-      },
+      // {
+      //   test: lessRegex,
+      //   exclude: lessModuleRegex,
+      //   use: [
+      //     {
+      //       loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+      //     },
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         importLoaders: 3,
+      //         modules: false,
+      //         sourceMap: true,
+      //       },
+      //     },
+      //     'postcss-loader',
+      //     {
+      //       loader: 'less-loader',
+      //       options: {
+      //         lessOptions: {
+      //           javascriptEnabled: true,
+      //           modifyVars: {},
+      //         },
+      //         sourceMap: true,
+      //       },
+      //     },
+      //   ],
+      // },
+      // {
+      //   test: lessModuleRegex,
+      //   include: path.resolve(__dirname, '../src'),
+      //   use: [
+      //     {
+      //       loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+      //     },
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         importLoaders: 3,
+      //         modules: {
+      //           exportLocalsConvention: 'camelCaseOnly',
+      //         },
+      //         sourceMap: true,
+      //       },
+      //     },
+      //     'postcss-loader',
+      //     {
+      //       loader: 'less-loader',
+      //       options: {
+      //         lessOptions: {
+      //           javascriptEnabled: true,
+      //           modifyVars: {
+      //             'primary-color': '#1DA57A',
+      //             'link-color': '#1DA57A',
+      //             'border-radius-base': '2px',
+      //           },
+      //         },
+      //         sourceMap: true,
+      //       },
+      //     },
+      //   ],
+      // },
     ],
   },
   plugins: [

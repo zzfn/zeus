@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { Dropdown, Menu, Tag } from 'antd';
+import { Dropdown } from 'antd';
 import { RootState } from '../../store';
-import styles from './index.module.less';
 import { DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { getCdn } from '../../utils/getCdn';
@@ -22,32 +21,29 @@ const TopHeader = () => {
     dispatch({ type: 'user/updateUserInfo' });
   }, []);
   return (
-    <div className={styles.topHeader}>
+    <div className='flex justify-between'>
       <img className='w-14 h-14' src={getCdn('/assets/logo.png')} alt='' />
       <div>
         <Dropdown
           trigger={['click']}
-          overlay={
-            <Menu
-              onClick={handleMenuClick}
-              items={[
-                {
-                  key: 'logout',
-                  label: (
-                    <>
-                      <LogoutOutlined /> 退出登录
-                    </>
-                  ),
-                },
-              ]}
-            />
-          }
+          menu={{
+            onClick: handleMenuClick,
+            items: [
+              {
+                key: 'logout',
+                label: (
+                  <>
+                    <LogoutOutlined /> 退出登录
+                  </>
+                ),
+              },
+            ],
+          }}
         >
-          <a>
+          <a className='text-amber-50'>
             {user.info?.nickname} <DownOutlined />
           </a>
         </Dropdown>
-        <Tag color='orange'>{process.env.APP_ENV}</Tag>
       </div>
     </div>
   );

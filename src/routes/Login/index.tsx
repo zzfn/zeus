@@ -1,7 +1,6 @@
 import { Form, Input, Button, Alert } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
-import styles from './index.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useEffect } from 'react';
@@ -26,9 +25,9 @@ const Login = () => {
   }, [user]);
 
   return (
-    <div className={styles.loginContainer}>
+    <div>
       <Alert message='访客账号密码 test/test' type='info' />
-      <Form className={styles.loginForm} onFinish={onFinish} autoComplete='off'>
+      <Form onFinish={onFinish} autoComplete='off'>
         <Form.Item
           name='username'
           rules={[{ required: true, message: 'Please input your username!' }]}
