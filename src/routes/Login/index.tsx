@@ -1,4 +1,4 @@
-import { Form, Input, Button, Alert } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,21 +25,20 @@ const Login = () => {
   }, [user]);
 
   return (
-    <div>
-      <Alert message='访客账号密码 test/test' type='info' />
+    <div className='h-screen flex justify-center items-center'>
       <Form onFinish={onFinish} autoComplete='off'>
         <Form.Item
           name='username'
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
-          <Input />
+          <Input placeholder='test' />
         </Form.Item>
 
         <Form.Item
           name='password'
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Input.Password />
+          <Input.Password placeholder='test' />
         </Form.Item>
 
         <Form.Item>
