@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Button, Drawer, message, Table, Upload, UploadProps } from 'antd';
+import { Button, Drawer, message, Table, Upload, UploadProps, Image } from 'antd';
 import { CopyOutlined, UploadOutlined } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
 import { files } from '../../service/oss';
@@ -13,6 +13,7 @@ dayjs.extend(relativeTime);
 const FileList = () => {
   const [prefix, setPrefix] = useState('');
   const [open, setOpen] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
   const { data = {} } = useQuery(['files', prefix], () =>
     files({ prefix }).then(({ data }) => data),
   );
@@ -52,6 +53,7 @@ const FileList = () => {
               if (record.dir) {
                 setPrefix(text);
               } else {
+                setCurrentUrl(record.url);
                 setOpen(true);
               }
             }}
@@ -90,10 +92,8 @@ const FileList = () => {
         columns={columns}
         dataSource={data.records ?? []}
       />
-      <Drawer onClose={() => setOpen(false)} title='Basic Drawer' placement='right' open={open}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Drawer onClose={() => setOpen(false)} title='预览' placement='right' open={open}>
+        <Image src={currentUrl} />
       </Drawer>
       <Upload {...props}>
         <Button icon={<UploadOutlined />}>Click to Upload</Button>
