@@ -10,6 +10,20 @@ import { copyToClip } from '../../utils/copyToClip';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
+
+function renderSize(filesize: string) {
+  if (!filesize) {
+    return '0 Bytes';
+  }
+  const unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  let index = 0;
+  const srcsize = parseFloat(filesize);
+  index = Math.floor(Math.log(srcsize) / Math.log(1024));
+  let size = srcsize / Math.pow(1024, index);
+  let ret = size.toFixed(2); //保留的小数位数
+  return ret + unitArr[index];
+}
+
 const FileList = () => {
   const [prefix, setPrefix] = useState('');
   const [open, setOpen] = useState(false);
@@ -71,6 +85,7 @@ const FileList = () => {
     {
       title: '文件大小',
       dataIndex: 'size',
+      render: (text: string) => <span>{renderSize(text)}</span>,
     },
     {
       title: '更新时间',
