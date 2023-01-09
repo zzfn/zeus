@@ -59,7 +59,7 @@ const ArticleList = () => {
 
   return (
     <>
-      <Space>
+      <Space className='mb-2'>
         <Input
           placeholder='search by id'
           value={params.id}

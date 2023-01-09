@@ -21,8 +21,8 @@ const TopHeader = () => {
     dispatch({ type: 'user/updateUserInfo' });
   }, []);
   return (
-    <div className='flex justify-between'>
-      <img className='w-14 h-14' src={getCdn('/assets/logo.png')} alt='' />
+    <div className='flex justify-between items-center'>
+      <img className='w-12 h-12' src={getCdn('/assets/logo.png')} alt='' />
       <div>
         <Dropdown
           trigger={['click']}

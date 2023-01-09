@@ -6,9 +6,12 @@ const ZeusTable = (props: any): JSX.Element => {
   const [dataSource, setDataSource] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState({});
+  const [loading, setLoading] = useState(false);
 
   async function handleFetch(query: any) {
+    setLoading(true);
     const { data, code } = await service(query);
+    setLoading(false);
     if (code === 0) {
       if (showPage) {
         setDataSource(data.records);
@@ -25,6 +28,7 @@ const ZeusTable = (props: any): JSX.Element => {
   }, [service, params, page]);
   return (
     <Table
+      loading={loading}
       size={size}
       bordered
       pagination={
