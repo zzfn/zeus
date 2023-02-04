@@ -1,3 +1,3 @@
 export function getCdn(path: string): string {
-  return 'https://cdn.orluma.ltd' + path;
+  return 'https://cdn.zzfzzf.com' + path;
 }
