@@ -8,16 +8,16 @@ export async function changelogList(data: any): Promise<any> {
   });
 }
 
-export async function menuOne(params: any): Promise<any> {
+export async function changelogOne(params: any): Promise<any> {
   return http({
-    url: `/menu/getOne`,
+    url: `/changelog/getOne`,
     method: 'get',
     params,
   });
 }
-export async function menuSave(data: any): Promise<any> {
+export async function changelogSave(data: any): Promise<any> {
   return http({
-    url: '/menu/save',
+    url: '/changelog/save',
     method: 'post',
     data,
   });
