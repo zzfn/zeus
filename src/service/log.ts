@@ -16,7 +16,7 @@ export function logUser(): Promise<any> {
 }
 export async function deleteLog(data: any): Promise<any> {
   return http({
-    url: '/log/delete',
+    url: '/search/delete',
     method: 'post',
     data,
   });

@@ -3,18 +3,15 @@ import ZeusTable from 'components/ZeusTable';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { deleteLog, logPage } from '../../service/log';
-import { useNavigate } from 'react-router-dom';
 import { Button, Input, message, Space, Tooltip } from 'antd';
 
 const LogList = () => {
   const access = useAccess();
-  const navigate = useNavigate();
   const [params, setParams] = useState<any>({});
   const [query, setQuery] = useState<any>({});
   const handleDelete = (id: string) => async () => {
     const { data } = await deleteLog({ id });
     message.success(data);
-    navigate(0);
   };
   const columns = [
     {
