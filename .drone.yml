@@ -54,6 +54,6 @@ steps:
         from_secret: caddy_username
       key:
         from_secret: caddy_ssh_key
-      target: /root/www/zeus.zzfzzf.com
+      target: /etc/caddy/zeus.zzfzzf.com
       source: ./dist
 
