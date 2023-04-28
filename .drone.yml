@@ -52,8 +52,8 @@ steps:
       port: 22
       username:
         from_secret: caddy_username
-      password:
-        from_secret: caddy_password
+      key:
+        from_secret: caddy_ssh_key
       target: /root/www/zeus.zzfzzf.com
       source: ./dist
 
