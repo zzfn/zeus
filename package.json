@@ -38,6 +38,8 @@
     "axios": "^1.4.0",
     "bytemd": "^1.21.0",
     "dayjs": "^1.11.9",
+    "framer-motion": "^10.16.1",
+    "jotai": "^2.4.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",

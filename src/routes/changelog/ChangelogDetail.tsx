@@ -13,9 +13,42 @@ const ArticleDetail = () => {
   const navigate = useNavigate();
   const access = useAccess();
   const onFinish = async (values: Record<string, any>): Promise<void> => {
-    const { data } = await changelogSave({ ...values, id: params.id === '_' ? '' : params.id });
-    data && message.success('操作成功');
-    data && navigate(`/article/${data}`);
+    let compose = function(...args) {
+      const init = args.pop()
+      return function(...arg) {
+        return args.reverse().reduce(function(sequence, func) {
+          return sequence.then(function(result) {
+            return func.call(null, result)
+          })
+        }, Promise.resolve(init.apply(null, arg)))
+      }
+    }
+    
+    let a = () => {
+      console.log('a')
+      return changelogSave({ ...values, id: params.id === '_' ? '' : params.id }).then(res=>{
+        if(res.success) {
+          return res.data
+        }
+      })
+    }
+    
+    let b = async(args) => {
+      console.log('b',args)
+      message.success('操作成功')
+      return args
+    }
+    let c = (data)=> {
+      console.log('c',data)
+      navigate(`/article/${data}`)
+    }
+    let steps = [c,b,a] // 从右向左执行
+    let composeFn = compose(...steps)
+    
+    composeFn().then(res => { console.log(666) })
+    // const { data } = await changelogSave({ ...values, id: params.id === '_' ? '' : params.id });
+    // data && message.success('操作成功');
+    // data && navigate(`/article/${data}`);
   };
   const handleFetchArticle = async (id: string) => {
     const { data, success } = await changelogOne({ id });
