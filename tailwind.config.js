@@ -1,10 +1,12 @@
+const {nextui} = require("@nextui-org/react");
 module.exports = {
-  corePlugins: {
-    preflight: false,
-  },
-  content: ['./src/**/*.tsx'],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+    content: [
+        './src/**/*.tsx',
+        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {},
+    },
+    darkMode: "class",
+    plugins: [nextui()],
 };

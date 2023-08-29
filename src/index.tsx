@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import './global.css';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import { App } from './App';
 import * as monitor from '@oc/monitor';
 

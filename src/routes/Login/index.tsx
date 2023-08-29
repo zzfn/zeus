@@ -1,14 +1,35 @@
-import { Form, Input, Button } from 'antd';
+import { Form } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useEffect } from 'react';
+import { Button, Input } from '@nextui-org/react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type Inputs = {
+  username: string;
+  passowrd: string;
+};
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
   let user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: any) => {};
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user.loginState) {
+      navigate('/home');
+    }
+  }, [user]);
+  const onSubmit: SubmitHandler<Inputs> = async (values) => {
     const { data, code } = await login(values);
     if (code === 0) {
       sessionStorage.setItem('uid', data.token);
@@ -17,49 +38,27 @@ const Login = () => {
     }
   };
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user.loginState) {
-      navigate('/home');
-    }
-  }, [user]);
-
+  console.log(watch('username')); // watch input value by passing the name of it
   return (
     <div className='h-screen flex flex-col justify-center items-center bg-gradient-to-r from-slate-100 to-gray-300'>
       <h1>Sign In</h1>
-      <Form
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className='rounded-lg bg-white/30 p-5 backdrop-opacity-80'
-        layout='vertical'
-        onFinish={onFinish}
-        autoComplete='off'
       >
-        <Form.Item
-          label='USERNAME'
-          name='username'
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-          <Input placeholder='test' />
-        </Form.Item>
+        <Input {...register('username')} label='username' placeholder='test' />
 
-        <Form.Item
-          label='PASSWORD'
-          name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-          <Input.Password placeholder='test' />
-        </Form.Item>
+        <Input {...register('password')} label='password' type='password' placeholder='test' />
 
-        <Form.Item>
-          <div className='flex justify-center gap-x-2'>
-            <Button type='primary' htmlType='submit'>
-              登录
-            </Button>
-            <Link to='/register'>
-              <Button>注册</Button>
-            </Link>
-          </div>
-        </Form.Item>
-      </Form>
+        <div className='flex justify-center gap-x-2'>
+          <Button color='primary' type='submit'>
+            登录
+          </Button>
+          <Link to='/register'>
+            <Button>注册</Button>
+          </Link>
+        </div>
+      </form>
     </div>
   );
 };
