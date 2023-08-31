@@ -1,4 +1,5 @@
-import { Button, Card, message } from 'antd';
+import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
+import { message } from 'antd';
 import {
   CartesianGrid,
   Funnel,
@@ -30,31 +31,37 @@ export default function Home() {
 
   return (
     <>
-      <Card title='快捷操作'>
-        <Button onClick={handleReset}>reset elastic article</Button>
+      <Card>
+        <CardHeader>快捷操作</CardHeader>
+        <CardBody>
+          <Button onClick={handleReset}>reset elastic article</Button>
+        </CardBody>
       </Card>
-      <Card title='访客统计'>
-        <ResponsiveContainer height={200}>
-          <LineChart
-            width={500}
-            height={300}
-            data={records}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='name' />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type='monotone' dataKey='pv' stroke='#8884d8' activeDot={{ r: 8 }} />
-            <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
-          </LineChart>
-        </ResponsiveContainer>
+      <Card>
+        <CardHeader>访客统计</CardHeader>
+        <CardBody>
+          <ResponsiveContainer height={200}>
+            <LineChart
+              width={500}
+              height={300}
+              data={records}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='name' />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type='monotone' dataKey='pv' stroke='#8884d8' activeDot={{ r: 8 }} />
+              <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardBody>
       </Card>
       <div className='grid grid-cols-2 gap-2'>
         <Card title='文章分类'>
