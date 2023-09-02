@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { articlePage, removeArticle } from 'service/article';
 import ZeusTable from 'components/ZeusTable';
-import { Input, Select, Space, Tag} from 'antd';
+import { Select, Space, Tag } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
-import {Button} from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react';
+
 const ArticleList = () => {
   const [params, setParams] = useState({ id: '', isRelease: 'all' });
   const navigate = useNavigate();
@@ -47,8 +48,12 @@ const ArticleList = () => {
       render: (_: string, record: any) => (
         <Access>
           <Space>
-            <Link to={`/article/${record.id}`}>编辑</Link>
-            <Button color="primary" onClick={handleDelete(record.id)}>
+            <Link to={`/article/${record.id}`}>
+              <Button variant='ghost' size='sm' color='primary'>
+                编辑
+              </Button>
+            </Link>
+            <Button variant='ghost' size='sm' color='danger' onClick={handleDelete(record.id)}>
               删除
             </Button>
           </Space>
@@ -61,6 +66,7 @@ const ArticleList = () => {
     <>
       <Space className='mb-2'>
         <Input
+          variant='bordered'
           placeholder='search by id'
           value={params.id}
           onChange={(e) => setParams({ ...params, id: e.target.value })}
@@ -76,7 +82,7 @@ const ArticleList = () => {
           ]}
         />
         <Link to='/article/_'>
-          <Button color="primary">新增</Button>
+          <Button color='primary'>新增</Button>
         </Link>
       </Space>
       <ZeusTable columns={columns} service={articlePage} params={params} />

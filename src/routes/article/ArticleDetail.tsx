@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, message, Space, Switch } from 'antd';
+import { Card, Form, Input, message, Space, Switch } from 'antd';
 import SelectCode from 'components/SelectCode';
 import MarkdownEditor from 'components/MarkdownEditor';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { isExist } from '../../utils/isExist';
 import ZeusUpload from '../../components/ZeusUpload';
-
+import { Button } from '@nextui-org/react'
 const sourceTag = [
   { label: 'frontend', value: 'frontend' },
   { label: 'backend', value: 'backend' },
@@ -131,7 +131,7 @@ const ArticleDetail = () => {
           <Form.Item wrapperCol={{ offset: 12 }} style={{ marginTop: 32 }}>
             <Access accessible={access.isAdmin}>
               <Space>
-                <Button type='primary' htmlType='submit'>
+                <Button size='sm'>
                   确认
                 </Button>
               </Space>
