@@ -3,9 +3,9 @@ import { store } from './store';
 import Router from './routes';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ConfigProvider } from 'antd';
-import {Button, NextUIProvider} from '@nextui-org/react';
-import {ConfigProvider} from "antd";
+import { NextUIProvider } from '@nextui-org/react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
 
@@ -16,17 +16,9 @@ function App(): JSX.Element {
   return (
     <NextUIProvider>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer />
         <Provider store={store}>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: '#158bb8',
-                colorInfo: '#158bb8',
-              },
-            }}
-          >
           <Router />
-          </ConfigProvider>
         </Provider>
       </QueryClientProvider>
     </NextUIProvider>

@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import MarkdownEditor from 'components/MarkdownEditor';
 import { useNavigate, useParams } from 'react-router-dom';
 import { articleOne, saveArticle } from 'service/article';
@@ -8,6 +7,7 @@ import useAccess from 'hooks/useAccess';
 import { isExist } from '../../utils/isExist';
 import { Button, Card, CardBody, Input, Select, SelectItem, Switch } from '@nextui-org/react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const sourceTag = [
   { label: 'frontend', value: 'frontend' },
@@ -43,7 +43,7 @@ const ArticleDetail = () => {
     if (success) {
       reset(data);
     } else {
-      message.error('未知错误');
+      toast.error('未知错误');
     }
   };
   useEffect(() => {
@@ -51,7 +51,7 @@ const ArticleDetail = () => {
   }, [params.id]);
   const onSubmit = async (values: Inputs) => {
     const { data } = await saveArticle({ ...values, id: params.id === '_' ? '' : params.id });
-    data && message.success('操作成功');
+    data && toast.success('操作成功');
     data && navigate(`/article/${data}`);
   };
   return (
@@ -112,7 +112,7 @@ const ArticleDetail = () => {
                 <MarkdownEditor
                   value={field.value}
                   onChange={field.onChange}
-                  // articleId={params.id}
+                  articleId={params.id}
                 />
               </div>
             )}
