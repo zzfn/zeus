@@ -15,7 +15,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
   let user = useSelector((state: RootState) => state.user);
@@ -36,7 +35,6 @@ const Login = () => {
     }
   };
 
-  console.log(watch('username')); // watch input value by passing the name of it
   return (
     <div className='h-screen flex flex-col justify-center items-center bg-gradient-to-r from-slate-100 to-gray-300'>
       <h1>Sign In</h1>

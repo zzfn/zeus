@@ -15,9 +15,9 @@ export async function menuOne(params: any): Promise<any> {
     params,
   });
 }
-export async function menuSave(data: any): Promise<any> {
+export async function friendSave(data: any): Promise<any> {
   return http({
-    url: '/menu/save',
+    url: '/friend/save',
     method: 'post',
     data,
   });

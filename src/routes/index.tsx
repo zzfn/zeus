@@ -6,6 +6,7 @@ import { RootState } from 'store';
 import { Spin } from 'antd';
 import React, { Suspense } from 'react';
 import Register from './register';
+import ApplyFriend from './ApplyFriend';
 
 export default function Router() {
   let user = useSelector((state: RootState) => state.user);
@@ -17,6 +18,7 @@ export default function Router() {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/apply-friend' element={<ApplyFriend />} />
           <Route path='/' element={<Navigate to='/home' replace />} />
           <Route
             path='/'
