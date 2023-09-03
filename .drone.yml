@@ -57,6 +57,8 @@ steps:
         from_secret: caddy_username
       key:
         from_secret: caddy_ssh_key
-      target: /etc/caddy/zeus/index.html
+#      target: /etc/caddy/zeus
+#      source: ./dist
+      target: /etc/caddy/${DRONE_REPO_NAME}
       source: ./dist/index.html
 
