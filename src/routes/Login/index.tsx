@@ -1,4 +1,3 @@
-import { Form } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +8,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Inputs = {
   username: string;
-  passowrd: string;
+  password: string;
 };
 
 const Login = () => {
@@ -21,7 +20,6 @@ const Login = () => {
   } = useForm<Inputs>();
   let user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const onFinish = async (values: any) => {};
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -46,9 +44,21 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         className='rounded-lg bg-white/30 p-5 backdrop-opacity-80'
       >
-        <Input {...register('username')} label='username' placeholder='test' />
+        <Input
+          validationState={errors.username ? 'invalid' : 'valid'}
+          autoFocus
+          {...register('username')}
+          label='username'
+          placeholder='test'
+        />
 
-        <Input {...register('password')} label='password' type='password' placeholder='test' />
+        <Input
+          validationState={errors.password ? 'invalid' : 'valid'}
+          {...register('password')}
+          label='password'
+          type='password'
+          placeholder='test'
+        />
 
         <div className='flex justify-center gap-x-2'>
           <Button color='primary' type='submit'>

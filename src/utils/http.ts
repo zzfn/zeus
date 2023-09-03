@@ -2,9 +2,9 @@ import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
 
-interface ResponseType {
+interface ResponseType<T> {
   msg?: string;
-  data?: unknown;
+  data?: T;
   code?: number;
   errcode?: number;
   success: boolean;
@@ -68,8 +68,8 @@ instance.interceptors.response.use(
   },
 );
 
-function http(config: AxiosRequestConfig): Promise<ResponseType> {
-  return instance(config) as unknown as Promise<ResponseType>;
+function http<T>(config: AxiosRequestConfig): Promise<ResponseType<T>> {
+  return instance(config) as unknown as Promise<ResponseType<T>>;
 }
 
 export default http;

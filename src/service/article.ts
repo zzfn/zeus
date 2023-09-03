@@ -30,15 +30,28 @@ export async function removeArticle(params: { id: string }) {
     method: 'delete',
   });
 }
+
 export async function resetElastic() {
   return http({
     url: `/article/resetElastic`,
     method: 'post',
   });
 }
+
 export async function topSearch() {
   return http({
     url: `/article/topSearch`,
     method: 'get',
+  });
+}
+
+export async function uploadFile(data: FormData) {
+  return http<string[]>({
+    url: '/file/upload',
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 }

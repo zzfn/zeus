@@ -5,6 +5,7 @@ import {RootState} from '../../store';
 import {DownOutlined, LogoutOutlined} from '@ant-design/icons';
 import {useNavigate} from 'react-router-dom';
 import Logo from "../../components/Logo";
+import {Kbd} from "@nextui-org/react";
 
 const TopHeader = () => {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const TopHeader = () => {
         <div className='flex justify-between items-center'>
             <Logo width={90} height={30}/>
             <div>
+                <Kbd keys={["command"]}>K</Kbd>
                 <Dropdown
                     trigger={['click']}
                     menu={{

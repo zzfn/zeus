@@ -1,6 +1,7 @@
 import { Button, Image, message, Upload, UploadProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRef } from 'react';
+import { uploadFile } from '../service/article';
 
 type ZeusUpload = {
   value?: string;
@@ -40,12 +41,21 @@ const ZeusUpload = ({ value, onChange, data = {} }: ZeusUpload) => {
       }
     },
   };
+  const handleFileChange = async (event) => {
+    console.log(event.target.files);
+    const formData = new FormData();
+    formData.append('file', event.target.files[0]);
+    formData.append('path', `article/${data.id}`);
+    const res = await uploadFile(formData);
+    res.data.forEach(onChange);
+  };
   return (
     <div className='flex'>
-      <Upload {...props}>
-        <Button icon={<UploadOutlined />}>upload</Button>
-        <Image preview={false} width={200} height={200} src={value} alt='' />
-      </Upload>
+      <input type='file' onChange={handleFileChange} />
+      {/*<Upload {...props}>*/}
+      {/*  <Button icon={<UploadOutlined />}>upload</Button>*/}
+      {/*  <Image preview={false} width={200} height={200} src={value} alt='' />*/}
+      {/*</Upload>*/}
     </div>
   );
 };

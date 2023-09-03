@@ -1,14 +1,16 @@
 import { Editor } from '@bytemd/react';
 import 'bytemd/dist/index.min.css';
 import gfm from '@bytemd/plugin-gfm';
-import axios from 'axios';
 import { message } from 'antd';
+import { uploadFile } from '../service/article';
 
 const plugins = [gfm()];
+
 function formatFile(file: File) {
   const suffix = file.name.split('.').pop();
   return new File([file], `${Date.now()}.${suffix}`);
 }
+
 const MarkdownEditor = (props: any) => {
   const { value = '', onChange } = props;
 
@@ -17,23 +19,19 @@ const MarkdownEditor = (props: any) => {
     let formData = new FormData();
     formData.append('path', `article/${props.articleId}`);
     value.forEach((item) => formData.append('file', formatFile(item)));
-    const {
-      data: { data },
-    } = await axios({
-      url: `${process.env.API_URL}/file/upload`,
-      method: 'post',
-      data: formData,
-      headers: {
-        authorization: `Bearer ${sessionStorage.getItem('uid')}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const { data } = await uploadFile(formData);
     hide();
-    return data.map((url: string) => ({ url }));
+    return data?.map((url: string) => ({ url }));
   }
 
   return (
-    <Editor uploadImages={handleUploadImages} value={value} plugins={plugins} onChange={onChange} />
+    <Editor
+      mode='tab'
+      uploadImages={handleUploadImages}
+      value={value}
+      plugins={plugins}
+      onChange={onChange}
+    />
   );
 };
 
