@@ -51,6 +51,7 @@ const ApplyFriend = () => {
         <CardBody>
           <form className='flex flex-col gap-y-3  px-6' onSubmit={handleSubmit(onSubmit, onError)}>
             <Input
+              type='url'
               isRequired
               validationState={errors.url ? 'invalid' : 'valid'}
               autoFocus
@@ -59,24 +60,25 @@ const ApplyFriend = () => {
             />
 
             <Input
-              variant='faded'
               isRequired
               validationState={errors.title ? 'invalid' : 'valid'}
-              {...register('title', { required: true })}
+              {...register('title', { required: true, })}
               label='TITLE'
+              maxLength={10}
             />
             <Textarea
               isRequired
               validationState={errors.description ? 'invalid' : 'valid'}
               {...register('description', { required: true })}
               label='DESCRIPTION'
+              maxLength={10}
             />
             <Input
+              type='url'
               isRequired
               validationState={errors.logo ? 'invalid' : 'valid'}
               {...register('logo', { required: true })}
               label='LOGO'
-              type='logo'
             />
             <CardFooter>
               <Button className='w-full' color='primary' type='submit'>

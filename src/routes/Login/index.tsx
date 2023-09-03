@@ -3,7 +3,7 @@ import { login } from 'service/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useEffect } from 'react';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Inputs = {
@@ -36,38 +36,41 @@ const Login = () => {
   };
 
   return (
-    <div className='h-screen flex flex-col justify-center items-center bg-gradient-to-r from-slate-100 to-gray-300'>
-      <h1>Sign In</h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='rounded-lg bg-white/30 p-5 backdrop-opacity-80'
-      >
-        <Input
-          validationState={errors.username ? 'invalid' : 'valid'}
-          autoFocus
-          {...register('username')}
-          label='username'
-          placeholder='test'
-        />
+    <Card className='max-w-md m-auto mt-28'>
+      <CardHeader>
+        <h1>ZEUS中台</h1>
+      </CardHeader>
+      <CardBody>
+        <form className='flex flex-col gap-y-3' onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            isRequired
+            validationState={errors.username ? 'invalid' : 'valid'}
+            autoFocus
+            {...register('username', { required: true })}
+            label='username'
+            placeholder='test'
+          />
 
-        <Input
-          validationState={errors.password ? 'invalid' : 'valid'}
-          {...register('password')}
-          label='password'
-          type='password'
-          placeholder='test'
-        />
+          <Input
+            isRequired
+            validationState={errors.password ? 'invalid' : 'valid'}
+            {...register('password', { required: true })}
+            label='password'
+            type='password'
+            placeholder='test'
+          />
 
-        <div className='flex justify-center gap-x-2'>
-          <Button color='primary' type='submit'>
-            登录
-          </Button>
-          <Link to='/register'>
-            <Button>注册</Button>
-          </Link>
-        </div>
-      </form>
-    </div>
+          <div className='flex justify-center gap-x-2'>
+            <Button color='primary' type='submit'>
+              登录
+            </Button>
+            <Link to='/register'>
+              <Button>注册</Button>
+            </Link>
+          </div>
+        </form>
+      </CardBody>
+    </Card>
   );
 };
 export default Login;
