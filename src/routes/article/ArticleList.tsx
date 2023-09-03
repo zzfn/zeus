@@ -36,7 +36,7 @@ const ArticleList = () => {
       setList(data.records);
       setTotal(data.total);
     });
-  }, [page]);
+  }, [page,params]);
   const columns = [
     {
       title: '标题',
