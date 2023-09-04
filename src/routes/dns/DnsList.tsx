@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import ZeusTable from 'components/ZeusTable';
-import { Button, Drawer, Form, Input, Select, Space } from 'antd';
+import { Drawer, Form, Input, Select, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
-import { dnsDomains, dnsList, removeDns } from '../../service/dns';
+import { addDns, dnsDomains, dnsList, removeDns, updateDns } from '../../service/dns';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const DnsList = () => {
   const { data = [] } = useQuery(['dnsDomains'], () =>
     dnsDomains(params).then(({ data }) => data.records),
   );
-
+  const [form] = Form.useForm();
+  const [RecordId, setRecordId] = useState('');
   const access = useAccess();
-  const [params, setParams] = useState({ DomainName: 'orluna.ink' });
+  const [params, setParams] = useState({ DomainName: 'zzfzzf.com' });
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const handleDelete = (RecordId: string) => async () => {
@@ -48,12 +51,16 @@ const DnsList = () => {
       render: (_: string, record: any) => (
         <Access accessible={access.isAdmin}>
           <Space>
-            <Button type='text' onClick={() => setVisible(true)}>
+            <Button
+              onClick={() => {
+                setVisible(true);
+                setRecordId(record.RecordId);
+                form.setFieldsValue(record);
+              }}
+            >
               修改
             </Button>
-            <Button type='text' onClick={handleDelete(record.RecordId)}>
-              删除
-            </Button>
+            <Button onClick={handleDelete(record.RecordId)}>删除</Button>
           </Space>
         </Access>
       ),
@@ -61,7 +68,21 @@ const DnsList = () => {
   ];
 
   async function handleSubmit(values: any) {
-    console.log(values);
+    if (RecordId) {
+      const { code } = await updateDns({ ...values, RecordId });
+      if (code === 0) {
+        toast.success('更新成功');
+      } else {
+        toast.warning('更新失败');
+      }
+    } else {
+      const { code } = await addDns({ ...values, DomainName: params.DomainName });
+      if (code === 0) {
+        toast.success('添加成功');
+      } else {
+        toast.warning('添加失败');
+      }
+    }
   }
 
   return (
@@ -79,7 +100,12 @@ const DnsList = () => {
           ))}
         </Select>
       )}
-      <Button onClick={() => setVisible(true)} type='primary'>
+      <Button
+        onClick={() => {
+          setVisible(true);
+          setRecordId('');
+        }}
+      >
         新增
       </Button>
       <Drawer
@@ -89,7 +115,7 @@ const DnsList = () => {
         onClose={() => setVisible(false)}
       >
         <Form
-          name='basic'
+          form={form}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           onFinish={handleSubmit}
@@ -124,9 +150,7 @@ const DnsList = () => {
             <Input />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type='primary' htmlType='submit'>
-              Submit
-            </Button>
+            <Button type='submit'>Submit</Button>
           </Form.Item>
         </Form>
       </Drawer>

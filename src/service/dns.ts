@@ -15,7 +15,20 @@ export async function dnsList(params: any): Promise<any> {
     params,
   });
 }
-
+export async function addDns(data: any): Promise<any> {
+  return http({
+    url: '/dns/add',
+    method: 'post',
+    data,
+  });
+}
+export async function updateDns(data: any): Promise<any> {
+  return http({
+    url: '/dns/update',
+    method: 'post',
+    data,
+  });
+}
 export async function removeDns(data: any) {
   return http({
     url: `/dns/del`,

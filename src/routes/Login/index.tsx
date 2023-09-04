@@ -36,41 +36,43 @@ const Login = () => {
   };
 
   return (
-    <Card className='max-w-md m-auto mt-28'>
-      <CardHeader>
-        <h1>ZEUS中台</h1>
-      </CardHeader>
-      <CardBody>
-        <form className='flex flex-col gap-y-3' onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            isRequired
-            validationState={errors.username ? 'invalid' : 'valid'}
-            autoFocus
-            {...register('username', { required: true })}
-            label='username'
-            placeholder='test'
-          />
+    <div className='flex items-center h-screen'>
+      <Card className='max-w-md m-auto'>
+        <CardHeader>
+          <h1>ZEUS中台</h1>
+        </CardHeader>
+        <CardBody>
+          <form className='flex flex-col gap-y-3' onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              isRequired
+              validationState={errors.username ? 'invalid' : 'valid'}
+              autoFocus
+              {...register('username', { required: true })}
+              label='username'
+              placeholder='test'
+            />
 
-          <Input
-            isRequired
-            validationState={errors.password ? 'invalid' : 'valid'}
-            {...register('password', { required: true })}
-            label='password'
-            type='password'
-            placeholder='test'
-          />
+            <Input
+              isRequired
+              validationState={errors.password ? 'invalid' : 'valid'}
+              {...register('password', { required: true })}
+              label='password'
+              type='password'
+              placeholder='test'
+            />
 
-          <div className='flex justify-center gap-x-2'>
-            <Button color='primary' type='submit'>
-              登录
-            </Button>
-            <Link to='/register'>
-              <Button>注册</Button>
-            </Link>
-          </div>
-        </form>
-      </CardBody>
-    </Card>
+            <div className='flex justify-center gap-x-2'>
+              <Button color='primary' type='submit'>
+                登录
+              </Button>
+              <Link to='/register'>
+                <Button>注册</Button>
+              </Link>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
+    </div>
   );
 };
 export default Login;
