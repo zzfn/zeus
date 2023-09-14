@@ -1,27 +1,28 @@
-import { Provider } from 'react-redux';
-import { store } from './store';
 import Router from './routes';
-import { useEffect } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactElement } from 'react';
 import { NextUIProvider } from '@nextui-org/react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BaseStyles, ThemeProvider } from '@primer/react';
+import { SWRConfig } from 'swr';
+import { fetchData } from './models/api';
 
-const queryClient = new QueryClient();
-
-function App(): JSX.Element {
-  useEffect(() => {
-    store.dispatch.user.updateUserState();
-  }, []);
+function App(): ReactElement {
   return (
-    <NextUIProvider>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer />
-        <Provider store={store}>
-          <Router />
-        </Provider>
-      </QueryClientProvider>
-    </NextUIProvider>
+    <ThemeProvider>
+      <BaseStyles>
+        <SWRConfig
+          value={{
+            fetcher: fetchData,
+          }}
+        >
+          <NextUIProvider>
+            <ToastContainer />
+            <Router />
+          </NextUIProvider>
+        </SWRConfig>
+      </BaseStyles>
+    </ThemeProvider>
   );
 }
 

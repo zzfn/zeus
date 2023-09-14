@@ -36,9 +36,7 @@ const instance = axios.create({
 });
 instance.interceptors.request.use(
   (config) => {
-    const Authorization = sessionStorage.getItem('uid')
-      ? `Bearer ${sessionStorage.getItem('uid')}`
-      : '';
+    const Authorization = localStorage.getItem('uid');
     if (config.headers) {
       Reflect.set(config.headers, 'Authorization', Authorization);
       Reflect.set(config.headers, 'System', 'admin');
@@ -56,7 +54,7 @@ instance.interceptors.response.use(
     if (response.status !== 200) {
       return message.error(msg.get(response.status)).then();
     }
-    if (response.data.code !== 0) {
+    if (response.data.code !== 2000) {
       return message.error(response.data.msg || response.data.message).then();
     }
     if (response.data.code === 4001) {

@@ -1,64 +1,56 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
-import TopHeader from './TopHeader';
-import { useEffect, useState } from 'react';
+import { Link, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
 import WaterMark from '../components/WaterMark';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch, RootState } from '../store';
-import { list2tree } from '../utils/list2tree';
+import { Avatar, Header, NavList, Octicon, PageLayout } from '@primer/react';
+import { MarkGithubIcon } from '@primer/octicons-react';
+import { useAtomValue } from 'jotai';
+import { userAtom } from 'atoms/userAtoms';
+import { ReactNode } from 'react';
 
-const { Header, Footer, Sider, Content } = Layout;
+function NavItem({ to, children }: { to: string; children: ReactNode }) {
+  const resolved = useResolvedPath(to);
+  const isCurrent = useMatch({ path: resolved.pathname, end: true });
+  return (
+    <NavList.Item as={Link} to={to} aria-current={isCurrent ? 'page' : undefined}>
+      {children}
+    </NavList.Item>
+  );
+}
 
 const CommonLayout = () => {
-  let menu = useSelector((state: RootState) => state.menu);
-  let user = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch<Dispatch>();
-  const [selectKey, setSelectKey] = useState<string[]>(['']);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const handleMenuClick = ({ keyPath }: { keyPath: string[] }) => {
-    navigate(keyPath[0]);
-  };
-  useEffect(() => {
-    dispatch.menu.updateMenuInfo();
-    setSelectKey([location.pathname.split('/').filter(Boolean).join('/')]);
-  }, [location.pathname]);
+  const user = useAtomValue(userAtom);
   return (
-    <WaterMark content={user?.info?.nickname}>
-      <Layout>
-        <Header>
-          <TopHeader />
-        </Header>
-        <Layout>
-          <Sider>
-            <Menu
-              selectedKeys={selectKey}
-              onClick={handleMenuClick}
-              mode='inline'
-              style={{ height: '100%' }}
-              items={list2tree(
-                menu
-                  ?.filter((item) => item.isShow)
-                  .sort((a, b) => a.orderNum - b.orderNum)
-                  .map((item) => ({
-                    key: item.path,
-                    label: item.name,
-                    pid: item.parentId,
-                    id: item.id,
-                  })),
-              )}
-            />
-          </Sider>
-          <Layout>
-            <Content style={{ padding: '15px' }}>
-              <Outlet />
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>
-              {new Date().getFullYear()} &copy; SnowLuna
-            </Footer>
-          </Layout>
-        </Layout>
-      </Layout>
+    <WaterMark content={user?.username}>
+      <div className='sticky top-0 z-50'>
+        <PageLayout.Header>
+          <Header>
+            <Header>
+              <Header.Link href='/'>
+                <Octicon icon={MarkGithubIcon} size={32} sx={{ mr: 2 }} />
+                <span>GitHub</span>
+              </Header.Link>
+            </Header>
+            <Header.Item full>Menu</Header.Item>
+            <Header.Item sx={{ mr: 0 }}>
+              {user?.username}
+              <Avatar src='https://github.com/octocat.png' size={20} square alt='@octocat' />
+            </Header.Item>
+          </Header>
+        </PageLayout.Header>
+      </div>
+      <PageLayout padding='none' containerWidth='full'>
+        <PageLayout.Content>
+          <Outlet />
+        </PageLayout.Content>
+        <PageLayout.Pane position='start'>
+          <NavList className='sticky top-0 z-50'>
+            <NavItem to='/home' aria-current='page'>
+              Home
+            </NavItem>
+            <NavItem to='/article'>Article</NavItem>
+          </NavList>
+        </PageLayout.Pane>
+        <PageLayout.Footer>{new Date().getFullYear()} &copy; wawama</PageLayout.Footer>
+      </PageLayout>
     </WaterMark>
   );
 };

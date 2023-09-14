@@ -2,7 +2,7 @@ import http from 'utils/http';
 
 export async function login(data: any): Promise<any> {
   return http({
-    url: '/user/login',
+    url: 'v1/app-users/login',
     method: 'post',
     data,
   });
@@ -10,7 +10,7 @@ export async function login(data: any): Promise<any> {
 
 export async function userRegister(data: any): Promise<any> {
   return http({
-    url: '/user/register',
+    url: 'v1/app-users/register',
     method: 'post',
     data,
   });
@@ -18,14 +18,14 @@ export async function userRegister(data: any): Promise<any> {
 
 export async function getUserState(): Promise<any> {
   return http({
-    url: '/user/getUserState',
+    url: 'v1/app-users/me',
     method: 'get',
   });
 }
 
 export async function getUserInfo(): Promise<any> {
   return http({
-    url: '/user/getUserInfo',
+    url: 'v1/app-users/me',
     method: 'get',
   });
 }

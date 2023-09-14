@@ -1,21 +1,9 @@
-import { Key, useCallback, useEffect, useState } from 'react';
-import { articlePage, removeArticle } from 'service/article';
+import { useState } from 'react';
+import { DataTable } from '@primer/react/drafts';
 import { Link, useNavigate } from 'react-router-dom';
-import Access from 'components/Access';
-import {
-  Button,
-  Chip,
-  Input,
-  Pagination,
-  Select,
-  SelectItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from '@nextui-org/react';
+import { Button, Input, Pagination, Select, SelectItem } from '@nextui-org/react';
+import { RelativeTime } from '@primer/react';
+import useSWR from 'swr';
 
 const ArticleList = () => {
   const [list, setList] = useState([]);
@@ -23,81 +11,9 @@ const ArticleList = () => {
   const [page, setPage] = useState(1);
   const [params, setParams] = useState({ id: '', isRelease: 'all' });
   const navigate = useNavigate();
-  const handleDelete = (id: string) => async () => {
-    await removeArticle({ id });
-    navigate(0);
-  };
-  useEffect(() => {
-    articlePage({
-      ...params,
-      current: page,
-      pageSize: 6,
-    }).then(({ data }) => {
-      setList(data.records);
-      setTotal(data.total);
-    });
-  }, [page,params]);
-  const columns = [
-    {
-      title: '标题',
-      dataIndex: 'title',
-    },
-    {
-      title: '是否发布',
-      dataIndex: 'isRelease',
-    },
-    {
-      title: '排序号',
-      dataIndex: 'orderNum',
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-    },
-    {
-      title: '修改时间',
-      dataIndex: 'updateTime',
-    },
-    {
-      title: '操作',
-      dataIndex: 'address',
-    },
-  ];
-  const renderCell = useCallback((record: any, columnKey: Key) => {
-    const cellValue = record[columnKey];
-
-    switch (columnKey) {
-      case 'address':
-        return (
-          <Access>
-            <Link to={`/article/${record.id}`}>
-              <Button variant='ghost' size='sm' color='primary'>
-                编辑
-              </Button>
-            </Link>
-            <Button variant='ghost' size='sm' color='danger' onClick={handleDelete(record.id)}>
-              删除
-            </Button>
-          </Access>
-        );
-      case 'title':
-        return (
-          <a
-            className='underline'
-            target='_blank'
-            href={`https://zzfzzf.com/post/${record.id}`}
-            rel='noreferrer'
-          >
-            {record.title}
-          </a>
-        );
-      case 'isRelease':
-        return cellValue ? <Chip color='success'>已发布</Chip> : <Chip>草稿</Chip>;
-      default:
-        return cellValue;
-    }
-  }, []);
-
+  const { data = [] } = useSWR<any>({
+    endpoint: '/v1/articles',
+  });
   return (
     <>
       <div className='grid grid-cols-5 gap-x-2 items-center'>
@@ -131,20 +47,58 @@ const ArticleList = () => {
           <Button color='primary'>新增</Button>
         </Link>
       </div>
-      <Table className='my-2'>
-        <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.dataIndex}>{column.title}</TableColumn>}
-        </TableHeader>
-        <TableBody items={list}>
-          {(item: any) => (
-            <TableRow key={item.id}>
-              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <DataTable
+        aria-labelledby='repositories'
+        aria-describedby='repositories-subtitle'
+        data={data}
+        columns={[
+          {
+            header: 'Title',
+            field: 'title',
+            renderCell: (row) => {
+              return <Link to={`/article/${row.id}`}>{row.title}</Link>;
+            },
+          },
+          {
+            header: 'Type',
+            field: 'type',
+          },
+          {
+            header: 'Updated',
+            field: 'updatedAt',
+            renderCell: (row) => {
+              return <RelativeTime date={new Date()} />;
+            },
+          },
+          // {
+          //   header: 'Dependabot',
+          //   field: 'securityFeatures.dependabot',
+          //   renderCell: (row) => {
+          //     return row.securityFeatures.dependabot.length > 0 ? (
+          //         <LabelGroup>
+          //           {row.securityFeatures.dependabot.map((feature) => {
+          //             return <Label key={feature}>{uppercase(feature)}</Label>
+          //           })}
+          //         </LabelGroup>
+          //     ) : null
+          //   },
+          // },
+          // {
+          //   header: 'Code scanning',
+          //   field: 'securityFeatures.codeScanning',
+          //   renderCell: (row) => {
+          //     return row.securityFeatures.codeScanning.length > 0 ? (
+          //         <LabelGroup>
+          //           {row.securityFeatures.codeScanning.map((feature) => {
+          //             return <Label key={feature}>{uppercase(feature)}</Label>
+          //           })}
+          //         </LabelGroup>
+          //     ) : null
+          //   },
+          // },
+        ]}
+      />
       <Pagination onChange={(v) => setPage(v)} total={Math.floor(total / 10)} initialPage={page} />
-      {/*<ZeusTable columns={columns} service={articlePage} params={params} />*/}
     </>
   );
 };

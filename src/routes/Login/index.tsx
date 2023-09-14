@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from 'service/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
 import { useEffect } from 'react';
-import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { userAtom } from '../../atoms/userAtoms';
+import { useAtomValue } from 'jotai';
+import { TextInput } from '@primer/react';
 
 type Inputs = {
   username: string;
@@ -17,21 +18,18 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  let user = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch();
+  let user = useAtomValue(userAtom);
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.loginState) {
+    if (user?.id) {
       navigate('/home');
     }
   }, [user]);
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
     const { data, code } = await login(values);
-    if (code === 0) {
-      sessionStorage.setItem('uid', data.token);
-      dispatch({ type: 'user/updateUserState' });
-      dispatch({ type: 'user/updateUserInfo' });
+    if (code === 2000) {
+      localStorage.setItem('uid', data);
     }
   };
 
@@ -43,7 +41,7 @@ const Login = () => {
         </CardHeader>
         <CardBody>
           <form className='flex flex-col gap-y-3' onSubmit={handleSubmit(onSubmit)}>
-            <Input
+            <TextInput
               isRequired
               validationState={errors.username ? 'invalid' : 'valid'}
               autoFocus
@@ -52,7 +50,7 @@ const Login = () => {
               placeholder='test'
             />
 
-            <Input
+            <TextInput
               isRequired
               validationState={errors.password ? 'invalid' : 'valid'}
               {...register('password', { required: true })}

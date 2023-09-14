@@ -1,4 +1,3 @@
-import MarkdownEditor from 'components/MarkdownEditor';
 import { useNavigate, useParams } from 'react-router-dom';
 import { articleOne, saveArticle } from 'service/article';
 import { useEffect } from 'react';
@@ -8,6 +7,8 @@ import { isExist } from '../../utils/isExist';
 import { Button, Card, CardBody, Input, Select, SelectItem, Switch } from '@nextui-org/react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { MarkdownEditor } from '@primer/react/drafts';
+import useSWR from 'swr';
 
 const sourceTag = [
   { label: 'frontend', value: 'frontend' },
@@ -38,28 +39,26 @@ const ArticleDetail = () => {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const handleFetchArticle = async (id: string) => {
-    const { data, success } = await articleOne({ id });
-    if (success) {
-      reset(data);
-    } else {
-      toast.error('未知错误');
-    }
-  };
+  const { data } = useSWR({
+    endpoint: '/v1/articles/' + params.id,
+  });
   useEffect(() => {
-    params.id && isExist(params.id) && handleFetchArticle(params.id).then();
-  }, [params.id]);
+    reset(data);
+  }, [data]);
   const onSubmit = async (values: Inputs) => {
     const { data } = await saveArticle({ ...values, id: params.id === '_' ? '' : params.id });
     data && toast.success('操作成功');
     data && navigate(`/article/${data}`);
   };
+  const onError = (error: string) => {
+    toast.warning(error);
+  };
   return (
     <Card>
       <CardBody>
-        <form className='grid grid-cols-4 gap-2' onSubmit={handleSubmit(onSubmit)}>
+        <form className='grid grid-cols-4 gap-2' onSubmit={handleSubmit(onSubmit, onError)}>
           <Input
-            validationState={errors.title ? 'invalid' : 'valid'}
+            isInvalid={!!errors.title}
             {...register('title', { required: true })}
             label='标题'
             placeholder='请输入标题'
@@ -112,8 +111,13 @@ const ArticleDetail = () => {
                 <MarkdownEditor
                   value={field.value}
                   onChange={field.onChange}
-                  articleId={params.id}
-                />
+                  onRenderPreview={async () => ''}
+                ></MarkdownEditor>
+                {/*<MarkdownEditor*/}
+                {/*  value={field.value}*/}
+                {/*  onChange={field.onChange}*/}
+                {/*  articleId={params.id}*/}
+                {/*/>*/}
               </div>
             )}
           />
