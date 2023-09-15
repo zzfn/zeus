@@ -3,3 +3,11 @@ declare module '*.less' {
   export default classes;
 }
 declare module '*.png';
+
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NODE_ENV: 'development' | 'production';
+    API_URL: string;
+    PUBLIC_URL: string;
+  }
+}

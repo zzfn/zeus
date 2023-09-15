@@ -1,134 +1,68 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { articleOne, saveArticle } from 'service/article';
-import { useEffect } from 'react';
-import Access from 'components/Access';
-import useAccess from 'hooks/useAccess';
-import { isExist } from '../../utils/isExist';
-import { Button, Card, CardBody, Input, Select, SelectItem, Switch } from '@nextui-org/react';
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { MarkdownEditor } from '@primer/react/drafts';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import useSWR from 'swr';
-
-const sourceTag = [
-  { label: 'frontend', value: 'frontend' },
-  { label: 'backend', value: 'backend' },
-  { label: 'devops', value: 'devops' },
-  { label: 'react', value: 'react' },
-  { label: 'vue', value: 'vue' },
-  { label: 'typescript', value: 'typescript' },
-  { label: 'leetcode', value: 'leetcode' },
-  { label: 'other', value: 'other' },
-].map((_) => ({ ..._, key: _.value }));
-type Inputs = {
-  title: string;
-  tag: string;
-  isRelease: boolean;
-  content: string;
-  orderNum: number;
-};
+import MarkdownEditor from 'components/MarkdownEditor';
+import { Button, Form, FormInstance, Input, Switch } from 'antd';
+import useSWRMutation from 'swr/mutation';
+import { mutateData } from 'models/api';
 
 const ArticleDetail = () => {
-  const params = useParams();
-  const navigate = useNavigate();
-  const access = useAccess();
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const formRef = useRef<FormInstance>(null);
+  const [searchParams] = useSearchParams();
   const { data } = useSWR({
-    endpoint: '/v1/articles/' + params.id,
+    url: '/v1/articles/' + searchParams.get('id'),
   });
+  const { trigger } = useSWRMutation(`/v1/articles/${searchParams.get('id')}`, mutateData);
   useEffect(() => {
-    reset(data);
+    formRef.current?.setFieldsValue(data);
   }, [data]);
-  const onSubmit = async (values: Inputs) => {
-    const { data } = await saveArticle({ ...values, id: params.id === '_' ? '' : params.id });
-    data && toast.success('操作成功');
-    data && navigate(`/article/${data}`);
+  const onFinish = async (values: any) => {
+    await trigger({
+      body: values,
+      method: 'PUT',
+    });
   };
-  const onError = (error: string) => {
-    toast.warning(error);
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
   };
   return (
-    <Card>
-      <CardBody>
-        <form className='grid grid-cols-4 gap-2' onSubmit={handleSubmit(onSubmit, onError)}>
-          <Input
-            isInvalid={!!errors.title}
-            {...register('title', { required: true })}
-            label='标题'
-            placeholder='请输入标题'
-          />
-          <Controller
-            name='tag'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select
-                selectedKeys={[field.value]}
-                validationState={errors.tag ? 'invalid' : 'valid'}
-                label='标签'
-                placeholder='请选择分类'
-                className='max-w-xs'
-                onChange={field.onChange}
-              >
-                {sourceTag.map((tag) => (
-                  <SelectItem key={tag.value} value={tag.value}>
-                    {tag.label}
-                  </SelectItem>
-                ))}
-              </Select>
-            )}
-          />
-          <Input
-            defaultValue='0'
-            type='number'
-            validationState={errors.orderNum ? 'invalid' : 'valid'}
-            {...register('orderNum', { required: true, setValueAs: (v) => parseInt(v) })}
-            label='排序号'
-            placeholder='请输入排序号'
-          />
-          <Controller
-            name='isRelease'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Switch onValueChange={field.onChange} isSelected={field.value}>
-                是否发布
-              </Switch>
-            )}
-          />
-          <Controller
-            name='content'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <div className='col-span-4 bytemd-600'>
-                <MarkdownEditor
-                  value={field.value}
-                  onChange={field.onChange}
-                  onRenderPreview={async () => ''}
-                ></MarkdownEditor>
-                {/*<MarkdownEditor*/}
-                {/*  value={field.value}*/}
-                {/*  onChange={field.onChange}*/}
-                {/*  articleId={params.id}*/}
-                {/*/>*/}
-              </div>
-            )}
-          />
-          <Access accessible={access.isAdmin}>
-            <Button className='col-span-4' type='submit' size='sm'>
-              确认
-            </Button>
-          </Access>
-        </form>
-      </CardBody>
-    </Card>
+    <>
+      <Form
+        ref={formRef}
+        name='basic'
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete='off'
+      >
+        <Form.Item
+          label='Title'
+          name='title'
+          rules={[{ required: true, message: 'Please input your username!' }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label='Tag'
+          name='tag'
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label='是否发布' name='isActive' valuePropName='checked'>
+          <Switch />
+        </Form.Item>
+        <Form.Item name='content'>
+          <MarkdownEditor />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type='primary' htmlType='submit'>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 

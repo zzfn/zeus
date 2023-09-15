@@ -1,56 +1,78 @@
-import { Link, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
+import {Outlet, useNavigate, useResolvedPath} from 'react-router-dom';
 import WaterMark from '../components/WaterMark';
-import { Avatar, Header, NavList, Octicon, PageLayout } from '@primer/react';
-import { MarkGithubIcon } from '@primer/octicons-react';
 import { useAtomValue } from 'jotai';
 import { userAtom } from 'atoms/userAtoms';
-import { ReactNode } from 'react';
+import { Avatar, Layout, Menu, theme } from 'antd';
+import { useState } from 'react';
 
-function NavItem({ to, children }: { to: string; children: ReactNode }) {
-  const resolved = useResolvedPath(to);
-  const isCurrent = useMatch({ path: resolved.pathname, end: true });
-  return (
-    <NavList.Item as={Link} to={to} aria-current={isCurrent ? 'page' : undefined}>
-      {children}
-    </NavList.Item>
-  );
-}
-
+const { Content, Footer, Sider } = Layout;
+// const useCurrent = function (to: string) {
+//   const resolved = useResolvedPath(to);
+//   const isCurrent = useMatch({ path: resolved.pathname, end: true });
+// };
 const CommonLayout = () => {
+  const resolved = useResolvedPath(location.pathname)
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([resolved.pathname]);
   const user = useAtomValue(userAtom);
+  const navigate = useNavigate()
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   return (
     <WaterMark content={user?.username}>
-      <div className='sticky top-0 z-50'>
-        <PageLayout.Header>
-          <Header>
-            <Header>
-              <Header.Link href='/'>
-                <Octicon icon={MarkGithubIcon} size={32} sx={{ mr: 2 }} />
-                <span>GitHub</span>
-              </Header.Link>
-            </Header>
-            <Header.Item full>Menu</Header.Item>
-            <Header.Item sx={{ mr: 0 }}>
+      <Layout hasSider>
+        <Sider
+          className='fixed left-0 top-0 bottom-0'
+          breakpoint='lg'
+          collapsedWidth='0'
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
+        >
+          <div className='h-screen flex flex-col justify-between items-center py-10'>
+            <Menu
+              onClick={(item) => {
+                setSelectedKeys(item.keyPath);
+                navigate(item.key)
+              }}
+              selectedKeys={selectedKeys}
+              theme='dark'
+              mode='inline'
+              items={[
+                { path: '/home', name: 'Home' },
+                { path: '/article', name: 'Article' },
+              ].map((menu) => ({
+                key: menu.path,
+                label: menu.name,
+              }))}
+            />
+            <Avatar
+              style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }}
+              size='large'
+              gap={4}
+            >
               {user?.username}
-              <Avatar src='https://github.com/octocat.png' size={20} square alt='@octocat' />
-            </Header.Item>
-          </Header>
-        </PageLayout.Header>
-      </div>
-      <PageLayout padding='none' containerWidth='full'>
-        <PageLayout.Content>
-          <Outlet />
-        </PageLayout.Content>
-        <PageLayout.Pane position='start'>
-          <NavList className='sticky top-0 z-50'>
-            <NavItem to='/home' aria-current='page'>
-              Home
-            </NavItem>
-            <NavItem to='/article'>Article</NavItem>
-          </NavList>
-        </PageLayout.Pane>
-        <PageLayout.Footer>{new Date().getFullYear()} &copy; wawama</PageLayout.Footer>
-      </PageLayout>
+            </Avatar>
+          </div>
+        </Sider>
+        <Layout className='min-h-screen'>
+          <Content style={{ margin: '24px 16px 0' }}>
+            <div
+              style={{
+                padding: 24,
+                background: colorBgContainer,
+                overflow: 'auto',
+              }}
+            >
+              <Outlet />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        </Layout>
+      </Layout>
     </WaterMark>
   );
 };

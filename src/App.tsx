@@ -1,28 +1,26 @@
 import Router from './routes';
 import { ReactElement } from 'react';
-import { NextUIProvider } from '@nextui-org/react';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BaseStyles, ThemeProvider } from '@primer/react';
 import { SWRConfig } from 'swr';
 import { fetchData } from './models/api';
+import { StyleProvider } from '@ant-design/cssinjs';
+
+const fetcher = (options) => {
+  const { url, ...args } = options;
+  return fetchData(url, args);
+};
 
 function App(): ReactElement {
   return (
-    <ThemeProvider>
-      <BaseStyles>
-        <SWRConfig
-          value={{
-            fetcher: fetchData,
-          }}
-        >
-          <NextUIProvider>
-            <ToastContainer />
-            <Router />
-          </NextUIProvider>
-        </SWRConfig>
-      </BaseStyles>
-    </ThemeProvider>
+    <SWRConfig
+      value={{
+        fetcher: fetcher,
+      }}
+    >
+      <StyleProvider hashPriority='high'>
+        <Router />
+      </StyleProvider>
+    </SWRConfig>
   );
 }
 

@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from 'service/user';
 import { useEffect } from 'react';
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { userAtom } from '../../atoms/userAtoms';
+import { userAtom } from 'atoms/userAtoms';
 import { useAtomValue } from 'jotai';
-import { TextInput } from '@primer/react';
+import { Button, Card, Form, Input } from 'antd';
+import useSWRMutation from 'swr/mutation';
+import { mutateData } from '../../models/api';
 
 type Inputs = {
   username: string;
@@ -13,12 +12,8 @@ type Inputs = {
 };
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
   let user = useAtomValue(userAtom);
+  const { trigger } = useSWRMutation('/v1/app-users/login', mutateData);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,49 +21,37 @@ const Login = () => {
       navigate('/home');
     }
   }, [user]);
-  const onSubmit: SubmitHandler<Inputs> = async (values) => {
-    const { data, code } = await login(values);
-    if (code === 2000) {
-      localStorage.setItem('uid', data);
-    }
+  const onSubmit = async (values) => {
+    console.log(values);
+    const data = await trigger({
+      body: values,
+      method: 'POST',
+    });
+    console.log(data);
+    // if (code === 2000) {
+    //   localStorage.setItem('uid', data);
+    // }
   };
 
   return (
-    <div className='flex items-center h-screen'>
+    <div className='flex items-center h-screen justify-center'>
       <Card className='max-w-md m-auto'>
-        <CardHeader>
-          <h1>ZEUS中台</h1>
-        </CardHeader>
-        <CardBody>
-          <form className='flex flex-col gap-y-3' onSubmit={handleSubmit(onSubmit)}>
-            <TextInput
-              isRequired
-              validationState={errors.username ? 'invalid' : 'valid'}
-              autoFocus
-              {...register('username', { required: true })}
-              label='username'
-              placeholder='test'
-            />
-
-            <TextInput
-              isRequired
-              validationState={errors.password ? 'invalid' : 'valid'}
-              {...register('password', { required: true })}
-              label='password'
-              type='password'
-              placeholder='test'
-            />
-
-            <div className='flex justify-center gap-x-2'>
-              <Button color='primary' type='submit'>
-                登录
-              </Button>
-              <Link to='/register'>
-                <Button>注册</Button>
-              </Link>
-            </div>
-          </form>
-        </CardBody>
+        <Form className='flex flex-col gap-y-3' onFinish={onSubmit}>
+          <Form.Item name='username'>
+            <Input autoFocus placeholder='test' />
+          </Form.Item>
+          <Form.Item name='password'>
+            <Input type='password' placeholder='test' />
+          </Form.Item>
+          <div className='flex justify-center gap-x-2'>
+            <Link to='/register'>
+              <Button>注册</Button>
+            </Link>
+            <Button type='primary' color='primary' htmlType='submit'>
+              登录
+            </Button>
+          </div>
+        </Form>
       </Card>
     </div>
   );

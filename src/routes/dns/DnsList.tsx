@@ -6,7 +6,6 @@ import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { addDns, dnsDomains, dnsList, removeDns, updateDns } from '../../service/dns';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
 const DnsList = () => {

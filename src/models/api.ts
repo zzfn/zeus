@@ -1,29 +1,34 @@
 // models/api.ts
+type OptionType = RequestInit & { params?: Record<string, any> };
 
-type FetchOptions = {
-  endpoint: string;
-  queryParams?: Record<string, string | number>;
-  fetchParams?: RequestInit;
-};
-
-async function fetchData<T>({
-  endpoint,
-  queryParams = {},
-  fetchParams = {},
-}: FetchOptions): Promise<T> {
-  const url = new URL(endpoint, process.env.API_URL);
-  const authorization = localStorage.getItem('uid');
-  // 添加查询参数到URL
-  for (const [key, value] of Object.entries(queryParams)) {
-    url.searchParams.set(key, value.toString());
+async function fetchData<T>(url: string, initOptions: OptionType): Promise<T> {
+  const apiEndpoint = new URL(url, process.env.API_URL);
+  if (initOptions?.params) {
+    for (const [key, value] of Object.entries(initOptions.params)) {
+      apiEndpoint.searchParams.set(key, value.toString());
+    }
   }
-
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: authorization ?? '',
-    },
-    ...fetchParams,
-  });
+  if (initOptions?.body) {
+    initOptions.body = JSON.stringify(initOptions.body);
+  }
+  const uid = localStorage.getItem('uid');
+  if (initOptions?.headers) {
+    initOptions.headers = {
+      ...initOptions.headers,
+      'Content-Type': 'application/json',
+    };
+  } else {
+    initOptions.headers = {
+      'Content-Type': 'application/json',
+    };
+  }
+  if (uid) {
+    initOptions.headers = {
+      ...initOptions.headers,
+      uid: uid,
+    };
+  }
+  const res = await fetch(apiEndpoint.toString(), initOptions);
 
   if (!res.ok) {
     throw new Error(`Failed to fetch ${url}`);
@@ -33,4 +38,8 @@ async function fetchData<T>({
   return data;
 }
 
-export { fetchData };
+async function mutateData<T>(url: string, { arg }: { arg: OptionType }): Promise<T> {
+  return fetchData(url, arg);
+}
+
+export { fetchData, mutateData };

@@ -4,19 +4,17 @@ import Login from './Login';
 import Register from './register';
 import ApplyFriend from './ApplyFriend';
 import ArticleList from './article/ArticleList';
-import { Blankslate } from '@primer/react/drafts';
-import { BookIcon } from '@primer/octicons-react';
 import ArticleDetail from './article/ArticleDetail';
 import { useSetAtom } from 'jotai';
 import { userAtom } from '../atoms/userAtoms';
 import useSWR from 'swr';
-import { Spinner } from '@primer/react';
 import { useEffect } from 'react';
+import { Empty, Spin } from 'antd';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
   const { data, isLoading } = useSWR({
-    endpoint: '/v1/app-users/me',
+    url: '/v1/app-users/me',
   });
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export default function Router() {
   if (isLoading) {
     return (
       <div className='flex h-screen justify-center items-center'>
-        <Spinner size='large' />
+        <Spin size='large' />
       </div>
     );
   }
@@ -39,7 +37,7 @@ export default function Router() {
         <Route path='/' element={<Navigate to='/home' replace />} />
         <Route path='/' element={data?.id ? <CommonLayout /> : <Navigate to='/login' replace />}>
           <Route path='/article' element={<ArticleList />} />
-          <Route path='/article/:id' element={<ArticleDetail />} />
+          <Route path='/article/detail' element={<ArticleDetail />} />
 
           {/*{[].map((item: any) => (*/}
           {/*  <Route*/}
@@ -52,45 +50,9 @@ export default function Router() {
           {/*    }*/}
           {/*  />*/}
           {/*))}*/}
-          <Route
-            path='*'
-            element={
-              <Blankslate>
-                <Blankslate.Visual>
-                  <BookIcon size='medium' />
-                </Blankslate.Visual>
-                <Blankslate.Heading>Welcome to the mona wiki!</Blankslate.Heading>
-                <Blankslate.Description>
-                  Wikis provide a place in your repository to lay out the roadmap of your project,
-                  show the current status, and document software better, together.
-                </Blankslate.Description>
-                <Blankslate.PrimaryAction href='#'>Create the first page</Blankslate.PrimaryAction>
-                <Blankslate.SecondaryAction href='#'>
-                  Learn more about wikis
-                </Blankslate.SecondaryAction>
-              </Blankslate>
-            }
-          />
+          <Route path='*' element={<Empty />} />
         </Route>
-        <Route
-          path='*'
-          element={
-            <Blankslate>
-              <Blankslate.Visual>
-                <BookIcon size='medium' />
-              </Blankslate.Visual>
-              <Blankslate.Heading>Welcome to the mona wiki!</Blankslate.Heading>
-              <Blankslate.Description>
-                Wikis provide a place in your repository to lay out the roadmap of your project,
-                show the current status, and document software better, together.
-              </Blankslate.Description>
-              <Blankslate.PrimaryAction href='#'>Create the first page</Blankslate.PrimaryAction>
-              <Blankslate.SecondaryAction href='#'>
-                Learn more about wikis
-              </Blankslate.SecondaryAction>
-            </Blankslate>
-          }
-        />
+        <Route path='*' element={<Empty />} />
       </Routes>
     </BrowserRouter>
   );

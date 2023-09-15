@@ -1,14 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Chip,
-  Input,
-  Textarea,
-} from '@nextui-org/react';
+
 import { friendSave } from '../service/friend';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
