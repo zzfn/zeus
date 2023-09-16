@@ -25,7 +25,7 @@ async function fetchData<T>(url: string, initOptions: OptionType): Promise<T> {
   if (uid) {
     initOptions.headers = {
       ...initOptions.headers,
-      uid: uid,
+      "Authorization": `Bearer ${uid}`,
     };
   }
   const res = await fetch(apiEndpoint.toString(), initOptions);

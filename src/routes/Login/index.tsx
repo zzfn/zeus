@@ -4,12 +4,7 @@ import { userAtom } from 'atoms/userAtoms';
 import { useAtomValue } from 'jotai';
 import { Button, Card, Form, Input } from 'antd';
 import useSWRMutation from 'swr/mutation';
-import { mutateData } from '../../models/api';
-
-type Inputs = {
-  username: string;
-  password: string;
-};
+import { mutateData } from 'models/api';
 
 const Login = () => {
   let user = useAtomValue(userAtom);
@@ -21,16 +16,13 @@ const Login = () => {
       navigate('/home');
     }
   }, [user]);
-  const onSubmit = async (values) => {
+  const onSubmit = async (values:any) => {
     console.log(values);
     const data = await trigger({
       body: values,
       method: 'POST',
     });
-    console.log(data);
-    // if (code === 2000) {
-    //   localStorage.setItem('uid', data);
-    // }
+    localStorage.setItem('uid', data as string);
   };
 
   return (
