@@ -14,12 +14,12 @@ const ArticleDetail = () => {
   });
   const { trigger } = useSWRMutation(`/v1/articles/${searchParams.get('id')}`, mutateData);
   useEffect(() => {
-    formRef.current?.setFieldsValue(data);
+    formRef.current?.setFieldsValue({ ...data });
   }, [data]);
   const onFinish = async (values: any) => {
     await trigger({
       body: values,
-      method: 'PUT',
+      method: searchParams.get('id') ? 'PUT' : 'POST',
     });
   };
 
