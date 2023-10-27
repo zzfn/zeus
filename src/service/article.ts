@@ -47,7 +47,7 @@ export async function topSearch() {
 
 export async function uploadFile(data: FormData) {
   return http<string[]>({
-    url: '/file/upload',
+    url: '/v1/files/upload',
     method: 'post',
     data,
     headers: {

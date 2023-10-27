@@ -12,12 +12,11 @@ function formatFile(file: File) {
 }
 
 const MarkdownEditor = (props: any) => {
-  const { value = '', onChange, articleId } = props;
+  const { value = '', onChange } = props;
 
   async function handleUploadImages(value: File[]): Promise<any> {
     const hide = message.loading('uploading...', 0);
     let formData = new FormData();
-    formData.append('path', `article/${articleId}`);
     value.forEach((item) => formData.append('file', formatFile(item)));
     const { data } = await uploadFile(formData);
     hide();
