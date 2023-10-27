@@ -17,6 +17,7 @@ const MarkdownEditor = (props: any) => {
   async function handleUploadImages(value: File[]): Promise<any> {
     const hide = message.loading('uploading...', 0);
     let formData = new FormData();
+    formData.append('objectPath', 'img');
     value.forEach((item) => formData.append('file', formatFile(item)));
     const { data } = await uploadFile(formData);
     hide();
