@@ -17,7 +17,7 @@ steps:
       - pnpm install
       - pnpm run build
   - name: oss
-    image: registry.cn-shanghai.aliyuncs.com/zzf2001/drone-aliyun-oss
+    image: wwma/drone-aliyun-oss
     depends_on: [build]
     settings:
       endpoint:

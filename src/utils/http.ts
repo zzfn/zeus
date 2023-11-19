@@ -36,13 +36,9 @@ const instance = axios.create({
 });
 instance.interceptors.request.use(
   (config) => {
-    const Authorization = localStorage.getItem('uid');
-    if (config.headers) {
-      Reflect.set(config.headers, 'Authorization', Authorization);
-      Reflect.set(config.headers, 'System', 'admin');
-    } else {
-      config.headers = { Authorization, System: 'admin' };
-    }
+    const Authorization = `Bearer ${localStorage.getItem('uid')}`;
+    Reflect.set(config.headers, 'Authorization', Authorization);
+    Reflect.set(config.headers, 'System', 'admin');
     return config;
   },
   (error) => {

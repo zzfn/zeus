@@ -6,10 +6,7 @@ import { Avatar, Layout, Menu, theme } from 'antd';
 import { useState } from 'react';
 
 const { Content, Footer, Sider } = Layout;
-// const useCurrent = function (to: string) {
-//   const resolved = useResolvedPath(to);
-//   const isCurrent = useMatch({ path: resolved.pathname, end: true });
-// };
+
 const CommonLayout = () => {
   const resolved = useResolvedPath(location.pathname)
   const [selectedKeys, setSelectedKeys] = useState<string[]>([resolved.pathname]);
@@ -44,6 +41,7 @@ const CommonLayout = () => {
               items={[
                 { path: '/home', name: 'Home' },
                 { path: '/article', name: 'Article' },
+                { path: '/snap', name: 'Snap' },
               ].map((menu) => ({
                 key: menu.path,
                 label: menu.name,

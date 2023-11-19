@@ -2,14 +2,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import CommonLayout from 'layout/CommonLayout';
 import Login from './Login';
 import Register from './register';
-import ApplyFriend from './ApplyFriend';
 import ArticleList from './article/ArticleList';
 import ArticleDetail from './article/ArticleDetail';
 import { useSetAtom } from 'jotai';
 import { userAtom } from '../atoms/userAtoms';
 import useSWR from 'swr';
 import { useEffect } from 'react';
-import { Empty, Spin } from 'antd';
+import {Empty, Spin} from 'antd';
+import List from "./snap/List";
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
@@ -33,11 +33,11 @@ export default function Router() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/apply-friend' element={<ApplyFriend />} />
         <Route path='/' element={<Navigate to='/home' replace />} />
         <Route path='/' element={data?.id ? <CommonLayout /> : <Navigate to='/login' replace />}>
           <Route path='/article' element={<ArticleList />} />
           <Route path='/article/detail' element={<ArticleDetail />} />
+          <Route path='/snap' element={<List />} />
 
           {/*{[].map((item: any) => (*/}
           {/*  <Route*/}
