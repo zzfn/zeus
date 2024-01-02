@@ -10,6 +10,7 @@ import useSWR from 'swr';
 import { useEffect } from 'react';
 import {Empty, Spin} from 'antd';
 import List from "./snap/List";
+import Home from "./Home";
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
@@ -35,6 +36,7 @@ export default function Router() {
         <Route path='/register' element={<Register />} />
         <Route path='/' element={<Navigate to='/home' replace />} />
         <Route path='/' element={data?.id ? <CommonLayout /> : <Navigate to='/login' replace />}>
+          <Route path='/home' element={<Home />} />
           <Route path='/article' element={<ArticleList />} />
           <Route path='/article/detail' element={<ArticleDetail />} />
           <Route path='/snap' element={<List />} />
