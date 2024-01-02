@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +20,7 @@ const ArticleList = () => {
     {
       title: 'Active',
       dataIndex: 'isActive',
+      render: (text) => <Tag>{text ? 'Yes' : 'No'}</Tag>,
     },
   ];
   return (
