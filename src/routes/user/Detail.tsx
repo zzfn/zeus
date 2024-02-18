@@ -1,39 +1,52 @@
-import { Badge, Button, Descriptions, Input } from 'antd';
+import { Button, Descriptions, Input } from 'antd';
+import useSWR from 'swr';
+import { useEffect, useState } from 'react';
+import { produce } from 'immer';
+import useSWRMutation from 'swr/mutation';
+import { mutateData } from '../../models/api';
 
 const Detail = () => {
+  const { data = {} } = useSWR<any>({
+    url: `/v1/config/site`,
+  });
+  const [formData, setFormData] = useState(data);
+  const { trigger } = useSWRMutation(`/v1/config/site`, mutateData);
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
   return (
-    <Descriptions title='User Info' bordered>
-      <Descriptions.Item label='新密码'>
-        <Input></Input>
-        <Button>save</Button>
-      </Descriptions.Item>
-      <Descriptions.Item label='Billing Mode'>Prepaid</Descriptions.Item>
-      <Descriptions.Item label='Automatic Renewal'>YES</Descriptions.Item>
-      <Descriptions.Item label='Order time'>2018-04-24 18:00:00</Descriptions.Item>
-      <Descriptions.Item label='Usage Time' span={2}>
-        2019-04-24 18:00:00
-      </Descriptions.Item>
-      <Descriptions.Item label='Status' span={3}>
-        <Badge status='processing' text='Running' />
-      </Descriptions.Item>
-      <Descriptions.Item label='Negotiated Amount'>$80.00</Descriptions.Item>
-      <Descriptions.Item label='Discount'>$20.00</Descriptions.Item>
-      <Descriptions.Item label='Official Receipts'>$60.00</Descriptions.Item>
-      <Descriptions.Item label='Config Info'>
-        Data disk type: MongoDB
-        <br />
-        Database version: 3.4
-        <br />
-        Package: dds.mongo.mid
-        <br />
-        Storage space: 10 GB
-        <br />
-        Replication factor: 3
-        <br />
-        Region: East China 1
-        <br />
-      </Descriptions.Item>
-    </Descriptions>
+    <Descriptions
+      items={Object.keys(data).map((key) => ({
+        key,
+        label: key,
+        children: (
+          <Input
+            onChange={(event) => {
+              const newFormData = produce(formData, (draft: Record<any, any>) => {
+                draft[key] = event.target.value;
+              });
+              setFormData(newFormData);
+            }}
+            value={formData[key]}
+          />
+        ),
+      }))}
+      title='Config'
+      extra={
+        <Button
+          onClick={async () => {
+            await trigger({
+              body: formData,
+              method: 'POST',
+            });
+          }}
+          type='primary'
+        >
+          Save
+        </Button>
+      }
+      bordered
+    />
   );
 };
 export default Detail;

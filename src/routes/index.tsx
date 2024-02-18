@@ -4,16 +4,19 @@ import Login from './Login';
 import Register from './register';
 import ArticleList from './article/ArticleList';
 import ArticleDetail from './article/ArticleDetail';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { userAtom } from '../atoms/userAtoms';
 import useSWR from 'swr';
-import { useEffect } from 'react';
-import {Empty, Spin} from 'antd';
-import List from "./snap/List";
-import Home from "./Home";
+import { createElement, lazy, Suspense, useEffect } from 'react';
+import { Empty, Spin } from 'antd';
+import List from './snap/List';
+import Home from './Home';
+import { menuAtom } from '../atoms/menuAtoms';
+import Detail from './user/Detail';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
+  let [menu] = useAtom(menuAtom);
   const { data, isLoading } = useSWR({
     url: '/v1/app-users/me',
   });
@@ -40,18 +43,19 @@ export default function Router() {
           <Route path='/article' element={<ArticleList />} />
           <Route path='/article/detail' element={<ArticleDetail />} />
           <Route path='/snap' element={<List />} />
+          <Route path='/config' element={<Detail />} />
 
-          {/*{[].map((item: any) => (*/}
-          {/*  <Route*/}
-          {/*    key={item.id}*/}
-          {/*    path={item.path}*/}
-          {/*    element={*/}
-          {/*      <Suspense fallback={<div>Loading...</div>}>*/}
-          {/*        {React.createElement(React.lazy(() => import(`./${item.component}`)))}*/}
-          {/*      </Suspense>*/}
-          {/*    }*/}
-          {/*  />*/}
-          {/*))}*/}
+          {menu.map((item: any) => (
+            <Route
+              key={item.id}
+              path={item.path}
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  {createElement(lazy(() => import(`./${item.component}`)))}
+                </Suspense>
+              }
+            />
+          ))}
           <Route path='*' element={<Empty />} />
         </Route>
         <Route path='*' element={<Empty />} />

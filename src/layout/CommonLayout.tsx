@@ -1,4 +1,4 @@
-import {Outlet, useNavigate, useResolvedPath} from 'react-router-dom';
+import { Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
 import WaterMark from '../components/WaterMark';
 import { useAtomValue } from 'jotai';
 import { userAtom } from 'atoms/userAtoms';
@@ -8,10 +8,10 @@ import { useState } from 'react';
 const { Content, Footer, Sider } = Layout;
 
 const CommonLayout = () => {
-  const resolved = useResolvedPath(location.pathname)
+  const resolved = useResolvedPath(location.pathname);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([resolved.pathname]);
   const user = useAtomValue(userAtom);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -33,7 +33,7 @@ const CommonLayout = () => {
             <Menu
               onClick={(item) => {
                 setSelectedKeys(item.keyPath);
-                navigate(item.key)
+                navigate(item.key);
               }}
               selectedKeys={selectedKeys}
               theme='dark'
@@ -42,6 +42,7 @@ const CommonLayout = () => {
                 { path: '/home', name: 'Home' },
                 { path: '/article', name: 'Article' },
                 { path: '/snap', name: 'Snap' },
+                { path: '/config', name: 'Config' },
               ].map((menu) => ({
                 key: menu.path,
                 label: menu.name,

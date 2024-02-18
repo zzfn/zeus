@@ -1,4 +1,4 @@
-import {Button, Card, message} from 'antd';
+import { Button, Card, Input, message } from 'antd';
 import useSWRMutation from 'swr/mutation';
 import { mutateData } from '../models/api';
 
@@ -7,8 +7,6 @@ export default function Home() {
 
   return (
     <>
-      {/*<Card>*/}
-      {/*  <CardHeader>快捷操作</CardHeader>*/}
       <Card>
         <Button
           onClick={async () => {
@@ -19,6 +17,29 @@ export default function Home() {
           }}
         >
           reset elastic article
+        </Button>
+      </Card>
+      <Card>
+        <Input />
+        <Button
+          onClick={async () => {
+            await trigger({
+              method: 'get',
+            });
+            message.success('同步成功');
+          }}
+        >
+          reset tag
+        </Button>
+        <Button
+          onClick={async () => {
+            await trigger({
+              method: 'get',
+            });
+            message.success('同步成功');
+          }}
+        >
+          reset path
         </Button>
       </Card>
       {/*</Card>*/}
