@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import ZeusTable from 'components/ZeusTable';
-import { Drawer, Form, Input, Select, Space } from 'antd';
+import { Button, Drawer, Form, Input, message, Select, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Access from 'components/Access';
 import useAccess from 'hooks/useAccess';
 import { addDns, dnsDomains, dnsList, removeDns, updateDns } from '../../service/dns';
 import { useQuery } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 
 const DnsList = () => {
   const { data = [] } = useQuery(['dnsDomains'], () =>
@@ -70,16 +69,16 @@ const DnsList = () => {
     if (RecordId) {
       const { code } = await updateDns({ ...values, RecordId });
       if (code === 0) {
-        toast.success('更新成功');
+        message.success('更新成功');
       } else {
-        toast.warning('更新失败');
+        message.warning('更新失败');
       }
     } else {
       const { code } = await addDns({ ...values, DomainName: params.DomainName });
       if (code === 0) {
-        toast.success('添加成功');
+        message.success('添加成功');
       } else {
-        toast.warning('添加失败');
+        message.warning('添加失败');
       }
     }
   }
@@ -110,7 +109,7 @@ const DnsList = () => {
       <Drawer
         title={params.DomainName}
         placement='right'
-        visible={visible}
+        open={visible}
         onClose={() => setVisible(false)}
       >
         <Form
@@ -149,7 +148,7 @@ const DnsList = () => {
             <Input />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type='submit'>Submit</Button>
+            <Button htmlType='submit'>Submit</Button>
           </Form.Item>
         </Form>
       </Drawer>

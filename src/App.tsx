@@ -1,6 +1,5 @@
 import Router from './routes';
 import { ReactElement } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
 import { SWRConfig } from 'swr';
 import { fetchData } from './models/api';
 import { StyleProvider } from '@ant-design/cssinjs';
