@@ -1,4 +1,6 @@
 // models/api.ts
+import { message } from 'antd';
+
 type OptionType = RequestInit & { params?: Record<string, any> };
 
 async function fetchData<T>(url: string, initOptions: OptionType): Promise<T> {
@@ -25,13 +27,14 @@ async function fetchData<T>(url: string, initOptions: OptionType): Promise<T> {
   if (uid) {
     initOptions.headers = {
       ...initOptions.headers,
-      "Authorization": `Bearer ${uid}`,
+      Authorization: `Bearer ${uid}`,
     };
   }
   const res = await fetch(apiEndpoint.toString(), initOptions);
-
   if (!res.ok) {
-    throw new Error(`Failed to fetch ${url}`);
+    if (res.status === 401) {
+      message.error('无权限');
+    }
   }
 
   const { data } = await res.json();

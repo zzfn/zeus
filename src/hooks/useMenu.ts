@@ -8,7 +8,8 @@ const useMenu = () => {
       .keys()
       .map((item) => {
         return {
-          path: item.replace('./', '').replace('/index.zh-CN.md', ''),
+          componentPath: item.replace('./', ''),
+          path: item.replace(/^(\.\/)?([^.]+)\.(.*)$/, '$2'),
           component: files(item).default,
         };
       })

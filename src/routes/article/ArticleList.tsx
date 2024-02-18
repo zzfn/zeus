@@ -1,19 +1,19 @@
 import useSWR from 'swr';
-import {Radio, Table, Tag} from 'antd';
+import { Radio, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import {useState} from "react";
+import { useState } from 'react';
 
 const ArticleList = () => {
   const [isActive, setIsActive] = useState<boolean>(true);
   const { data = [] } = useSWR<any>({
-    url: `/v1/articles?isActive=${isActive}`
+    url: `/v1/articles?isActive=${isActive}`,
   });
   const columns: ColumnsType<any> = [
     {
       title: 'Title',
       dataIndex: 'title',
-      render: (text, record) => <Link to={`/article/detail?id=${record.id}`}>{text}</Link>,
+      render: (text, record) => <Link to={`/article/ArticleDetail?id=${record.id}`}>{text}</Link>,
     },
     {
       title: 'Tag',
@@ -27,9 +27,12 @@ const ArticleList = () => {
   ];
   return (
     <>
-      <Radio.Group defaultValue={true} onChange={(event)=>{
-        setIsActive(event.target.value)
-      }}>
+      <Radio.Group
+        defaultValue={true}
+        onChange={(event) => {
+          setIsActive(event.target.value);
+        }}
+      >
         <Radio.Button value={true}>active</Radio.Button>
         <Radio.Button value={false}>inactive</Radio.Button>
       </Radio.Group>

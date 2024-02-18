@@ -40,8 +40,8 @@ const CommonLayout = () => {
               mode='inline'
               items={[
                 { path: '/home', name: 'Home' },
-                { path: '/article', name: 'Article' },
-                { path: '/snap', name: 'Snap' },
+                { path: '/article/ArticleList', name: 'Article' },
+                { path: '/snap/List', name: 'Snap' },
                 { path: '/user/Detail', name: 'Config' },
               ].map((menu) => ({
                 key: menu.path,

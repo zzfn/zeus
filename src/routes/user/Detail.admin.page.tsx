@@ -5,7 +5,7 @@ import { produce } from 'immer';
 import useSWRMutation from 'swr/mutation';
 import { mutateData } from '../../models/api';
 
-const Detail = () => {
+const DetailAdminPage = () => {
   const { data = {} } = useSWR<any>({
     url: `/v1/config/site`,
   });
@@ -49,4 +49,4 @@ const Detail = () => {
     />
   );
 };
-export default Detail;
+export default DetailAdminPage;
