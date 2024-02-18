@@ -14,7 +14,6 @@ const useMenu = () => {
       })
       .filter((item) => item.path);
     setList(components);
-    console.log(components);
   }, []);
   return list;
 };

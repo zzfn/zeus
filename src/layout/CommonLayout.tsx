@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
 import WaterMark from '../components/WaterMark';
 import { useAtomValue } from 'jotai';
 import { userAtom } from 'atoms/userAtoms';
-import { Avatar, Layout, Menu, theme } from 'antd';
+import { Avatar, Button, Layout, Menu, Popover, theme } from 'antd';
 import { useState } from 'react';
 
 const { Content, Footer, Sider } = Layout;
@@ -42,19 +42,33 @@ const CommonLayout = () => {
                 { path: '/home', name: 'Home' },
                 { path: '/article', name: 'Article' },
                 { path: '/snap', name: 'Snap' },
-                { path: '/config', name: 'Config' },
+                { path: '/user/Detail', name: 'Config' },
               ].map((menu) => ({
                 key: menu.path,
                 label: menu.name,
               }))}
             />
-            <Avatar
-              style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }}
-              size='large'
-              gap={4}
+            <Popover
+              placement='right'
+              content={
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem('uid');
+                    navigate(0);
+                  }}
+                >
+                  logout
+                </Button>
+              }
             >
-              {user?.username}
-            </Avatar>
+              <Avatar
+                style={{ backgroundColor: '#7265e6', verticalAlign: 'middle' }}
+                size='large'
+                gap={4}
+              >
+                {user?.username}
+              </Avatar>
+            </Popover>
           </div>
         </Sider>
         <Layout className='min-h-screen'>

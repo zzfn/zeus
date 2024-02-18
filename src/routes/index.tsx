@@ -4,25 +4,25 @@ import Login from './Login';
 import Register from './register';
 import ArticleList from './article/ArticleList';
 import ArticleDetail from './article/ArticleDetail';
-import { useAtom, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { userAtom } from '../atoms/userAtoms';
 import useSWR from 'swr';
 import { createElement, lazy, Suspense, useEffect } from 'react';
-import { Empty, Spin } from 'antd';
+import { Empty, Result, Spin } from 'antd';
 import List from './snap/List';
 import Home from './Home';
-import { menuAtom } from '../atoms/menuAtoms';
-import Detail from './user/Detail';
+import useMenu from '../hooks/useMenu';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
-  let [menu] = useAtom(menuAtom);
+  const menus = useMenu();
   const { data, isLoading } = useSWR({
     url: '/v1/app-users/me',
   });
 
   useEffect(() => {
     setUser(data);
+    console.log(menus);
   }, [data]);
 
   if (isLoading) {
@@ -42,16 +42,28 @@ export default function Router() {
           <Route path='/home' element={<Home />} />
           <Route path='/article' element={<ArticleList />} />
           <Route path='/article/detail' element={<ArticleDetail />} />
-          <Route path='/snap' element={<List />} />
-          <Route path='/config' element={<Detail />} />
-
-          {menu.map((item: any) => (
+          <Route
+            path='/snap'
+            element={
+              data?.isAdmin ? (
+                <List />
+              ) : (
+                <Result
+                  status='403'
+                  title='403'
+                  subTitle='Sorry, you are not authorized to access this page.'
+                />
+              )
+            }
+          />
+          {menus.map((item: any) => (
             <Route
-              key={item.id}
-              path={item.path}
+              key={item.path}
+              path={item.path.replace('.tsx', '')}
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  {createElement(lazy(() => import(`./${item.component}`)))}
+                  {createElement(lazy(() => import(`./${item.path}`)))}
+                  {/*{createElement(item.component)}*/}
                 </Suspense>
               }
             />

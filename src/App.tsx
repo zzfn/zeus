@@ -4,7 +4,7 @@ import { SWRConfig } from 'swr';
 import { fetchData } from './models/api';
 import { StyleProvider } from '@ant-design/cssinjs';
 
-const fetcher = (options) => {
+const fetcher = (options: any) => {
   const { url, ...args } = options;
   return fetchData(url, args);
 };
