@@ -14,8 +14,13 @@ steps:
     image: registry.cn-shanghai.aliyuncs.com/zzf2001/pnpm
     depends_on: [clone]
     commands:
+      - corepack enable
+      - corepack prepare pnpm@latest-8 --activate
+      - pnpm config set store-dir .pnpm-store
+      - pnpm -v
       - pnpm install
       - pnpm run build
+      - pnpm prune --prod
   - name: oss
     image: wwma/drone-aliyun-oss
     depends_on: [build]
