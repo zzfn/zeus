@@ -43,6 +43,7 @@ const CommonLayout = () => {
                 { path: '/article/ArticleList', name: 'Article' },
                 { path: '/snap/List', name: 'Snap' },
                 { path: '/user/Detail', name: 'Config' },
+                { path: '/subscription/subscription', name: '订阅管理' },
               ].map((menu) => ({
                 key: menu.path,
                 label: menu.name,

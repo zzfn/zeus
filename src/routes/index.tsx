@@ -19,7 +19,6 @@ export default function Router() {
 
   useEffect(() => {
     setUser(data);
-    console.log(menus);
   }, [data]);
 
   if (isLoading) {
