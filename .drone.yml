@@ -11,7 +11,7 @@ steps:
       SSH_KEY:
         from_secret: ssh_key
   - name: build
-    image: registry.cn-shanghai.aliyuncs.com/zzf2001/pnpm
+    image: node:lts-alpine
     depends_on: [clone]
     commands:
       - corepack enable
