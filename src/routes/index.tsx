@@ -9,6 +9,7 @@ import { createElement, lazy, Suspense, useEffect } from 'react';
 import { Empty, Result, Spin } from 'antd';
 import Home from './Home';
 import useMenu from '../hooks/useMenu';
+import SubscriptionBoardPage from './subscription/subscriptionboard.admin.page';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
@@ -56,6 +57,7 @@ export default function Router() {
               }
             />
           ))}
+          <Route path='/subscriptionboard' element={<SubscriptionBoardPage />} />
           <Route path='*' element={<Empty />} />
         </Route>
         <Route path='*' element={<Empty />} />
