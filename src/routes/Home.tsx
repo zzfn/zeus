@@ -1,105 +1,67 @@
-import { Button, Card, Input, message } from 'antd';
+import { Button, Card, Input, message, Space, Typography } from 'antd';
 import useSWRMutation from 'swr/mutation';
 import { mutateData } from '../models/api';
+
+const { Title } = Typography;
 
 export default function Home() {
   const { trigger } = useSWRMutation(`v1/articles/search/sync`, mutateData);
 
   return (
-    <>
-      <Card>
-        <Button
-          onClick={async () => {
-            await trigger({
-              method: 'get',
-            });
-            message.success('同步成功');
-          }}
-        >
-          reset elastic article
-        </Button>
+    <div className='space-y-4'>
+      <Card title='数据同步'>
+        <Space direction='vertical' className='w-full'>
+          <div>
+            <Title level={5}>文章索引</Title>
+            <Space>
+              <Button
+                type='primary'
+                onClick={async () => {
+                  await trigger({ method: 'get' });
+                  message.success('文章索引同步成功');
+                }}
+              >
+                同步文章索引
+              </Button>
+              <span className='text-gray-500'>同步文章数据到搜索引擎</span>
+            </Space>
+          </div>
+
+          <div>
+            <Title level={5}>标签管理</Title>
+            <Space align='center'>
+              <Input placeholder='输入标签名称' style={{ width: 200 }} />
+              <Button
+                onClick={async () => {
+                  await trigger({ method: 'get' });
+                  message.success('标签同步成功');
+                }}
+              >
+                同步标签数据
+              </Button>
+              <span className='text-gray-500'>更新文章标签信息</span>
+            </Space>
+          </div>
+
+          <div>
+            <Title level={5}>路径管理</Title>
+            <Space>
+              <Button
+                onClick={async () => {
+                  await trigger({ method: 'get' });
+                  message.success('路径同步成功');
+                }}
+              >
+                同步路径数据
+              </Button>
+              <span className='text-gray-500'>更新文章路径信息</span>
+            </Space>
+          </div>
+        </Space>
       </Card>
-      <Card>
-        <Input />
-        <Button
-          onClick={async () => {
-            await trigger({
-              method: 'get',
-            });
-            message.success('同步成功');
-          }}
-        >
-          reset tag
-        </Button>
-        <Button
-          onClick={async () => {
-            await trigger({
-              method: 'get',
-            });
-            message.success('同步成功');
-          }}
-        >
-          reset path
-        </Button>
-      </Card>
-      {/*</Card>*/}
-      {/*<Card>*/}
-      {/*  <CardHeader>访客统计</CardHeader>*/}
-      {/*  <CardBody>*/}
-      {/*    <ResponsiveContainer height={200}>*/}
-      {/*      <LineChart*/}
-      {/*        width={500}*/}
-      {/*        height={300}*/}
-      {/*        data={records}*/}
-      {/*        margin={{*/}
-      {/*          top: 5,*/}
-      {/*          right: 30,*/}
-      {/*          left: 20,*/}
-      {/*          bottom: 5,*/}
-      {/*        }}*/}
-      {/*      >*/}
-      {/*        <CartesianGrid strokeDasharray='3 3' />*/}
-      {/*        <XAxis dataKey='name' />*/}
-      {/*        <YAxis />*/}
-      {/*        <Tooltip />*/}
-      {/*        <Legend />*/}
-      {/*        <Line type='monotone' dataKey='pv' stroke='#8884d8' activeDot={{ r: 8 }} />*/}
-      {/*        <Line type='monotone' dataKey='uv' stroke='#82ca9d' />*/}
-      {/*      </LineChart>*/}
-      {/*    </ResponsiveContainer>*/}
-      {/*  </CardBody>*/}
-      {/*</Card>*/}
-      {/*<div className='grid grid-cols-2 gap-2'>*/}
-      {/*  <Card title='文章分类'>*/}
-      {/*    <ResponsiveContainer height={200}>*/}
-      {/*      <PieChart width={200} height={200}>*/}
-      {/*        <Pie*/}
-      {/*          nameKey='tag'*/}
-      {/*          dataKey='score'*/}
-      {/*          isAnimationActive={false}*/}
-      {/*          data={[]}*/}
-      {/*          cx='50%'*/}
-      {/*          cy='50%'*/}
-      {/*          outerRadius={80}*/}
-      {/*          fill='#8dd1e1'*/}
-      {/*          label*/}
-      {/*        />*/}
-      {/*        <Tooltip />*/}
-      {/*        <LabelList position='right' fill='#000' stroke='none' dataKey='value' />*/}
-      {/*      </PieChart>*/}
-      {/*    </ResponsiveContainer>*/}
-      {/*  </Card>*/}
-      {/*  <Card title='热门搜索'>*/}
-      {/*    <ResponsiveContainer height={200}>*/}
-      {/*      <FunnelChart width={200} height={200}>*/}
-      {/*        <Tooltip />*/}
-      {/*        <Funnel fill='#83a6ed' dataKey='score' data={[]} isAnimationActive={false}>*/}
-      {/*          <LabelList position='right' fill='#000' stroke='none' dataKey='value' />*/}
-      {/*        </Funnel>*/}
-      {/*      </FunnelChart>*/}
-      {/*    </ResponsiveContainer>*/}
-      {/*  </Card>*/}
-      {/*</div>*/}
-    </>
+
+      {/* 保留原有的统计图表注释代码，以便后续恢复 */}
+      {/* ... existing chart code ... */}
+    </div>
   );
 }

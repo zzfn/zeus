@@ -10,6 +10,7 @@ import { Empty, Result, Spin } from 'antd';
 import Home from './Home';
 import useMenu from '../hooks/useMenu';
 import SubscriptionBoardPage from './subscription/subscriptionboard.admin.page';
+import FriendList from './friend/FriendList';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
@@ -58,6 +59,7 @@ export default function Router() {
             />
           ))}
           <Route path='/subscriptionboard' element={<SubscriptionBoardPage />} />
+          <Route path='/friends' element={<FriendList />} />
           <Route path='*' element={<Empty />} />
         </Route>
         <Route path='*' element={<Empty />} />

@@ -2,7 +2,7 @@ import http from 'utils/http';
 
 export async function friendList(data: any): Promise<any> {
   return http({
-    url: '/friend/list',
+    url: '/v1/friend-links',
     method: 'get',
     data,
   });
