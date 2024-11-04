@@ -1,22 +1,35 @@
-import { Card, Tag, Button, Space, Avatar, Dropdown } from 'antd';
+import { Card, Tag, Space, Dropdown } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useState } from 'react';
 import { EllipsisOutlined, CalendarOutlined, DollarOutlined } from '@ant-design/icons';
 import type { Task } from './types';
+import dayjs from 'dayjs';
 
-const SubscriptionBoardPage = () => {
+interface SubscriptionBoardProps {
+  tasks?: Task[];
+  onEdit?: (task: Task) => void;
+  onDelete?: (task: Task) => void;
+  onStatusChange?: (taskId: number, newStatus: string) => void;
+}
+
+const SubscriptionBoardPage = ({
+  tasks = [],
+  onEdit,
+  onDelete,
+  onStatusChange,
+}: SubscriptionBoardProps) => {
   const [columns, setColumns] = useState({
-    todo: {
+    PENDING: {
       title: '待处理',
-      items: [{ id: 1, title: '待处理', type: 1, dueDate: '2024-01-01', amount: 100 }] as Task[],
+      items: tasks.filter((task) => task.status === 'PENDING') || [],
     },
-    inProgress: {
+    ONGOING: {
       title: '进行中',
-      items: [] as Task[],
+      items: tasks.filter((task) => task.status === 'ONGOING') || [],
     },
-    completed: {
+    COMPLETED: {
       title: '已完成',
-      items: [] as Task[],
+      items: tasks.filter((task) => task.status === 'COMPLETED') || [],
     },
   });
 
@@ -44,6 +57,9 @@ const SubscriptionBoardPage = () => {
           items: destItems,
         },
       });
+
+      // 通知父组件状态变化，使用新的状态值
+      onStatusChange?.(removed.id, destination.droppableId as 'PENDING' | 'ONGOING' | 'COMPLETED');
     } else {
       const column = columns[source.droppableId as keyof typeof columns];
       const copiedItems = [...column.items];
@@ -69,8 +85,8 @@ const SubscriptionBoardPage = () => {
           key='dropdown'
           menu={{
             items: [
-              { key: '1', label: '编辑' },
-              { key: '2', label: '删除', danger: true },
+              { key: '1', label: '编辑', onClick: () => onEdit?.(task) },
+              { key: '2', label: '删除', danger: true, onClick: () => onDelete?.(task) },
             ],
           }}
           trigger={['click']}
@@ -87,7 +103,8 @@ const SubscriptionBoardPage = () => {
       <div className='font-medium mb-2'>{task.title}</div>
       <div className='text-gray-500 text-sm flex items-center justify-between'>
         <Space>
-          <CalendarOutlined /> {task.dueDate}
+          <CalendarOutlined />{' '}
+          {task.dueDate ? dayjs(task.dueDate).format('YYYY-MM-DD HH:mm:ss') : '-'}
         </Space>
         {task.amount && (
           <Space>
@@ -99,46 +116,36 @@ const SubscriptionBoardPage = () => {
   );
 
   return (
-    <div className='p-6'>
-      <div className='mb-4 flex justify-between items-center'>
-        <h1 className='text-2xl font-bold'>任务看板</h1>
-        <Button type='primary'>新建任务</Button>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className='grid grid-cols-3 gap-4'>
+        {Object.entries(columns).map(([columnId, column]) => (
+          <div key={columnId} className='bg-gray-50 p-4 rounded-lg'>
+            <h2 className='font-medium mb-4'>{column.title}</h2>
+            <Droppable droppableId={columnId}>
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef} className='min-h-[500px]'>
+                  {column.items.map((task, index) => (
+                    // eslint-disable-next-line react/prop-types
+                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <TaskCard task={task} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        ))}
       </div>
-
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className='grid grid-cols-3 gap-4'>
-          {Object.entries(columns).map(([columnId, column]) => (
-            <div key={columnId} className='bg-gray-50 p-4 rounded-lg'>
-              <h2 className='font-medium mb-4'>{column.title}</h2>
-              <Droppable droppableId={columnId}>
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className='min-h-[500px]'
-                  >
-                    {column.items.map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <TaskCard task={task} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          ))}
-        </div>
-      </DragDropContext>
-    </div>
+    </DragDropContext>
   );
 };
 

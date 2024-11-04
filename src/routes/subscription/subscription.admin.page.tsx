@@ -17,6 +17,7 @@ import useSWRMutation from 'swr/mutation';
 import { mutateData } from '../../models/api';
 import useSWR from 'swr';
 import dayjs from 'dayjs';
+import SubscriptionBoardPage from './subscriptionboard.admin.page';
 
 const SubscriptionAdminPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -66,17 +67,34 @@ const SubscriptionAdminPage = () => {
       },
     },
     {
+      title: '开始日期',
+      dataIndex: 'startDate',
+      key: 'startDate',
+      render: (date: string) => (date ? dayjs(date).format('YYYY-MM-DD HH:mm:ss') : '-'),
+    },
+    {
       title: '到期日期',
       dataIndex: 'dueDate',
       key: 'dueDate',
+      render: (date: string) => (date ? dayjs(date).format('YYYY-MM-DD HH:mm:ss') : '-'),
     },
     {
       title: '状态',
-      dataIndex: 'isCompleted',
-      key: 'isCompleted',
-      render: (completed: boolean) => (
-        <Tag color={completed ? 'green' : 'orange'}>{completed ? '已完成' : '进行中'}</Tag>
-      ),
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: 'PENDING' | 'ONGOING' | 'COMPLETED') => {
+        const statusConfig = {
+          PENDING: { color: 'orange', text: '待处理' },
+          ONGOING: { color: 'blue', text: '进行中' },
+          COMPLETED: { color: 'green', text: '已完成' },
+        };
+
+        return (
+          <Tag color={statusConfig[status]?.color || 'default'}>
+            {statusConfig[status]?.text || status}
+          </Tag>
+        );
+      },
     },
     {
       title: '操作',
@@ -117,12 +135,14 @@ const SubscriptionAdminPage = () => {
     setEditingTask(null);
     form.resetFields();
   };
+  const [viewType, setViewType] = useState('table');
+
   return (
     <div className='p-6'>
       <div className='mb-4 flex justify-between'>
         <div className='flex items-center gap-4'>
           <h1 className='text-2xl font-bold'>任务管理</h1>
-          <Radio.Group defaultValue='table'>
+          <Radio.Group value={viewType} onChange={(e) => setViewType(e.target.value)}>
             <Radio.Button value='table'>表格视图</Radio.Button>
             <Radio.Button value='board'>看板视图</Radio.Button>
           </Radio.Group>
@@ -132,7 +152,24 @@ const SubscriptionAdminPage = () => {
         </Button>
       </div>
 
-      <Table columns={columns} dataSource={tasks} />
+      {viewType === 'table' ? (
+        <Table columns={columns} dataSource={tasks} />
+      ) : (
+        <SubscriptionBoardPage
+          tasks={tasks}
+          onEdit={handleEdit}
+          onDelete={async (task) => {
+            // 处理删除逻辑
+          }}
+          onStatusChange={async (taskId, newStatus) => {
+            await trigger({
+              method: 'put',
+              body: { id: taskId, status: newStatus },
+            });
+            // 处理状态变更逻辑
+          }}
+        />
+      )}
 
       <Modal
         title={editingTask ? '编辑任务' : '新建任务'}
