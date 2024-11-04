@@ -11,7 +11,7 @@ import {
   InputNumber,
   Radio,
 } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Task } from './types';
 import useSWRMutation from 'swr/mutation';
 import { mutateData } from '../../models/api';
@@ -24,11 +24,7 @@ const SubscriptionAdminPage = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [form] = Form.useForm();
   const { trigger } = useSWRMutation(`v1/task`, mutateData);
-  const {
-    data: tasks,
-    isLoading,
-    mutate,
-  } = useSWR({
+  const { data: tasks, mutate } = useSWR({
     url: '/v1/task',
   });
   const columns = [
@@ -120,10 +116,12 @@ const SubscriptionAdminPage = () => {
     });
     setIsModalVisible(true);
   };
-  async function handleOk(values) {
+  async function handleOk(values: Partial<Task>) {
     await trigger({
       method: editingTask ? 'put' : 'post',
-      body: editingTask ? { ...values, id: editingTask.id } : values,
+      body: editingTask
+        ? ({ ...values, id: editingTask.id } as any)
+        : { ...values, status: 'PENDING' },
     });
     setIsModalVisible(false);
     setEditingTask(null);
@@ -158,13 +156,13 @@ const SubscriptionAdminPage = () => {
         <SubscriptionBoardPage
           tasks={tasks}
           onEdit={handleEdit}
-          onDelete={async (task) => {
+          onDelete={async () => {
             // 处理删除逻辑
           }}
           onStatusChange={async (taskId, newStatus) => {
             await trigger({
               method: 'put',
-              body: { id: taskId, status: newStatus },
+              body: { id: taskId, status: newStatus } as any,
             });
             // 处理状态变更逻辑
           }}
