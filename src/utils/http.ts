@@ -30,7 +30,7 @@ const msg = new Map([
 ]);
 const instance = axios.create({
   baseURL: process.env.API_URL,
-  timeout: 10000,
+  timeout: Infinity,
   headers: { 'Content-Type': 'application/json;charset=UTF-8' },
   validateStatus: () => true,
 });
