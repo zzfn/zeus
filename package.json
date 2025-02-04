@@ -32,7 +32,6 @@
     "@bytemd/plugin-gfm": "^1.21.0",
     "@bytemd/react": "^1.21.0",
     "@fingerprintjs/fingerprintjs": "^4.2.2",
-    "@oc/monitor": "^1.0.0",
     "@tanstack/react-query": "^5.21.4",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@xstate/react": "^4.1.0",
