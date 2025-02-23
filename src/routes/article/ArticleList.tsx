@@ -1,8 +1,9 @@
 import useSWR from 'swr';
-import { Card, Radio, Table, Tag, Typography, Space } from 'antd';
+import { Card, Radio, Table, Tag, Typography, Space, Button } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { DownloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -47,6 +48,36 @@ const ArticleList = () => {
       dataIndex: 'isActive',
       render: (active) => (
         <Tag color={active ? 'success' : 'default'}>{active ? '已发布' : '未发布'}</Tag>
+      ),
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_, record) => (
+        <Button
+          type='link'
+          icon={<DownloadOutlined />}
+          onClick={async () => {
+            const response = await fetch(
+              `${process.env.API_URL}/v1/articles/export/markdown/${record.id}`,
+            );
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            console.log(url);
+            // 这里添加下载逻辑
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${record.title}.md`; // 设置下载文件名
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // 清理blob URL
+            URL.revokeObjectURL(url);
+          }}
+        >
+          下载
+        </Button>
       ),
     },
   ];
