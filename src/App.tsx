@@ -12,7 +12,6 @@ const fetcher = (options: any) => {
 function App(): ReactElement {
   useEffect(() => {
     console.log(`GIT_VERSION: ${process.env.GIT_VERSION}`);
-    console.log(`GIT_AUTHOR_DATE: ${process.env.GIT_AUTHOR_DATE}`);
   });
   return (
     <SWRConfig
