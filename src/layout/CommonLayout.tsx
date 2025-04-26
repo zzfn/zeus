@@ -17,18 +17,8 @@ const CommonLayout = () => {
   } = theme.useToken();
   return (
     <WaterMark content={user?.username}>
-      <Layout hasSider>
-        <Sider
-          className='fixed left-0 top-0 bottom-0'
-          breakpoint='lg'
-          collapsedWidth='0'
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-        >
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider>
           <div className='h-screen flex flex-col justify-between items-center py-10'>
             <Menu
               onClick={(item) => {
@@ -73,8 +63,8 @@ const CommonLayout = () => {
             </Popover>
           </div>
         </Sider>
-        <Layout className='min-h-screen'>
-          <Content style={{ margin: '24px 16px 0' }}>
+        <Layout>
+          <Content style={{ margin: '0 16px' }}>
             <div
               style={{
                 padding: 24,
@@ -85,7 +75,6 @@ const CommonLayout = () => {
               <Outlet />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
         </Layout>
       </Layout>
     </WaterMark>
