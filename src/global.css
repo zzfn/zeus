@@ -8,5 +8,5 @@
 @tailwind utilities;
 
 .bytemd {
-    height: calc(100vh - 366px)!important;
+    height: calc(100vh - 48px - 224px)!important;
 }
