@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { rspack } = require('@rspack/core')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const webpack = require('webpack');
@@ -30,11 +30,9 @@ module.exports = merge(base, {
     splitChunks: {
       chunks: 'all',
       minSize: 0,
-      minRemainingSize: 0,
       minChunks: 1,
       maxAsyncRequests: 30,
       maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
@@ -60,9 +58,9 @@ module.exports = merge(base, {
   },
 
   plugins: [
-    new webpack.ProgressPlugin(handler),
+    new rspack.ProgressPlugin(handler),
     process.env.ANALYZER && new BundleAnalyzerPlugin(),
-    new MiniCssExtractPlugin({
+    new rspack.CssExtractRspackPlugin({
       filename: 'static/css/[name].[contenthash:8].css',
       chunkFilename: 'static/css/[contenthash:8].chunk.css',
     }),

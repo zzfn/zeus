@@ -1,21 +1,19 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { rspack } = require('@rspack/core')
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshPlugin = require("@rspack/plugin-react-refresh");
 const isDevelopment = process.env.NODE_ENV === 'development';
-const lessRegex = /\.(less)$/;
-const lessModuleRegex = /\.module\.(less)$/;
 
 module.exports = {
-  entry: path.resolve(__dirname, '../src/index.tsx'),
-  cache: {
-    type: 'filesystem',
-    buildDependencies: {
-      config: [__filename],
+    experiments: {
+    rspackFuture: {
+      disableTransformByDefault: true,
     },
   },
+  entry: {
+    main: path.resolve(__dirname, '../src/index.tsx')
+  },
+  cache: true,
   output: {
     clean: true,
     path: path.resolve(__dirname, '../dist'),
@@ -43,7 +41,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              plugins: [isDevelopment && 'react-refresh/babel'].filter(Boolean),
+              plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
             },
           },
         ],
@@ -52,7 +50,7 @@ module.exports = {
         test: /\.(css)$/,
         use: [
           {
-            loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+            loader: isDevelopment ? 'style-loader' : rspack.CssExtractRspackPlugin.loader,
           },
           {
             loader: 'css-loader',
@@ -64,6 +62,7 @@ module.exports = {
           },
           'postcss-loader',
         ],
+        type: 'javascript/auto'
       },
       // {
       //   test: lessRegex,
@@ -130,18 +129,18 @@ module.exports = {
     ],
   },
   plugins: [
-    isDevelopment && new ReactRefreshWebpackPlugin(),
+    isDevelopment && new ReactRefreshPlugin(),
     new Dotenv({
       systemvars: true,
       path: `./.env.${process.env.APP_ENV}`,
     }),
-    new HtmlWebpackPlugin({
+    new rspack.HtmlRspackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
       favicon: path.resolve(__dirname, '../public/favicon.ico'),
-    }),
+    })
   ].filter(Boolean),
   resolve: {
-    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })],
+    tsConfig:{ configFile: path.resolve(__dirname, '../tsconfig.json') },
     extensions: ['.tsx', '.ts', '.js'],
   },
 };
