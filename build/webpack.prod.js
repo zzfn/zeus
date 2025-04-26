@@ -59,7 +59,7 @@ module.exports = merge(base, {
 
   plugins: [
     new rspack.EnvironmentPlugin({
-      GIT_VERSION: DRONE_COMMIT,
+      GIT_VERSION: process.env.DRONE_COMMIT,
     }),
     new rspack.ProgressPlugin(handler),
     process.env.ANALYZER && new BundleAnalyzerPlugin(),
