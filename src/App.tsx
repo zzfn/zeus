@@ -1,5 +1,5 @@
 import Router from './routes';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { SWRConfig } from 'swr';
 import { fetchData } from './models/api';
 import { StyleProvider } from '@ant-design/cssinjs';
@@ -10,6 +10,10 @@ const fetcher = (options: any) => {
 };
 
 function App(): ReactElement {
+  useEffect(() => {
+    console.log(`GIT_VERSION: ${process.env.GIT_VERSION}`);
+    console.log(`GIT_AUTHOR_DATE: ${process.env.GIT_AUTHOR_DATE}`);
+  });
   return (
     <SWRConfig
       value={{

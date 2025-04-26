@@ -1,10 +1,14 @@
-const { rspack } = require('@rspack/core')
+const { rspack } = require('@rspack/core');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const base = require('./webpack.base');
 const TerserPlugin = require('terser-webpack-plugin');
+const child_process = require('child_process');
+function git(command) {
+  return child_process.execSync(`git ${command}`, { encoding: 'utf8' }).trim();
+}
 const handler = (percentage, message, ...args) => {
   // e.g. Output each progress message directly to the console:
   console.info(`${Number.parseInt(percentage * 100)}%`, message, ...args);
@@ -58,6 +62,10 @@ module.exports = merge(base, {
   },
 
   plugins: [
+    new rspack.EnvironmentPlugin({
+      GIT_VERSION: git('describe --always'),
+      GIT_AUTHOR_DATE: git('log -1 --format=%aI'),
+    }),
     new rspack.ProgressPlugin(handler),
     process.env.ANALYZER && new BundleAnalyzerPlugin(),
     new rspack.CssExtractRspackPlugin({
