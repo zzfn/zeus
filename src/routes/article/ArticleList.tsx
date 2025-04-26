@@ -83,11 +83,11 @@ const ArticleList = () => {
   ];
 
   return (
-    <Card className='shadow-sm'>
+    <Card className='shadow-xs'>
       <Space direction='vertical' size='large' className='w-full'>
         <div className='flex justify-between items-center'>
           <div>
-            <Title level={4} className='!mb-1'>
+            <Title level={4} className='mb-1!'>
               文章管理
             </Title>
             <span className='text-gray-500'>管理所有的文章内容</span>

@@ -1,11 +1,6 @@
-@layer tailwind-base, antd;
+@layer theme, base, antd, components, utilities;
 
-@layer tailwind-base {
-    @tailwind base;
-}
-
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 .bytemd {
     height: calc(100vh - 48px - 224px)!important;

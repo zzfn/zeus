@@ -58,8 +58,8 @@ const ListAdminPage = () => {
         </div>
       </Dragger>
 
-      <Card className='shadow-sm'>
-        <Title level={4} className='!mb-4'>
+      <Card className='shadow-xs'>
+        <Title level={4} className='mb-4!'>
           图片列表
         </Title>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
@@ -76,7 +76,7 @@ const ListAdminPage = () => {
                   mask: <div className='text-sm'>点击预览</div>,
                 }}
               />
-              <div className='opacity-0 group-hover:opacity-100 absolute bottom-2 left-2 right-2 bg-black bg-opacity-50 text-white text-xs p-2 rounded transition-opacity'>
+              <div className='opacity-0 group-hover:opacity-100 absolute bottom-2 left-2 right-2 bg-black bg-opacity-50 text-white text-xs p-2 rounded-sm transition-opacity'>
                 {object.Key.split('/').pop()}
               </div>
             </div>

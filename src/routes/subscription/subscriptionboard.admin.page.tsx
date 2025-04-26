@@ -79,7 +79,7 @@ const SubscriptionBoardPage = ({
   const TaskCard = ({ task }: { task: Task }) => (
     <Card
       size='small'
-      className='mb-3 shadow-sm'
+      className='mb-3 shadow-xs'
       actions={[
         <Dropdown
           key='dropdown'

@@ -152,7 +152,7 @@ const FriendList = () => {
   };
 
   return (
-    <Card className='shadow-sm'>
+    <Card className='shadow-xs'>
       <div className='flex justify-between items-center mb-4'>
         <div>
           <h4 className='text-lg font-medium mb-1'>友链管理</h4>
