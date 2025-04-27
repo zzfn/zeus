@@ -6,9 +6,11 @@ const { Title } = Typography;
 
 export default function Home() {
   const { trigger } = useSWRMutation(`v1/articles/search/sync`, mutateData);
+  const [messageApi, contextHolder] = message.useMessage();
 
   return (
     <div className='space-y-4'>
+      {contextHolder}
       <Card title='数据同步'>
         <Space direction='vertical' className='w-full'>
           <div>
@@ -18,7 +20,7 @@ export default function Home() {
                 type='primary'
                 onClick={async () => {
                   await trigger({ method: 'get' });
-                  message.success('文章索引同步成功');
+                  messageApi.success('文章索引同步成功');
                 }}
               >
                 同步文章索引
@@ -34,7 +36,7 @@ export default function Home() {
               <Button
                 onClick={async () => {
                   await trigger({ method: 'get' });
-                  message.success('标签同步成功');
+                  messageApi.success('标签同步成功');
                 }}
               >
                 同步标签数据
@@ -49,7 +51,7 @@ export default function Home() {
               <Button
                 onClick={async () => {
                   await trigger({ method: 'get' });
-                  message.success('路径同步成功');
+                  messageApi.success('路径同步成功');
                 }}
               >
                 同步路径数据
