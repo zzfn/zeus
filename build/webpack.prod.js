@@ -27,34 +27,34 @@ module.exports = merge(base, {
         // minify: TerserPlugin.swcMinify,
       }),
     ],
-    splitChunks: {
-      chunks: 'all',
-      minSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      cacheGroups: {
-        defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module, chunks, cacheGroupKey) {
-            const moduleFileName = module
-              .identifier()
-              .split('/')
-              .reduceRight((item) => item);
-            const allChunksNames = chunks.map((item) => item.name).join('~');
-            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-          },
-          chunks: 'all',
-          priority: -10,
-          reuseExistingChunk: true,
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
-    },
+    // splitChunks: {
+    //   chunks: 'all',
+    //   minSize: 0,
+    //   minChunks: 1,
+    //   maxAsyncRequests: 30,
+    //   maxInitialRequests: 30,
+    //   cacheGroups: {
+    //     defaultVendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       name(module, chunks, cacheGroupKey) {
+    //         const moduleFileName = module
+    //           .identifier()
+    //           .split('/')
+    //           .reduceRight((item) => item);
+    //         const allChunksNames = chunks.map((item) => item.name).join('~');
+    //         return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+    //       },
+    //       chunks: 'all',
+    //       priority: -10,
+    //       reuseExistingChunk: true,
+    //     },
+    //     default: {
+    //       minChunks: 2,
+    //       priority: -20,
+    //       reuseExistingChunk: true,
+    //     },
+    //   },
+    // },
   },
 
   plugins: [
