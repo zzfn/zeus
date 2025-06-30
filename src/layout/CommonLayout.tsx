@@ -35,6 +35,7 @@ const CommonLayout = () => {
                 { path: '/user/Detail', name: 'Config' },
                 { path: '/subscription/subscription', name: '订阅管理' },
                 { path: '/friend/FriendList', name: '友链管理' },
+                { path: '/calculator/AnnualReturnCalculator', name: '收益年化计算器' },
               ].map((menu) => ({
                 key: menu.path,
                 label: menu.name,
