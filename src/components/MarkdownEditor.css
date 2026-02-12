@@ -1,9 +1,9 @@
 /* Monaco Editor 编辑器样式 */
 .editor-wrapper {
+  display: flex;
+  overflow: hidden;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
-  overflow: hidden;
-  display: flex;
   flex-direction: column;
 }
 
@@ -17,36 +17,36 @@
 
 .editor-toolbar button {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
   height: 28px;
+  min-width: 32px;
   padding: 4px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #595959;
+  cursor: pointer;
   background: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 3px;
-  cursor: pointer;
-  font-size: 13px;
-  color: #595959;
   transition: all 0.2s;
-  font-family: inherit;
+  align-items: center;
+  justify-content: center;
 }
 
 .editor-toolbar button:hover {
+  color: #1890ff;
   background: #e6f7ff;
   border-color: #4096ff;
-  color: #1890ff;
 }
 
 .editor-toolbar button:disabled {
-  opacity: 0.6;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .editor-toolbar button:disabled:hover {
+  color: #595959;
   background: #fff;
   border-color: #d9d9d9;
-  color: #595959;
 }
 
 .monaco-editor {
@@ -55,8 +55,8 @@
 
 /* 加载状态 */
 .editor-loading {
-  text-align: center;
   padding: 20px;
-  color: #8c8c8c;
   font-size: 14px;
+  color: #8c8c8c;
+  text-align: center;
 }
