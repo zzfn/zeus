@@ -73,39 +73,63 @@ const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>(
       });
 
       // 监听粘贴事件（支持粘贴图片）
+      // Monaco Editor 的 textarea 在 inputarea 内
+      const handlePaste = async (e: Event) => {
+        const clipboardEvent = e as ClipboardEvent;
+        const items = clipboardEvent.clipboardData?.items;
+        if (!items) return;
+
+        let hasImage = false;
+        for (const item of Array.from(items)) {
+          if (item.type.startsWith('image/')) {
+            hasImage = true;
+            clipboardEvent.preventDefault();
+            const file = item.getAsFile();
+            if (file && !isUploading) {
+              setIsUploading(true);
+              const imageUrl = await uploadImageFile(file);
+              setIsUploading(false);
+
+              if (imageUrl && editorRef.current) {
+                const position = editorRef.current.getPosition();
+                if (!position) return;
+
+                const markdownText = `![图片描述](${imageUrl})`;
+
+                // 使用 executeEdits 正确插入文本
+                editorRef.current.executeEdits('paste-image', [
+                  {
+                    range: {
+                      startLineNumber: position.lineNumber,
+                      startColumn: position.column,
+                      endLineNumber: position.lineNumber,
+                      endColumn: position.column,
+                    },
+                    text: markdownText,
+                  },
+                ]);
+
+                // 将光标移动到插入文本的末尾
+                editorRef.current.setPosition({
+                  lineNumber: position.lineNumber,
+                  column: position.column + markdownText.length,
+                });
+              }
+            }
+            break;
+          }
+        }
+      };
+
+      // 尝试在多个可能的位置添加粘贴监听
       const editorDom = editor.getDomNode();
       if (editorDom) {
-        editorDom.addEventListener('paste', async (e: Event) => {
-          const clipboardEvent = e as ClipboardEvent;
-          const items = clipboardEvent.clipboardData?.items;
-          if (!items) return;
-
-          for (const item of Array.from(items)) {
-            if (item.type.startsWith('image/')) {
-              clipboardEvent.preventDefault();
-              const file = item.getAsFile();
-              if (file && !isUploading) {
-                setIsUploading(true);
-                const imageUrl = await uploadImageFile(file);
-                setIsUploading(false);
-
-                if (imageUrl && editorRef.current) {
-                  const position = editorRef.current.getPosition();
-                  const markdownText = `![图片描述](${imageUrl})`;
-
-                  editorRef.current.trigger('keyboard', 'type', {
-                    text: markdownText,
-                  });
-
-                  if (position) {
-                    editorRef.current.setPosition(position);
-                  }
-                }
-              }
-              break;
-            }
-          }
-        });
+        const textarea = editorDom.querySelector('textarea');
+        if (textarea) {
+          textarea.addEventListener('paste', handlePaste);
+        }
+        // 也可能在父容器上需要监听
+        editorDom.addEventListener('paste', handlePaste, true);
       }
     };
 
@@ -125,15 +149,28 @@ const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>(
 
         if (imageUrl && editorRef.current) {
           const position = editorRef.current.getPosition();
+          if (!position) return;
+
           const markdownText = `![图片描述](${imageUrl})`;
 
-          editorRef.current.trigger('keyboard', 'type', {
-            text: markdownText,
-          });
+          // 使用 executeEdits 正确插入文本
+          editorRef.current.executeEdits('upload-image', [
+            {
+              range: {
+                startLineNumber: position.lineNumber,
+                startColumn: position.column,
+                endLineNumber: position.lineNumber,
+                endColumn: position.column,
+              },
+              text: markdownText,
+            },
+          ]);
 
-          if (position) {
-            editorRef.current.setPosition(position);
-          }
+          // 将光标移动到插入文本的末尾
+          editorRef.current.setPosition({
+            lineNumber: position.lineNumber,
+            column: position.column + markdownText.length,
+          });
         }
       };
 
@@ -143,12 +180,7 @@ const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>(
     return (
       <div className='editor-wrapper'>
         <div className='editor-toolbar'>
-          <button
-            type='button'
-            onClick={handleImageUpload}
-            title='插入图片'
-            disabled={isUploading}
-          >
+          <button type='button' onClick={handleImageUpload} title='插入图片' disabled={isUploading}>
             {isUploading ? '⏳ 上传中...' : '🖼️ 上传图片'}
           </button>
         </div>
@@ -180,7 +212,7 @@ const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>(
         />
       </div>
     );
-  }
+  },
 );
 
 MarkdownEditor.displayName = 'MarkdownEditor';
