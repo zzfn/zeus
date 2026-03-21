@@ -4,6 +4,7 @@ import { useAtomValue } from 'jotai';
 import { userAtom } from 'atoms/userAtoms';
 import { Avatar, Button, Layout, Menu, Popover, theme } from 'antd';
 import { useState } from 'react';
+import { fetchData } from '../models/api';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -45,9 +46,11 @@ const CommonLayout = () => {
               placement='right'
               content={
                 <Button
-                  onClick={() => {
-                    localStorage.removeItem('uid');
-                    navigate(0);
+                  onClick={async () => {
+                    await fetchData('/v1/app-users/logout', {
+                      method: 'POST',
+                    });
+                    navigate('/login', { replace: true });
                   }}
                 >
                   logout

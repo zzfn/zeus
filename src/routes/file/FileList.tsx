@@ -34,9 +34,7 @@ const FileList = () => {
   const props: UploadProps = {
     name: 'file',
     action: `${process.env.API_URL}/file/upload`,
-    headers: {
-      authorization: `Bearer ${sessionStorage.getItem('uid')}`,
-    },
+    withCredentials: true,
     onChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);

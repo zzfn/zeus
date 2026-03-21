@@ -1,49 +1,40 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { userAtom } from 'atoms/userAtoms';
 import { useAtomValue } from 'jotai';
-import { Button, Card, Form, Input } from 'antd';
-import useSWRMutation from 'swr/mutation';
-import { mutateData } from 'models/api';
+import { Button, Card, Typography } from 'antd';
+
+const { Paragraph, Title } = Typography;
 
 const Login = () => {
-  let user = useAtomValue(userAtom);
-  const { trigger } = useSWRMutation('/v1/app-users/login', mutateData);
-
+  const user = useAtomValue(userAtom);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (user?.id) {
       navigate('/home');
     }
-  }, [user]);
-  const onSubmit = async (values:any) => {
-    console.log(values);
-    const data = await trigger({
-      body: values,
-      method: 'POST',
-    });
-    localStorage.setItem('uid', data as string);
+  }, [navigate, user]);
+
+  const handleLogin = () => {
+    window.sessionStorage.setItem('post_login_redirect', '/home');
+    window.location.href = new URL('/v1/app-users/discourse/login', process.env.API_URL).toString();
   };
 
   return (
     <div className='flex items-center h-screen justify-center'>
       <Card className='max-w-md m-auto'>
-        <Form className='flex flex-col gap-y-3' onFinish={onSubmit}>
-          <Form.Item name='username'>
-            <Input autoFocus placeholder='test' />
-          </Form.Item>
-          <Form.Item name='password'>
-            <Input type='password' placeholder='test' />
-          </Form.Item>
-          <div className='flex justify-center gap-x-2'>
-            <Link to='/register'>
-              <Button>注册</Button>
-            </Link>
-            <Button type='primary' color='primary' htmlType='submit'>
-              登录
-            </Button>
-          </div>
-        </Form>
+        <div className='flex flex-col items-center gap-y-4 p-4 text-center'>
+          <Title level={3} className='!mb-0'>
+            Zeus 管理后台
+          </Title>
+          <Paragraph className='!mb-0 text-gray-500'>
+            使用 `blog-server-go` 的 Discourse 单点登录进入后台。
+          </Paragraph>
+          <Button type='primary' size='large' onClick={handleLogin}>
+            使用 Discourse 登录
+          </Button>
+        </div>
       </Card>
     </div>
   );

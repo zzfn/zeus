@@ -11,6 +11,7 @@ import Home from './Home';
 import useMenu from '../hooks/useMenu';
 import SubscriptionBoardPage from './subscription/subscriptionboard.admin.page';
 import FriendList from './friend/FriendList';
+import AuthCallback from './AuthCallback';
 
 export default function Router() {
   const setUser = useSetAtom(userAtom);
@@ -35,6 +36,7 @@ export default function Router() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/auth/callback' element={<AuthCallback />} />
         <Route path='/' element={<Navigate to='/home' replace />} />
         <Route path='/' element={data?.id ? <CommonLayout /> : <Navigate to='/login' replace />}>
           <Route path='/home' element={<Home />} />

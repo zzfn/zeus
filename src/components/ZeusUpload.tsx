@@ -14,10 +14,8 @@ const ZeusUpload = ({ value, onChange, data = {} }: ZeusUpload) => {
     name: 'file',
     showUploadList: false,
     action: `${process.env.API_URL}/file/upload`,
+    withCredentials: true,
     data: { path: `article/${data.id}` },
-    headers: {
-      authorization: `Bearer ${sessionStorage.getItem('uid')}`,
-    },
     beforeUpload: (file) => {
       return new Promise((resolve) => {
         const suffix = file.name.split('.').pop();

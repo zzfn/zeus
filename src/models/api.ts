@@ -5,32 +5,29 @@ type OptionType = RequestInit & { params?: Record<string, any> };
 
 async function fetchData<T>(url: string, initOptions: OptionType): Promise<T> {
   const apiEndpoint = new URL(url, process.env.API_URL);
-  if (initOptions?.params) {
-    for (const [key, value] of Object.entries(initOptions.params)) {
+  const requestOptions: OptionType = {
+    credentials: 'include',
+    ...initOptions,
+  };
+  if (requestOptions.params) {
+    for (const [key, value] of Object.entries(requestOptions.params)) {
       apiEndpoint.searchParams.set(key, value.toString());
     }
   }
-  if (initOptions?.body) {
-    initOptions.body = JSON.stringify(initOptions.body);
+  if (requestOptions.body) {
+    requestOptions.body = JSON.stringify(requestOptions.body);
   }
-  const uid = localStorage.getItem('uid');
-  if (initOptions?.headers) {
-    initOptions.headers = {
-      ...initOptions.headers,
+  if (requestOptions.headers) {
+    requestOptions.headers = {
+      ...requestOptions.headers,
       'Content-Type': 'application/json',
     };
   } else {
-    initOptions.headers = {
+    requestOptions.headers = {
       'Content-Type': 'application/json',
     };
   }
-  if (uid) {
-    initOptions.headers = {
-      ...initOptions.headers,
-      Authorization: `Bearer ${uid}`,
-    };
-  }
-  const res = await fetch(apiEndpoint.toString(), initOptions);
+  const res = await fetch(apiEndpoint.toString(), requestOptions);
   if (!res.ok) {
     if (res.status === 401) {
       message.error('无权限');

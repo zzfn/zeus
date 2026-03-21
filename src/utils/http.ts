@@ -31,13 +31,12 @@ const msg = new Map([
 const instance = axios.create({
   baseURL: process.env.API_URL,
   timeout: Infinity,
+  withCredentials: true,
   headers: { 'Content-Type': 'application/json;charset=UTF-8' },
   validateStatus: () => true,
 });
 instance.interceptors.request.use(
   (config) => {
-    const Authorization = `Bearer ${localStorage.getItem('uid')}`;
-    Reflect.set(config.headers, 'Authorization', Authorization);
     Reflect.set(config.headers, 'System', 'admin');
     return config;
   },
