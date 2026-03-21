@@ -18,7 +18,9 @@ const Login = () => {
 
   const handleLogin = () => {
     window.sessionStorage.setItem('post_login_redirect', '/home');
-    window.location.href = new URL('/v1/app-users/discourse/login', process.env.API_URL).toString();
+    const loginURL = new URL('/v1/app-users/discourse/login', process.env.API_URL);
+    loginURL.searchParams.set('redirect', window.location.origin);
+    window.location.href = loginURL.toString();
   };
 
   return (
